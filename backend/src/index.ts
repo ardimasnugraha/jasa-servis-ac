@@ -12,6 +12,14 @@ import apiRoutes from './routes/api.js';
 app.use(cors());
 app.use(express.json());
 
+// Strip Vercel monorepo routing prefix if present
+app.use((req, res, next) => {
+  if (req.url.startsWith('/api/backend')) {
+    req.url = req.url.replace('/api/backend', '');
+  }
+  next();
+});
+
 app.use('/api', apiRoutes);
 
 app.get('/', (req: Request, res: Response) => {
