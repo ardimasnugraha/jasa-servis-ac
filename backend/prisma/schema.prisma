@@ -1,0 +1,202 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id          String       @id @default(uuid()) @db.Uuid
+  fullname    String?      @db.VarChar(150)
+  email       String?      @unique @db.VarChar(150)
+  phone       String?      @db.VarChar(20)
+  password    String?
+  role        String?      @db.VarChar(30)
+  createdAt   DateTime?    @default(now()) @map("created_at")
+
+  technicians Technician[]
+  crmNotes    CrmNote[]
+
+  @@map("users")
+}
+
+model Customer {
+  id          String       @id @default(uuid()) @db.Uuid
+  fullname    String?      @db.VarChar(150)
+  phone       String?      @db.VarChar(20)
+  email       String?      @db.VarChar(150)
+  address     String?
+  createdAt   DateTime?    @default(now()) @map("created_at")
+
+  acUnits     AcUnit[]
+  bookings    Booking[]
+  reminders   Reminder[]
+  crmNotes    CrmNote[]
+
+  @@map("customers")
+}
+
+model Technician {
+  id          String       @id @default(uuid()) @db.Uuid
+  userId      String?      @db.Uuid @map("user_id")
+  specialty   String?      @db.VarChar(100)
+  status      String?      @db.VarChar(30)
+  createdAt   DateTime?    @default(now()) @map("created_at")
+
+  user        User?        @relation(fields: [userId], references: [id])
+  bookings    Booking[]
+  reports     ServiceReport[]
+
+  @@map("technicians")
+}
+
+model AcUnit {
+  id               String       @id @default(uuid()) @db.Uuid
+  customerId       String?      @db.Uuid @map("customer_id")
+  brand            String?      @db.VarChar(100)
+  type             String?      @db.VarChar(100)
+  pk               String?      @db.VarChar(50)
+  serialNumber     String?      @db.VarChar(100) @map("serial_number")
+  installationDate DateTime?    @db.Date @map("installation_date")
+  lastService      DateTime?    @db.Date @map("last_service")
+  notes            String?
+
+  customer         Customer?    @relation(fields: [customerId], references: [id])
+  reminders        Reminder[]
+
+  @@map("ac_units")
+}
+
+model Booking {
+  id              String       @id @default(uuid()) @db.Uuid
+  bookingCode     String?      @unique @db.VarChar(50) @map("booking_code")
+  customerId      String?      @db.Uuid @map("customer_id")
+  technicianId    String?      @db.Uuid @map("technician_id")
+  bookingDate     DateTime?    @db.Date @map("booking_date")
+  bookingTime     DateTime?    @db.Time @map("booking_time")
+  complaint       String?
+  status          String?      @db.VarChar(30)
+  createdAt       DateTime?    @default(now()) @map("created_at")
+
+  customer        Customer?    @relation(fields: [customerId], references: [id])
+  technician      Technician?  @relation(fields: [technicianId], references: [id])
+  reports         ServiceReport[]
+  invoices        Invoice[]
+  ratings         CustomerRating[]
+
+  @@map("bookings")
+}
+
+model ServiceReport {
+  id              String       @id @default(uuid()) @db.Uuid
+  bookingId       String?      @db.Uuid @map("booking_id")
+  technicianId    String?      @db.Uuid @map("technician_id")
+  diagnosis       String?
+  actionTaken     String?      @map("action_taken")
+  recommendations String?
+  beforePhoto     String?      @map("before_photo")
+  afterPhoto      String?      @map("after_photo")
+  totalCost       Decimal?     @db.Decimal(12, 2) @map("total_cost")
+  createdAt       DateTime?    @default(now()) @map("created_at")
+
+  booking         Booking?     @relation(fields: [bookingId], references: [id])
+  technician      Technician?  @relation(fields: [technicianId], references: [id])
+  spareparts      ServiceSparepart[]
+
+  @@map("service_reports")
+}
+
+model Sparepart {
+  id              String       @id @default(uuid()) @db.Uuid
+  name            String?      @db.VarChar(150)
+  stock           Int?
+  price           Decimal?     @db.Decimal(12, 2)
+
+  serviceSpares   ServiceSparepart[]
+
+  @@map("spareparts")
+}
+
+model ServiceSparepart {
+  id              String       @id @default(uuid()) @db.Uuid
+  serviceId       String?      @db.Uuid @map("service_id")
+  sparepartId     String?      @db.Uuid @map("sparepart_id")
+  qty             Int?
+  price           Decimal?     @db.Decimal(12, 2)
+
+  service         ServiceReport? @relation(fields: [serviceId], references: [id])
+  sparepart       Sparepart?     @relation(fields: [sparepartId], references: [id])
+
+  @@map("service_spareparts")
+}
+
+model Invoice {
+  id              String       @id @default(uuid()) @db.Uuid
+  bookingId       String?      @db.Uuid @map("booking_id")
+  invoiceNumber   String?      @unique @db.VarChar(100) @map("invoice_number")
+  subtotal        Decimal?     @db.Decimal(12, 2)
+  tax             Decimal?     @db.Decimal(12, 2)
+  discount        Decimal?     @db.Decimal(12, 2)
+  total           Decimal?     @db.Decimal(12, 2)
+  status          String?      @db.VarChar(30)
+  createdAt       DateTime?    @default(now()) @map("created_at")
+
+  booking         Booking?     @relation(fields: [bookingId], references: [id])
+  payments        Payment[]
+
+  @@map("invoices")
+}
+
+model Payment {
+  id              String       @id @default(uuid()) @db.Uuid
+  invoiceId       String?      @db.Uuid @map("invoice_id")
+  paymentMethod   String?      @db.VarChar(50) @map("payment_method")
+  amount          Decimal?     @db.Decimal(12, 2)
+  paymentDate     DateTime?    @db.Timestamp() @map("payment_date")
+  status          String?      @db.VarChar(30)
+
+  invoice         Invoice?     @relation(fields: [invoiceId], references: [id])
+
+  @@map("payments")
+}
+
+model Reminder {
+  id              String       @id @default(uuid()) @db.Uuid
+  customerId      String?      @db.Uuid @map("customer_id")
+  acUnitId        String?      @db.Uuid @map("ac_unit_id")
+  reminderDate    DateTime?    @db.Date @map("reminder_date")
+  status          String?      @db.VarChar(30)
+
+  customer        Customer?    @relation(fields: [customerId], references: [id])
+  acUnit          AcUnit?      @relation(fields: [acUnitId], references: [id])
+
+  @@map("reminders")
+}
+
+model CrmNote {
+  id              String       @id @default(uuid()) @db.Uuid
+  customerId      String?      @db.Uuid @map("customer_id")
+  userId          String?      @db.Uuid @map("user_id")
+  note            String?
+  createdAt       DateTime?    @default(now()) @map("created_at")
+
+  customer        Customer?    @relation(fields: [customerId], references: [id])
+  user            User?        @relation(fields: [userId], references: [id])
+
+  @@map("crm_notes")
+}
+
+model CustomerRating {
+  id              String       @id @default(uuid()) @db.Uuid
+  bookingId       String?      @db.Uuid @map("booking_id")
+  rating          Int?
+  review          String?
+  createdAt       DateTime?    @default(now()) @map("created_at")
+
+  booking         Booking?     @relation(fields: [bookingId], references: [id])
+
+  @@map("customer_ratings")
+}
