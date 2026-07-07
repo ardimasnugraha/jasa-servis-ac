@@ -1,10 +1,3 @@
-const isLocal = typeof window !== 'undefined' && (
-  window.location.hostname === 'localhost' ||
-  window.location.hostname === '127.0.0.1' ||
-  window.location.hostname.startsWith('192.168.') ||
-  window.location.hostname.startsWith('10.')
-);
-
-export const API_BASE_URL = isLocal
-  ? `http://${window.location.hostname}:5000`
-  : '/api/backend';
+// Next.js Route Handlers are co-located, so API_BASE_URL is empty string by default.
+// This routes all requests to the same origin (local or deployed Vercel domain).
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';

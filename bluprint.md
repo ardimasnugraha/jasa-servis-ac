@@ -37,13 +37,11 @@ Fitur utama:
 
 # Arsitektur
 
-Client (Next.js)
+Client (Next.js App)
       │
- REST API
+ Next.js API Routes (Route Handlers)
       │
-Node.js (Express)
-      │
- Prisma ORM
+  Prisma ORM
       │
 PostgreSQL (Supabase)
 
@@ -53,7 +51,7 @@ Supabase Storage
 
 Authentication
 │
-Supabase Auth
+Next.js JWT Auth + Supabase
 
 Realtime
 │
@@ -63,32 +61,27 @@ Supabase Realtime
 
 # Folder Structure
 
-frontend/
-
-app/
-components/
-hooks/
-services/
-types/
-utils/
-middleware.ts
-
-backend/
+frontend/ (Aplikasi Unified Next.js)
 
 src/
-
-controllers/
-routes/
-middlewares/
-services/
-repositories/
-prisma/
-utils/
-config/
-
-database/
-
-schema.sql
+  app/
+    api/              <-- Next.js API Route Handlers (Backend)
+      auth/
+        login/
+        register/
+      bookings/
+      customers/
+      dashboard/
+      invoices/
+      payments/
+      reports/
+      technicians/
+      webhooks/
+    (pages...)
+  components/
+  lib/
+  config.ts
+prisma/               <-- Prisma ORM Schema & Migrations
 
 ---
 
