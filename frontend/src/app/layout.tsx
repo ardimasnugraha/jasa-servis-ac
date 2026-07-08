@@ -3,7 +3,7 @@ import "./globals.css";
 import { RootLayoutClient } from "@/components/layout/RootLayoutClient";
 
 export const metadata: Metadata = {
-  title: "AC Service CRM - Dashboard",
+  title: "Servis Kita - Platform Cari Tukang Terdekat & Terlengkap",
   description: "Aplikasi CRM dan Manajemen Jasa Servis AC",
 };
 
@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id">
-      <body className="antialiased h-screen flex overflow-hidden bg-background font-sans">
+      <body className="antialiased bg-background font-sans">
         <RootLayoutClient>
           {children}
         </RootLayoutClient>

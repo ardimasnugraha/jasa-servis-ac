@@ -47,7 +47,7 @@ function ClientHeader() {
             <Wrench className="h-5 w-5 font-bold" />
           </div>
           <div>
-            <span className="text-lg font-black tracking-tight block leading-none">ACKITA</span>
+            <span className="text-lg font-black tracking-tight block leading-none">SERVIS KITA</span>
             <span className="text-[9px] font-semibold text-yellow-400 uppercase tracking-widest">Ahli & Profesional</span>
           </div>
         </Link>
@@ -129,10 +129,10 @@ export function RootLayoutClient({ children }: { children: React.ReactNode }) {
 
     // Untuk / dan /client/*, gunakan full-screen layout tanpa sidebar
     return (
-      <div className="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 text-slate-800 w-full">
+      <div className="min-h-screen w-full bg-slate-50 text-slate-800 flex flex-col">
         {/* Render header untuk /client/* (halaman / memiliki header kustom tersendiri) */}
         {isClientRoute && <ClientHeader />}
-        <main className="flex-1 overflow-y-auto w-full p-4 md:p-8">
+        <main className="flex-grow w-full">
           {children}
         </main>
       </div>
