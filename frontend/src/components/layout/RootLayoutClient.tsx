@@ -119,11 +119,18 @@ export function RootLayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const isClientRoute = pathname.startsWith("/client");
+  const isClientRoute = pathname?.startsWith("/client") || false;
 
-  // Jika di halaman Landing Page publik (/), halaman Client (/client/*), Auth, atau Pembayaran
-  if (pathname === "/" || isClientRoute || pathname === "/login" || pathname === "/register" || pathname.startsWith("/pay/")) {
-    if (pathname === "/login" || pathname === "/register" || pathname.startsWith("/pay/")) {
+  // Jika pathname null (saat static pre-rendering Next.js), anggap sebagai rute publik/client agar tidak masuk ke box admin
+  const isPublicOrClient = !pathname || 
+                           pathname === "/" || 
+                           isClientRoute || 
+                           pathname === "/login" || 
+                           pathname === "/register" || 
+                           pathname.startsWith("/pay/");
+
+  if (isPublicOrClient) {
+    if (pathname === "/login" || pathname === "/register" || pathname?.startsWith("/pay/")) {
       return <main className="flex-1 overflow-y-auto bg-slate-950 text-white">{children}</main>;
     }
 
