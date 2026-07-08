@@ -18,7 +18,6 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 type ServiceReport = {
   id: string;
@@ -111,84 +110,74 @@ export default function ServicesPage() {
     );
   });
 
-  const getCustomerInitials = (name: string) => {
-    return name
-      .split(" ")
-      .map(n => n[0])
-      .join("")
-      .substring(0, 2)
-      .toUpperCase();
-  };
-
   return (
-    <div className="space-y-7 animate-in fade-in slide-in-from-bottom-4 duration-500 select-none">
+    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 select-none">
       
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black tracking-tight flex items-center gap-3 text-[#0d2d2a]">
+          <h1 className="text-3xl font-bold tracking-tight flex items-center gap-3" style={{ color: 'var(--foreground)' }}>
             <span className="h-10 w-10 rounded-2xl flex items-center justify-center text-white"
               style={{ background: 'linear-gradient(135deg, oklch(0.68 0.20 55), oklch(0.63 0.20 40))' }}>
               <BellRing className="h-5.5 w-5.5" />
             </span>
             Laporan Servis
           </h1>
-          <p className="mt-1.5 text-sm font-medium text-[#577b78]">Catat hasil diagnosis dan tindakan pengerjaan servis AC teknisi.</p>
+          <p className="mt-1 text-sm text-slate-500 font-medium">Catat dan tinjau hasil pengerjaan servis AC Anda.</p>
         </div>
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger render={
-            <Button className="gap-2.5 rounded-2xl font-bold h-11 px-6 text-white cursor-pointer transition-all hover:-translate-y-0.5 active:translate-y-0"
-              style={{ background: 'linear-gradient(135deg, oklch(0.68 0.20 55), oklch(0.63 0.20 40))', boxShadow: '0 6px 20px oklch(0.68 0.20 55 / 0.3)' }}>
-              <Plus className="h-4.5 w-4.5" /> Buat Laporan Servis
+            <Button className="gap-2.5 rounded-2xl font-bold h-11 px-6 text-white cursor-pointer transition-all hover:scale-[1.02] active:scale-[0.98]"
+              style={{ background: 'linear-gradient(135deg, oklch(0.68 0.20 55), oklch(0.63 0.20 40))', boxShadow: '0 4px 14px oklch(0.68 0.20 55 / 0.3)' }}>
+              <Plus className="h-4.5 w-4.5" /> Buat Laporan
             </Button>
           } />
-          <DialogContent className="sm:max-w-[520px] rounded-3xl border border-[#e0edea]">
+          <DialogContent className="sm:max-w-[500px] rounded-3xl">
             <DialogHeader>
-              <DialogTitle className="text-lg font-black text-[#0d2d2a]">Buat Laporan Servis Baru</DialogTitle>
-              <DialogDescription className="text-xs text-[#577b78]">Catat tindakan servis setelah teknisi selesai melakukan kunjungan.</DialogDescription>
+              <DialogTitle className="text-base font-bold text-[#0d2d2a]">Buat Laporan Servis</DialogTitle>
+              <DialogDescription className="text-xs text-[#577b78]">Isi rincian tindakan yang dilakukan teknisi setelah servis selesai.</DialogDescription>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4 pt-2">
-              <div className="space-y-4">
-                <div className="flex flex-col gap-2">
-                  <Label className="text-xs font-bold text-[#0d2d2a]">Pilih Jadwal Booking Servis</Label>
-                  <Select value={bookingId} onValueChange={(val) => setBookingId(val || "")} required>
-                    <SelectTrigger className="rounded-xl h-11 border-[#e0edea] focus:ring-[#0d6e6a]">
-                      <SelectValue placeholder="Pilih nomor booking / pelanggan" />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-xl">
-                      {bookings.map(b => (
-                        <SelectItem key={b.id} value={b.id} className="text-xs font-medium text-[#0d2d2a] rounded-lg my-0.5">
-                          {b.bookingCode} — {b.customer} ({b.complaint})
-                        </SelectItem>
-                      ))}
-                      {bookings.length === 0 && <SelectItem value="empty" disabled className="text-xs">Tidak ada jadwal tertunda</SelectItem>}
-                    </SelectContent>
-                  </Select>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid gap-4 py-3">
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label className="text-right text-xs font-bold text-[#0d2d2a]">Pilih Booking</Label>
+                  <div className="col-span-3">
+                    <Select value={bookingId} onValueChange={(val) => setBookingId(val || "")} required>
+                      <SelectTrigger className="rounded-xl h-10 border-[#e0edea] focus:ring-[#0d6e6a]">
+                        <SelectValue placeholder="Pilih Jadwal Servis" />
+                      </SelectTrigger>
+                      <SelectContent className="rounded-xl">
+                        {bookings.map(b => (
+                          <SelectItem key={b.id} value={b.id} className="text-xs font-medium my-0.5">
+                            {b.bookingCode} — {b.customer}
+                          </SelectItem>
+                        ))}
+                        {bookings.length === 0 && <SelectItem value="empty" disabled className="text-xs">Tidak ada jadwal tertunda</SelectItem>}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
-                
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="diagnosis" className="text-xs font-bold text-[#0d2d2a]">Diagnosis Kerusakan</Label>
-                  <Input id="diagnosis" placeholder="Contoh: Freon bocor, kompresor aus, debu tebal..." value={diagnosis}
-                    onChange={e => setDiagnosis(e.target.value)} className="rounded-xl h-11 border-[#e0edea] focus-visible:ring-[#0d6e6a]" required />
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="diagnosis" className="text-right text-xs font-bold text-[#0d2d2a]">Diagnosis</Label>
+                  <Input id="diagnosis" placeholder="Freon kurang, debu menumpuk..." value={diagnosis}
+                    onChange={e => setDiagnosis(e.target.value)} className="col-span-3 rounded-xl h-10 border-[#e0edea] focus-visible:ring-[#0d6e6a]" required />
                 </div>
-                
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="actionTaken" className="text-xs font-bold text-[#0d2d2a]">Tindakan Perbaikan</Label>
-                  <Textarea id="actionTaken" placeholder="Contoh: Pengelasan pipa, pengisian ulang freon R32, cuci evaporator..." value={actionTaken}
-                    onChange={e => setActionTaken(e.target.value)} className="rounded-xl min-h-[90px] border-[#e0edea] focus-visible:ring-[#0d6e6a]" required />
+                <div className="grid grid-cols-4 items-start gap-4">
+                  <Label htmlFor="actionTaken" className="text-right text-xs font-bold text-[#0d2d2a] mt-2.5">Tindakan</Label>
+                  <Textarea id="actionTaken" placeholder="Pencucian total dan isi ulang freon..." value={actionTaken}
+                    onChange={e => setActionTaken(e.target.value)} className="col-span-3 rounded-xl min-h-[90px] border-[#e0edea] focus-visible:ring-[#0d6e6a]" required />
                 </div>
-                
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="totalCost" className="text-xs font-bold text-[#0d2d2a]">Total Biaya Jasa & Sparepart (Rp)</Label>
-                  <Input id="totalCost" type="number" placeholder="Contoh: 350000" value={totalCost}
-                    onChange={e => setTotalCost(e.target.value)} className="rounded-xl h-11 border-[#e0edea] focus-visible:ring-[#0d6e6a]" required />
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="totalCost" className="text-right text-xs font-bold text-[#0d2d2a]">Total Biaya</Label>
+                  <Input id="totalCost" type="number" placeholder="150000" value={totalCost}
+                    onChange={e => setTotalCost(e.target.value)} className="col-span-3 rounded-xl h-10 border-[#e0edea] focus-visible:ring-[#0d6e6a]" required />
                 </div>
               </div>
-              <DialogFooter className="pt-4">
-                <Button type="submit" disabled={isSubmitting} className="rounded-xl h-11 w-full text-white font-bold cursor-pointer transition-all hover:bg-[#0d6e6a]"
+              <DialogFooter>
+                <Button type="submit" disabled={isSubmitting} className="rounded-xl h-11 w-full text-white font-bold cursor-pointer"
                   style={{ background: 'linear-gradient(135deg, oklch(0.68 0.20 55), oklch(0.63 0.20 40))' }}>
-                  {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Menyimpan Laporan...</> : "Simpan & Selesaikan Booking"}
+                  {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Menyimpan...</> : "Simpan Laporan"}
                 </Button>
               </DialogFooter>
             </form>
@@ -196,50 +185,53 @@ export default function ServicesPage() {
         </Dialog>
       </div>
 
-      {/* Analytics Summary - Glassmorphism Cards */}
+      {/* Summary Cards Section (Colorful Blocks to Match Invoice Layout) */}
       <div className="grid gap-5 sm:grid-cols-3">
-        {/* Card 1 */}
-        <div className="relative rounded-3xl p-5 bg-white/70 border border-[#e0edea] shadow-[0_8px_30px_rgba(13,110,106,0.02)] overflow-hidden flex items-center gap-4.5 min-h-[105px]">
-          <div className="h-12 w-12 rounded-2xl flex items-center justify-center text-amber-600 bg-amber-500/10 border border-amber-500/15 shrink-0">
-            <BellRing className="h-5.5 w-5.5" />
-          </div>
-          <div>
-            <div className="text-2xl font-black text-[#0d2d2a] tracking-tight">{reports.length} Laporan</div>
-            <div className="text-xs font-bold text-[#577b78] mt-0.5 uppercase tracking-wide">Total Servis Selesai</div>
-          </div>
-        </div>
-
-        {/* Card 2 */}
-        <div className="relative rounded-3xl p-5 bg-white/70 border border-[#e0edea] shadow-[0_8px_30px_rgba(13,110,106,0.02)] overflow-hidden flex items-center gap-4.5 min-h-[105px]">
-          <div className="h-12 w-12 rounded-2xl flex items-center justify-center text-emerald-600 bg-emerald-500/10 border border-emerald-500/15 shrink-0">
-            <DollarSign className="h-5.5 w-5.5" />
-          </div>
-          <div>
-            <div className="text-2xl font-black text-[#0d2d2a] tracking-tight">Rp {totalRevenue.toLocaleString('id-ID')}</div>
-            <div className="text-xs font-bold text-[#577b78] mt-0.5 uppercase tracking-wide">Total Nilai Servis</div>
+        {/* Card 1: Green Card (Total Nilai Servis / Pendapatan) */}
+        <div className="rounded-[2rem] p-6 text-white relative overflow-hidden shadow-sm flex flex-col justify-between min-h-[125px] transition-all hover:scale-[1.01]"
+          style={{ background: 'linear-gradient(135deg, oklch(0.55 0.18 160), oklch(0.52 0.20 185))' }}>
+          <div className="absolute -top-3 -right-3 h-16 w-16 rounded-full bg-white/10" />
+          <div className="absolute -bottom-6 -right-6 h-16 w-16 rounded-full bg-white/5" />
+          <CheckCircle2 className="h-5.5 w-5.5 text-white/80" />
+          <div className="mt-4">
+            <div className="text-2xl font-bold tracking-tight">Rp {totalRevenue.toLocaleString('id-ID')}</div>
+            <div className="text-xs text-white/75 font-bold mt-0.5 uppercase tracking-wide">Total Nilai Servis</div>
           </div>
         </div>
 
-        {/* Card 3 */}
-        <div className="relative rounded-3xl p-5 bg-white/70 border border-[#e0edea] shadow-[0_8px_30px_rgba(13,110,106,0.02)] overflow-hidden flex items-center gap-4.5 min-h-[105px]">
-          <div className="h-12 w-12 rounded-2xl flex items-center justify-center text-blue-600 bg-blue-500/10 border border-blue-500/15 shrink-0">
-            <Award className="h-5.5 w-5.5" />
+        {/* Card 2: Blue/Violet Card (Total Laporan) */}
+        <div className="rounded-[2rem] p-6 text-white relative overflow-hidden shadow-sm flex flex-col justify-between min-h-[125px] transition-all hover:scale-[1.01]"
+          style={{ background: 'linear-gradient(135deg, oklch(0.58 0.22 264), oklch(0.55 0.22 295))' }}>
+          <div className="absolute -top-3 -right-3 h-16 w-16 rounded-full bg-white/10" />
+          <div className="absolute -bottom-6 -right-6 h-16 w-16 rounded-full bg-white/5" />
+          <FileText className="h-5.5 w-5.5 text-white/80" />
+          <div className="mt-4">
+            <div className="text-2xl font-bold tracking-tight">{reports.length} Laporan</div>
+            <div className="text-xs text-white/75 font-bold mt-0.5 uppercase tracking-wide">Total Servis Selesai</div>
           </div>
-          <div>
-            <div className="text-2xl font-black text-[#0d2d2a] tracking-tight">Rp {Math.round(averageRevenue).toLocaleString('id-ID')}</div>
-            <div className="text-xs font-bold text-[#577b78] mt-0.5 uppercase tracking-wide">Rata-rata Per Servis</div>
+        </div>
+
+        {/* Card 3: Orange/Red Card (Rata-rata Biaya Servis) */}
+        <div className="rounded-[2rem] p-6 text-white relative overflow-hidden shadow-sm flex flex-col justify-between min-h-[125px] transition-all hover:scale-[1.01]"
+          style={{ background: 'linear-gradient(135deg, oklch(0.68 0.20 55), oklch(0.63 0.20 40))' }}>
+          <div className="absolute -top-3 -right-3 h-16 w-16 rounded-full bg-white/10" />
+          <div className="absolute -bottom-6 -right-6 h-16 w-16 rounded-full bg-white/5" />
+          <Award className="h-5.5 w-5.5 text-white/80" />
+          <div className="mt-4">
+            <div className="text-2xl font-bold tracking-tight">Rp {Math.round(averageRevenue).toLocaleString('id-ID')}</div>
+            <div className="text-xs text-white/75 font-bold mt-0.5 uppercase tracking-wide">Rata-rata Per Servis</div>
           </div>
         </div>
       </div>
 
       {/* Main Content Area */}
-      <Card className="rounded-[2rem] border border-[#e0edea] shadow-[0_12px_45px_rgba(13,110,106,0.03)] bg-white/80 backdrop-blur-lg overflow-hidden">
+      <Card className="rounded-[2rem] border border-slate-100 shadow-[0_8px_30px_rgba(13,110,106,0.015)] bg-white overflow-hidden">
         
         {/* Table Filter Header */}
-        <div className="p-6 pb-4 border-b border-[#e0edea]/55 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="p-6 pb-4 border-b border-[#e0edea]/55 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <CardTitle className="text-base font-extrabold text-[#0d2d2a]">Riwayat Pengerjaan Servis</CardTitle>
-            <CardDescription className="text-xs text-[#577b78] mt-0.5">Semua data rekaman diagnosis dan penanganan AC oleh tim teknisi.</CardDescription>
+            <CardTitle className="text-base font-bold text-[#0d2d2a]">Riwayat Laporan Servis</CardTitle>
+            <CardDescription className="text-xs text-[#577b78] mt-0.5">Daftar detail penanganan pengerjaan servis AC oleh teknisi.</CardDescription>
           </div>
 
           {/* Search bar */}
@@ -247,10 +239,10 @@ export default function ServicesPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#577b78]" />
             <Input
               type="text"
-              placeholder="Cari kode booking, pelanggan, teknisi..."
+              placeholder="Cari laporan servis..."
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              className="pl-9 pr-4 h-10 text-xs font-medium rounded-xl border border-[#e0edea] focus-visible:ring-[#0d6e6a] bg-white/50"
+              className="pl-9 pr-4 h-10 text-xs font-semibold rounded-xl border border-[#e0edea] focus-visible:ring-[#0d6e6a] bg-white/50"
             />
           </div>
         </div>
@@ -260,61 +252,40 @@ export default function ServicesPage() {
           <Table>
             <TableHeader className="bg-slate-50/50">
               <TableRow className="hover:bg-transparent" style={{ borderColor: 'var(--border)' }}>
-                <TableHead className="text-xs font-bold uppercase tracking-wider py-4 px-6 text-[#577b78]">Kode Booking</TableHead>
-                <TableHead className="text-xs font-bold uppercase tracking-wider py-4 px-6 text-[#577b78]">Pelanggan</TableHead>
-                <TableHead className="text-xs font-bold uppercase tracking-wider py-4 px-6 text-[#577b78]">Teknisi Penanggung Jawab</TableHead>
-                <TableHead className="text-xs font-bold uppercase tracking-wider py-4 px-6 text-[#577b78]">Tindakan Perbaikan</TableHead>
-                <TableHead className="text-xs font-bold uppercase tracking-wider py-4 px-6 text-[#577b78]">Total Biaya</TableHead>
-                <TableHead className="text-xs font-bold uppercase tracking-wider py-4 px-6 text-[#577b78]">Status</TableHead>
-                <TableHead className="py-4 px-6"></TableHead>
+                {['Kode Booking', 'Pelanggan & Teknisi', 'Tindakan', 'Total Biaya', 'Status', 'Aksi'].map((h, i) => (
+                  <TableHead key={i} className="text-xs font-bold uppercase tracking-wider py-4 px-6 text-[#577b78]">{h}</TableHead>
+                ))}
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredReports.length === 0 && !loading && (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center h-36 text-sm text-[#577b78] font-medium">
-                    {searchTerm ? "Tidak ditemukan laporan servis yang cocok dengan pencarian Anda." : "Belum ada riwayat laporan servis."}
+                  <TableCell colSpan={6} className="text-center h-36 text-sm text-[#577b78]/70">
+                    {searchTerm ? "Tidak ditemukan laporan servis yang cocok dengan pencarian." : "Belum ada riwayat laporan servis."}
                   </TableCell>
                 </TableRow>
               )}
               {filteredReports.map(report => (
-                <TableRow key={report.id} className="hover:bg-[#0d6e6a]/[0.01] transition-colors" style={{ borderColor: 'var(--border)' }}>
+                <TableRow key={report.id} className="hover:bg-muted/30 transition-colors" style={{ borderColor: 'var(--border)' }}>
                   {/* Booking Code */}
                   <TableCell className="py-4.5 px-6">
-                    <span className="font-mono text-xs font-extrabold px-2.5 py-1 rounded-lg bg-[#0d6e6a]/5 text-[#0d6e6a] border border-[#0d6e6a]/10">
+                    <span className="font-mono text-xs font-bold px-2.5 py-1 rounded-lg"
+                      style={{ background: 'oklch(0.68 0.20 55 / 0.1)', color: 'oklch(0.60 0.18 55)' }}>
                       {report.bookingCode}
                     </span>
                   </TableCell>
 
-                  {/* Customer Info */}
+                  {/* Customer & Technician Info */}
                   <TableCell className="py-4.5 px-6">
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-8.5 w-8.5 ring-2 ring-[#0d6e6a]/5">
-                        <AvatarFallback className="text-[11px] font-black text-white" style={{ background: 'linear-gradient(135deg, oklch(0.55 0.14 185), oklch(0.50 0.14 195))' }}>
-                          {getCustomerInitials(report.customerName)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <span className="font-bold text-sm text-[#0d2d2a]">{report.customerName}</span>
+                    <div className="font-bold text-sm text-[#0d2d2a]">{report.customerName}</div>
+                    <div className="text-xs mt-0.5 text-[#577b78] font-semibold">
+                      Teknisi: {report.technicianName && report.technicianName !== "-" ? report.technicianName : "-"}
                     </div>
                   </TableCell>
 
-                  {/* Technician Info */}
-                  <TableCell className="py-4.5 px-6">
-                    {report.technicianName && report.technicianName !== "-" ? (
-                      <div className="flex items-center gap-2 text-xs font-bold text-slate-700 bg-slate-100/60 border border-slate-200/50 py-1.5 px-3 rounded-xl w-fit">
-                        <Wrench className="h-3.5 w-3.5 text-[#0d6e6a]" />
-                        <span>{report.technicianName}</span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-1.5 text-xs font-bold text-slate-400 italic">
-                        <span>Belum Ditugaskan</span>
-                      </div>
-                    )}
-                  </TableCell>
-
                   {/* Actions Taken */}
-                  <TableCell className="py-4.5 px-6 max-w-[220px]">
-                    <p className="text-xs text-[#577b78] font-bold truncate leading-relaxed" title={report.actionTaken}>{report.actionTaken}</p>
+                  <TableCell className="py-4.5 px-6 max-w-[200px]">
+                    <p className="text-xs text-[#577b78] font-semibold truncate leading-relaxed" title={report.actionTaken}>{report.actionTaken}</p>
                   </TableCell>
 
                   {/* Total Cost */}
@@ -322,26 +293,26 @@ export default function ServicesPage() {
                     Rp {Number(report.totalCost).toLocaleString('id-ID')}
                   </TableCell>
 
-                  {/* Status */}
+                  {/* Status Badge (Soft Green Capsule Layout matching Lunas in Invoice) */}
                   <TableCell className="py-4.5 px-6">
-                    <span className="flex items-center gap-1 text-[10px] font-black px-2.5 py-1 rounded-full w-fit bg-emerald-500/10 text-emerald-600 border border-emerald-500/15 uppercase tracking-wider">
+                    <span className="flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full w-fit bg-emerald-500/10 text-emerald-600 border border-emerald-500/15 uppercase tracking-wide">
                       <CheckCircle2 className="h-3.5 w-3.5" /> Selesai
                     </span>
                   </TableCell>
 
-                  {/* View Details Action */}
-                  <TableCell className="py-4.5 px-6 text-right">
+                  {/* Action Button: Detail File Text icon */}
+                  <TableCell className="py-4.5 px-6">
                     <Button 
                       variant="ghost" 
                       size="icon" 
-                      className="h-9 w-9 rounded-xl bg-slate-50 border border-slate-100 hover:bg-[#0d6e6a]/5 hover:border-[#0d6e6a]/15 text-[#577b78] hover:text-[#0d6e6a] transition-all cursor-pointer shadow-sm"
+                      className="h-8.5 w-8.5 rounded-xl bg-slate-50 border border-slate-100 hover:bg-[#0d6e6a]/5 hover:border-[#0d6e6a]/15 text-[#577b78] hover:text-[#0d6e6a] cursor-pointer shadow-sm"
                       onClick={() => {
                         setSelectedReport(report);
                         setDetailDialogOpen(true);
                       }}
-                      title="Lihat Detail Pengerjaan"
+                      title="Lihat Rincian Laporan"
                     >
-                      <ChevronRight className="h-4.5 w-4.5" />
+                      <FileText className="h-4.5 w-4.5" />
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -353,7 +324,7 @@ export default function ServicesPage() {
 
       {/* Detail Laporan Dialog (Work Order Style Receipt) */}
       <Dialog open={detailDialogOpen} onOpenChange={setDetailDialogOpen}>
-        <DialogContent className="sm:max-w-[500px] select-none rounded-[2rem] border border-[#e0edea]">
+        <DialogContent className="sm:max-w-[480px] select-none rounded-[2rem] border border-[#e0edea]">
           <DialogHeader className="border-b border-[#e0edea] pb-4">
             <DialogTitle className="text-lg font-black text-[#0d2d2a] flex items-center gap-2.5">
               <FileText className="h-5.5 w-5.5 text-[#0d6e6a]" />
@@ -363,10 +334,10 @@ export default function ServicesPage() {
           </DialogHeader>
 
           {selectedReport && (
-            <div className="space-y-5 py-4 text-xs font-semibold">
+            <div className="space-y-4 py-3 text-xs font-semibold">
               
               {/* Order Metadata */}
-              <div className="grid grid-cols-2 gap-4 p-4.5 rounded-2xl bg-slate-50 border border-[#e0edea] relative overflow-hidden">
+              <div className="grid grid-cols-2 gap-4 p-4 rounded-2xl bg-slate-50 border border-[#e0edea] relative overflow-hidden">
                 <div className="absolute top-0 right-0 h-16 w-16 bg-[#0d6e6a]/5 rounded-full -mr-3 -mt-3" />
                 <div>
                   <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider block mb-1">Kode Booking</span>
@@ -427,7 +398,7 @@ export default function ServicesPage() {
               </div>
 
               {/* Cost summary */}
-              <div className="flex justify-between items-center p-4.5 rounded-xl bg-slate-50 border border-[#e0edea]">
+              <div className="flex justify-between items-center p-4 rounded-xl bg-slate-50 border border-[#e0edea]">
                 <span className="text-xs font-bold text-slate-600">Total Nilai Pengerjaan:</span>
                 <span className="font-black text-base text-[#0d2d2a] tabular-nums">
                   Rp {selectedReport.totalCost.toLocaleString('id-ID')}
