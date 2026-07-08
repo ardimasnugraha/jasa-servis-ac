@@ -127,6 +127,7 @@ export function RootLayoutClient({ children }: { children: React.ReactNode }) {
                        pathname?.startsWith("/customers") || 
                        pathname?.startsWith("/technicians") || 
                        pathname?.startsWith("/bookings") || 
+                       pathname?.startsWith("/services") || 
                        pathname?.startsWith("/invoices") || 
                        pathname?.startsWith("/payments") || 
                        pathname?.startsWith("/reports") || 
