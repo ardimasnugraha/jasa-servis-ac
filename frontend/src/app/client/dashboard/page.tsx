@@ -39,10 +39,14 @@ export default function ClientDashboard() {
       fetch(`${API_BASE_URL}/api/invoices`).then(res => res.json())
     ])
       .then(([bookingsData, invoicesData]) => {
-        // Filter bookings by client's customerId
-        const filteredBookings = bookingsData.filter((b: any) => b.customerId === parsedUser.customerId);
-        // Filter invoices by client's customerId
-        const filteredInvoices = invoicesData.filter((inv: any) => inv.customerId === parsedUser.customerId);
+        // Filter bookings by client's customerId (with name fallback for old sessions)
+        const filteredBookings = bookingsData.filter((b: any) => 
+          parsedUser.customerId ? b.customerId === parsedUser.customerId : b.customer === parsedUser.fullname
+        );
+        // Filter invoices by client's customerId (with name fallback for old sessions)
+        const filteredInvoices = invoicesData.filter((inv: any) => 
+          parsedUser.customerId ? inv.customerId === parsedUser.customerId : inv.customerName === parsedUser.fullname
+        );
         
         setMyBookings(filteredBookings);
         setMyInvoices(filteredInvoices);
