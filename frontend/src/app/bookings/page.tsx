@@ -282,7 +282,7 @@ export default function BookingsPage() {
                   <span className="text-xs text-muted-foreground block mb-1">Waktu Booking</span>
                   <div className="text-sm font-semibold flex flex-col">
                     <span className="flex items-center gap-1"><CalendarIcon className="h-3 w-3 text-muted-foreground" /> {selectedBooking.bookingDate ? new Date(selectedBooking.bookingDate).toLocaleDateString("id-ID", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : "—"}</span>
-                    <span className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5"><Clock className="h-3 w-3" /> {selectedBooking.bookingTime ? new Date(selectedBooking.bookingTime).toLocaleTimeString("id-ID", { hour: '2-digit', minute: '2-digit' }) : "—"}</span>
+                    <span className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5"><Clock className="h-3 w-3" /> {selectedBooking.bookingTime ? (selectedBooking.bookingTime.length <= 8 ? selectedBooking.bookingTime.substring(0, 5) : new Date(selectedBooking.bookingTime).toLocaleTimeString("id-ID", { hour: '2-digit', minute: '2-digit' })) : "—"}</span>
                   </div>
                 </div>
               </div>
@@ -397,7 +397,7 @@ export default function BookingsPage() {
                         </div>
                         <div className="flex items-center text-xs gap-1" style={{ color: 'var(--muted-foreground)' }}>
                           <Clock className="h-3 w-3" />
-                          {booking.bookingTime ? new Date(booking.bookingTime).toLocaleTimeString("id-ID", { hour: '2-digit', minute: '2-digit' }) : "—"}
+                          {booking.bookingTime ? (booking.bookingTime.length <= 8 ? booking.bookingTime.substring(0, 5) : new Date(booking.bookingTime).toLocaleTimeString("id-ID", { hour: '2-digit', minute: '2-digit' })) : "—"}
                         </div>
                       </div>
                     </TableCell>

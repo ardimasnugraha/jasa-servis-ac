@@ -22,7 +22,7 @@ export default function ClientInvoicesPage() {
     fetch(`${API_BASE_URL}/api/invoices`)
       .then(res => res.json())
       .then(data => {
-        const filtered = data.filter((inv: any) => inv.customerName === parsedUser.fullname);
+        const filtered = data.filter((inv: any) => inv.customerId === parsedUser.customerId);
         setMyInvoices(filtered);
         setLoading(false);
       })

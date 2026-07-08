@@ -117,7 +117,10 @@ function ClientHeader() {
 
 export function RootLayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [authorized, setAuthorized] = useState(false);
 
   // Cek apakah halaman adalah halaman Admin/Teknisi/Owner internal
   const isAdminRoute = pathname?.startsWith("/dashboard") || 
@@ -129,13 +132,61 @@ export function RootLayoutClient({ children }: { children: React.ReactNode }) {
                        pathname?.startsWith("/reports") || 
                        pathname?.startsWith("/settings");
 
+  const isClientRoute = pathname?.startsWith("/client") || false;
+
+  useEffect(() => {
+    setMounted(true);
+    
+    const userData = localStorage.getItem("user");
+    const user = userData ? JSON.parse(userData) : null;
+
+    let isAuth = true;
+    if (isAdminRoute) {
+      if (!user) {
+        setAuthorized(false);
+        router.push("/login");
+        isAuth = false;
+      } else if (user.role !== "ADMIN") {
+        setAuthorized(false);
+        router.push("/");
+        isAuth = false;
+      }
+    } else if (isClientRoute) {
+      if (!user) {
+        setAuthorized(false);
+        const currentSearch = window.location.search;
+        router.push(`/login?redirect=${pathname}${currentSearch}`);
+        isAuth = false;
+      } else if (user.role !== "USER") {
+        setAuthorized(false);
+        router.push("/dashboard");
+        isAuth = false;
+      }
+    }
+    
+    if (isAuth) {
+      setAuthorized(true);
+    }
+  }, [pathname, isAdminRoute, isClientRoute, router]);
+
+  if (!mounted) return null; // Avoid hydration mismatch
+
+  if (!authorized) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center bg-slate-50 select-none">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-10 w-10 rounded-full border-4 border-transparent border-t-[#0d6e6a] animate-spin" />
+          <p className="text-xs font-semibold text-[#577b78] tracking-wide">Memeriksa Otorisasi Akses...</p>
+        </div>
+      </div>
+    );
+  }
+
   // Jika bukan rute admin (artinya rute publik /, /login, /register, /pay/*, atau /client/*)
   if (!isAdminRoute) {
     if (pathname === "/login" || pathname === "/register" || pathname?.startsWith("/pay/")) {
       return <main className="flex-1 overflow-y-auto bg-slate-950 text-white">{children}</main>;
     }
-
-    const isClientRoute = pathname?.startsWith("/client") || false;
 
     // Gunakan full-screen layout lebar penuh tanpa sidebar
     return (

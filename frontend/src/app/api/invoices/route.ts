@@ -22,6 +22,7 @@ export async function GET() {
       id: i.id,
       invoiceNumber: i.invoiceNumber,
       bookingCode: i.booking?.bookingCode || '-',
+      customerId: i.booking?.customerId || null,
       customerName: i.booking?.customer?.fullname || '-',
       subtotal: i.subtotal ? Number(i.subtotal) : 0,
       tax: i.tax ? Number(i.tax) : 0,

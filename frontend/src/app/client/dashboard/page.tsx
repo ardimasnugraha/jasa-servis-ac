@@ -39,10 +39,10 @@ export default function ClientDashboard() {
       fetch(`${API_BASE_URL}/api/invoices`).then(res => res.json())
     ])
       .then(([bookingsData, invoicesData]) => {
-        // Filter bookings by client's name
-        const filteredBookings = bookingsData.filter((b: any) => b.customer === parsedUser.fullname);
-        // Filter invoices by client's name
-        const filteredInvoices = invoicesData.filter((inv: any) => inv.customerName === parsedUser.fullname);
+        // Filter bookings by client's customerId
+        const filteredBookings = bookingsData.filter((b: any) => b.customerId === parsedUser.customerId);
+        // Filter invoices by client's customerId
+        const filteredInvoices = invoicesData.filter((inv: any) => inv.customerId === parsedUser.customerId);
         
         setMyBookings(filteredBookings);
         setMyInvoices(filteredInvoices);
@@ -241,7 +241,7 @@ export default function ClientDashboard() {
                             <Calendar className="h-4 w-4 text-[#128a85] shrink-0" />
                             {new Date(b.bookingDate).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
                             <span className="text-slate-400">|</span>
-                            {b.bookingTime ? b.bookingTime.substring(0, 5) : '-'} WIB
+                            {b.bookingTime ? (b.bookingTime.length <= 8 ? b.bookingTime.substring(0, 5) : new Date(b.bookingTime).toLocaleTimeString("id-ID", { hour: '2-digit', minute: '2-digit' })) : '-'} WIB
                           </p>
                         </div>
                       </div>

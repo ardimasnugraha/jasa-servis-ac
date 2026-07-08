@@ -22,6 +22,7 @@ export async function GET() {
     const formattedBookings = bookings.map((b) => ({
       id: b.id,
       bookingCode: b.bookingCode,
+      customerId: b.customerId,
       customer: b.customer?.fullname || 'Tanpa Nama',
       customerPhone: b.customer?.phone || '-',
       customerEmail: b.customer?.email || '-',
@@ -29,7 +30,7 @@ export async function GET() {
       complaint: b.complaint || '-',
       status: b.status,
       bookingDate: b.bookingDate,
-      bookingTime: b.bookingTime,
+      bookingTime: b.bookingTime ? new Date(b.bookingTime).toISOString().slice(11, 16) : null,
       createdAt: b.createdAt,
       technician: b.technician ? {
         id: b.technician.id,
