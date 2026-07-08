@@ -54,7 +54,14 @@ export default function RegisterPage() {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      router.push("/client/dashboard");
+      const searchParams = new URLSearchParams(window.location.search);
+      const redirectPath = searchParams.get("redirect");
+
+      if (redirectPath) {
+        router.push(redirectPath);
+      } else {
+        router.push("/client/dashboard");
+      }
     } catch (err: any) {
       setError(err.message);
     } finally {

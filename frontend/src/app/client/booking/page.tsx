@@ -26,10 +26,17 @@ export default function ClientBookingPage() {
   useEffect(() => {
     const userData = localStorage.getItem("user");
     if (!userData) {
-      router.push("/login");
+      const currentSearch = window.location.search;
+      router.push(`/login?redirect=/client/booking${currentSearch}`);
       return;
     }
     setUser(JSON.parse(userData));
+
+    const searchParams = new URLSearchParams(window.location.search);
+    const serviceParam = searchParams.get("service");
+    if (serviceParam) {
+      setComplaint(serviceParam);
+    }
 
     fetch(`${API_BASE_URL}/api/technicians`)
       .then(res => res.json())
