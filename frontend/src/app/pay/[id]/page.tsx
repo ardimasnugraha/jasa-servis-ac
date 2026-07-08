@@ -138,7 +138,7 @@ export default function CustomerPaymentPage() {
             <div className="pt-2">
               <Link href={backUrl}>
                 <Button className="w-full font-bold rounded-xl h-11 text-xs text-white bg-gradient-to-r from-[#0d6e6a] to-[#128a85] shadow-lg shadow-[#0d6e6a]/15 hover:opacity-95 transition-all">
-                  Kembali ke Dashboard
+                  Kembali ke Dashboard Pemesanan
                 </Button>
               </Link>
             </div>
