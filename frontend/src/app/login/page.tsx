@@ -45,15 +45,10 @@ export default function LoginPage() {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      const searchParams = new URLSearchParams(window.location.search);
-      const redirectPath = searchParams.get("redirect");
-
       if (data.user.role === "ADMIN") {
         router.push("/dashboard");
-      } else if (redirectPath) {
-        router.push(redirectPath);
       } else {
-        router.push("/client/dashboard");
+        router.push("/");
       }
     } catch (err: any) {
       setError(err.message);

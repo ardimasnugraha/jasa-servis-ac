@@ -119,22 +119,25 @@ export function RootLayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const isClientRoute = pathname?.startsWith("/client") || false;
+  // Cek apakah halaman adalah halaman Admin/Teknisi/Owner internal
+  const isAdminRoute = pathname?.startsWith("/dashboard") || 
+                       pathname?.startsWith("/customers") || 
+                       pathname?.startsWith("/technicians") || 
+                       pathname?.startsWith("/bookings") || 
+                       pathname?.startsWith("/invoices") || 
+                       pathname?.startsWith("/payments") || 
+                       pathname?.startsWith("/reports") || 
+                       pathname?.startsWith("/settings");
 
-  // Jika pathname null (saat static pre-rendering Next.js), anggap sebagai rute publik/client agar tidak masuk ke box admin
-  const isPublicOrClient = !pathname || 
-                           pathname === "/" || 
-                           isClientRoute || 
-                           pathname === "/login" || 
-                           pathname === "/register" || 
-                           pathname.startsWith("/pay/");
-
-  if (isPublicOrClient) {
+  // Jika bukan rute admin (artinya rute publik /, /login, /register, /pay/*, atau /client/*)
+  if (!isAdminRoute) {
     if (pathname === "/login" || pathname === "/register" || pathname?.startsWith("/pay/")) {
       return <main className="flex-1 overflow-y-auto bg-slate-950 text-white">{children}</main>;
     }
 
-    // Untuk / dan /client/*, gunakan full-screen layout tanpa sidebar
+    const isClientRoute = pathname?.startsWith("/client") || false;
+
+    // Gunakan full-screen layout lebar penuh tanpa sidebar
     return (
       <div className="min-h-screen w-full bg-slate-50 text-slate-800 flex flex-col">
         {/* Render header untuk /client/* (halaman / memiliki header kustom tersendiri) */}
