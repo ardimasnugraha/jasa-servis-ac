@@ -76,9 +76,9 @@ export async function GET(request: Request) {
       return NextResponse.json(list);
     } else {
       // Current user is a regular customer.
-      // They should see all admin users to chat with.
-      const admins = await prisma.user.findMany({
-        where: { role: 'ADMIN' },
+      // They should see the admin "acep@gmail.com" as the ONLY contact.
+      let admin = await prisma.user.findUnique({
+        where: { email: 'acep@gmail.com' },
         select: {
           id: true,
           fullname: true,
@@ -88,37 +88,51 @@ export async function GET(request: Request) {
         },
       });
 
-      const list = await Promise.all(
-        admins.map(async (admin) => {
-          const lastMsg = await prisma.chatMessage.findFirst({
-            where: {
-              OR: [
-                { senderId: currentUser.id, receiverId: admin.id },
-                { senderId: admin.id, receiverId: currentUser.id },
-              ],
-            },
-            orderBy: { createdAt: 'desc' },
-          });
+      if (!admin) {
+        // Fallback to any ADMIN if acep@gmail.com is not found
+        admin = await prisma.user.findFirst({
+          where: { role: 'ADMIN' },
+          select: {
+            id: true,
+            fullname: true,
+            email: true,
+            phone: true,
+            role: true,
+          },
+        });
+      }
 
-          const unreadCount = await prisma.chatMessage.count({
-            where: {
-              senderId: admin.id,
-              receiverId: currentUser.id,
-              isRead: false,
-            },
-          });
+      if (!admin) {
+        return NextResponse.json([]);
+      }
 
-          return {
-            ...admin,
-            fullname: admin.fullname || 'Customer Support',
-            lastMessage: lastMsg ? lastMsg.message : null,
-            lastMessageAt: lastMsg ? lastMsg.createdAt : null,
-            unreadCount,
-          };
-        })
-      );
+      const lastMsg = await prisma.chatMessage.findFirst({
+        where: {
+          OR: [
+            { senderId: currentUser.id, receiverId: admin.id },
+            { senderId: admin.id, receiverId: currentUser.id },
+          ],
+        },
+        orderBy: { createdAt: 'desc' },
+      });
 
-      return NextResponse.json(list);
+      const unreadCount = await prisma.chatMessage.count({
+        where: {
+          senderId: admin.id,
+          receiverId: currentUser.id,
+          isRead: false,
+        },
+      });
+
+      const contact = {
+        ...admin,
+        fullname: admin.fullname || 'Acep (Admin)',
+        lastMessage: lastMsg ? lastMsg.message : null,
+        lastMessageAt: lastMsg ? lastMsg.createdAt : null,
+        unreadCount,
+      };
+
+      return NextResponse.json([contact]);
     }
   } catch (error) {
     console.error('Error fetching chat users:', error);
