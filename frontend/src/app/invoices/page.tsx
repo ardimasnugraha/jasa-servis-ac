@@ -18,6 +18,8 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 
+import { getAutoPrice } from "@/lib/utils";
+
 type Invoice = {
   id: string;
   invoiceNumber: string;
@@ -158,8 +160,7 @@ export default function InvoicesPage() {
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight flex items-center gap-3 text-gray-900">
-            <span className="h-10 w-10 rounded-xl flex items-center justify-center text-white"
-              style={{ background: '#111111' }}>
+            <span className="h-10 w-10 rounded-xl flex items-center justify-center text-white bg-gray-900">
               <FileText className="h-5 w-5" />
             </span>
             Invoice
@@ -183,7 +184,17 @@ export default function InvoicesPage() {
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label className="text-right text-sm">Pilih Booking</Label>
                   <div className="col-span-3">
-                    <Select value={bookingId} onValueChange={(val) => setBookingId(val || "")} required>
+                    <Select value={bookingId} onValueChange={(val) => {
+                      setBookingId(val || "");
+                      if (val) {
+                        const selectedB = bookings.find(b => b.id === val);
+                        if (selectedB) {
+                          setSubtotal(getAutoPrice(selectedB.complaint || selectedB.bookingCode || "").toString());
+                        }
+                      } else {
+                        setSubtotal("0");
+                      }
+                    }} required>
                       <SelectTrigger className="rounded-xl"><SelectValue placeholder="Pilih nomor booking" /></SelectTrigger>
                       <SelectContent>
                         {bookings.map(b => (

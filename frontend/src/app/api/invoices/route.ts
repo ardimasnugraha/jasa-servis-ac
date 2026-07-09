@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prismaClient';
+import { getAutoPrice } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -43,7 +44,15 @@ export async function POST(request: Request) {
   try {
     const { bookingId, subtotal, tax, discount } = await request.json();
 
-    const parsedSubtotal = parseFloat(subtotal) || 0;
+    let parsedSubtotal = parseFloat(subtotal) || 0;
+    if (parsedSubtotal === 0 && bookingId) {
+      const booking = await prisma.booking.findUnique({
+        where: { id: bookingId }
+      });
+      if (booking) {
+        parsedSubtotal = getAutoPrice(booking.complaint || booking.bookingCode);
+      }
+    }
     const parsedTax = parseFloat(tax) || 0;
     const parsedDiscount = parseFloat(discount) || 0;
     const total = parsedSubtotal + parsedTax - parsedDiscount;

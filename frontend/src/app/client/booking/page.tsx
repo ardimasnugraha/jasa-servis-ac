@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2, ArrowLeft, Calendar, Clock, Wrench, Sparkles, AlertCircle, ChevronLeft, ChevronRight, Check } from "lucide-react";
 import Link from "next/link";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { getAutoPrice } from "@/lib/utils";
 
 const QUICK_SUGGESTIONS = [
   "Cuci AC (Cleaning)",
@@ -388,7 +389,7 @@ export default function ClientBookingPage() {
                 {/* Ringkasan Pemesanan */}
                 <div className="bg-gray-100/25 border border-gray-200/60 rounded-2xl p-5 space-y-3">
                   <h4 className="font-extrabold text-xs text-gray-900 uppercase tracking-wide">Ringkasan Layanan</h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs text-gray-500">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs text-gray-500">
                     <div className="space-y-1">
                       <span className="font-bold text-gray-600">Keluhan / Kebutuhan:</span>
                       <p className="font-semibold text-gray-900 truncate">{complaint}</p>
@@ -401,6 +402,12 @@ export default function ClientBookingPage() {
                       <span className="font-bold text-gray-600">Teknisi Pilihan:</span>
                       <p className="font-semibold text-gray-900">
                         {technicianId ? technicians.find(t => t.id === technicianId)?.fullname || "Teknisi Pilihan" : "Pilihan Otomatis"}
+                      </p>
+                    </div>
+                    <div className="space-y-1">
+                      <span className="font-bold text-gray-600">Estimasi Biaya:</span>
+                      <p className="font-extrabold text-gray-900">
+                        Rp {getAutoPrice(complaint).toLocaleString('id-ID')}
                       </p>
                     </div>
                   </div>

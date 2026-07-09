@@ -29,6 +29,7 @@ import {
   ArrowRight
 } from "lucide-react";
 import Link from "next/link";
+import { getAutoPrice } from "@/lib/utils";
 
 interface Category {
   id: string;
@@ -332,7 +333,7 @@ export default function Home() {
                 onClick={() => handleBooking(sub)}
                 className="text-[11px] font-bold px-4 py-2 bg-white/10 hover:bg-gray-300 hover:text-[#111111] text-white border border-white/10 hover:border-gray-300 transition-all rounded-full flex items-center gap-1.5"
               >
-                {sub}
+                {sub} • Rp {getAutoPrice(sub).toLocaleString('id-ID')}
                 <Sparkles className="h-3 w-3 opacity-60" />
               </button>
             ))}

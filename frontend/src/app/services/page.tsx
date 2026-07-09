@@ -19,6 +19,8 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 
+import { getAutoPrice } from "@/lib/utils";
+
 type ServiceReport = {
   id: string;
   bookingCode: string;
@@ -141,7 +143,17 @@ export default function ServicesPage() {
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label className="text-right text-xs font-bold text-gray-900">Pilih Booking</Label>
                   <div className="col-span-3">
-                    <Select value={bookingId} onValueChange={(val) => setBookingId(val || "")} required>
+                    <Select value={bookingId} onValueChange={(val) => {
+                      setBookingId(val || "");
+                      if (val) {
+                        const selectedB = bookings.find(b => b.id === val);
+                        if (selectedB) {
+                          setTotalCost(getAutoPrice(selectedB.complaint || selectedB.bookingCode || "").toString());
+                        }
+                      } else {
+                        setTotalCost("0");
+                      }
+                    }} required>
                       <SelectTrigger className="rounded-xl h-10 border-gray-200 focus:ring-gray-900">
                         <SelectValue placeholder="Pilih Jadwal Servis" />
                       </SelectTrigger>
