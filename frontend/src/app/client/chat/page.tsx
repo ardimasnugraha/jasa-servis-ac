@@ -166,8 +166,8 @@ export default function ClientChatPage() {
       </div>
 
       <div className="flex-1 bg-white border border-gray-200/60 rounded-3xl overflow-hidden shadow-sm flex h-full">
-        {/* Contacts Sidebar - hidden if only 1 contact or on very small screen */}
-        {contacts.length > 1 && (
+        {/* Contacts Sidebar */}
+        {contacts.length > 0 && (
           <div className="w-80 border-r border-gray-100 flex flex-col bg-gray-50/50">
             <div className="p-4 border-b border-gray-100">
               <h3 className="text-xs font-extrabold uppercase text-gray-400 tracking-wider">Daftar Kontak</h3>
