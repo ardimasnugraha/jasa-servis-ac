@@ -238,7 +238,7 @@ export default function Home() {
           <nav className="hidden md:flex items-center gap-6 text-xs font-bold uppercase tracking-wider">
             <Link href="#" className="hover:text-gray-300 transition-colors">Bantuan</Link>
             <Link href="#" className="hover:text-gray-300 transition-colors">Jadi Mitra</Link>
-            <Link href="#" className="hover:text-gray-300 transition-colors">Chat</Link>
+            <Link href={user ? (user.role === "ADMIN" ? "/dashboard/chat" : "/client/chat") : "/login"} className="hover:text-gray-300 transition-colors">Chat</Link>
             <Link href={user ? (user.role === "ADMIN" ? "/dashboard" : "/client/dashboard") : "/login"} className="hover:text-gray-300 transition-colors">Pesanan</Link>
           </nav>
 
