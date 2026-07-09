@@ -103,9 +103,9 @@ export default function ClientBookingPage() {
             Dashboard Pemesanan
           </span>
           <h1 className="text-3xl font-black text-[#0d2d2a] tracking-tight mt-2.5 flex items-center gap-2">
-            Pesan Teknisi AC <Sparkles className="h-5 w-5 text-[#128a85]" />
+            Pesan dan Sewa Teknisi <Sparkles className="h-5 w-5 text-[#128a85]" />
           </h1>
-          <p className="text-[#577b78] text-sm mt-1">Jadwalkan perbaikan atau perawatan AC Anda dengan mudah dan cepat.</p>
+          <p className="text-[#577b78] text-sm mt-1">Jadwalkan perbaikan atau perawatan Anda dengan mudah dan cepat.</p>
         </div>
       </div>
 
@@ -116,10 +116,10 @@ export default function ClientBookingPage() {
         <CardHeader className="bg-[#ebf5f3]/10 pb-6 border-b border-[#e0edea]/60 pt-8 px-8">
           <CardTitle className="text-xl font-extrabold flex items-center text-[#0d2d2a] gap-2">
             <Wrench className="h-5.5 w-5.5 text-[#0d6e6a]" />
-            Formulir Pemesanan Servis
+            Formulir Pemesanan Jasa Servis
           </CardTitle>
           <CardDescription className="text-[#577b78] text-xs">
-            Lengkapi detail masalah AC dan atur jadwal kunjungan sesuai ketersediaan waktu Anda.
+            Lengkapi detail masalah anda dan atur jadwal kunjungan sesuai ketersediaan waktu Anda.
           </CardDescription>
         </CardHeader>
 
@@ -254,7 +254,7 @@ export default function ClientBookingPage() {
             <div className="bg-[#ebf5f3]/25 rounded-2xl p-4 flex items-start gap-3 border border-[#e0edea]/55">
               <AlertCircle className="h-5 w-5 text-[#128a85] shrink-0 mt-0.5" />
               <div className="text-[11px] text-[#577b78] leading-relaxed">
-                <span className="font-bold text-[#0d2d2a]">Catatan Layanan:</span> Semua pengerjaan servis AC didukung oleh garansi kualitas kerja selama 30 hari. Jadwal kunjungan teknisi akan disesuaikan dan dikonfirmasi kembali oleh admin.
+                <span className="font-bold text-[#0d2d2a]">Catatan Layanan:</span> Semua pengerjaan servis didukung oleh garansi kualitas kerja selama 30 hari. Jadwal kunjungan teknisi akan disesuaikan dan dikonfirmasi kembali oleh admin.
               </div>
             </div>
 
