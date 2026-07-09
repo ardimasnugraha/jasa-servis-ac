@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Loader2, CheckCircle2, Building2, CreditCard, Receipt, Clock,
-  ShieldCheck, Wrench, Copy, Check, Upload, Image as ImageIcon
+  ShieldCheck, Wrench, Copy, Check
 } from "lucide-react";
 import Link from "next/link";
 
@@ -20,10 +20,6 @@ export default function CustomerPaymentPage() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [copied, setCopied] = useState(false);
   const [backUrl, setBackUrl] = useState("/client/dashboard");
-
-  // Receipt upload states
-  const [receiptFile, setReceiptFile] = useState<File | null>(null);
-  const [receiptPreview, setReceiptPreview] = useState<string | null>(null);
 
   useEffect(() => {
     try {
@@ -77,49 +73,7 @@ export default function CustomerPaymentPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setReceiptFile(file);
 
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setReceiptPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const uploadReceipt = async () => {
-    if (!receiptPreview) return;
-    setIsProcessing(true);
-    try {
-      // 1. Save Base64 payload to localStorage (shared persistence with same origin admin)
-      localStorage.setItem(`payment_proof_${invoice.id}`, receiptPreview);
-
-      // 2. Call backend pay endpoint to update invoice status in PostgreSQL database
-      const response = await fetch(`${API_BASE_URL}/api/invoices/${id}/pay`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount: invoice.total,
-          paymentMethod: "TRANSFER MANUAL",
-        }),
-      });
-
-      if (response.ok) {
-        setTimeout(() => {
-          setPaymentSuccess(true);
-          setIsProcessing(false);
-        }, 1200);
-      } else {
-        throw new Error();
-      }
-    } catch {
-      alert("Gagal mengirim bukti pembayaran.");
-      setIsProcessing(false);
-    }
-  };
 
   if (loading) {
     return (
@@ -168,20 +122,7 @@ export default function CustomerPaymentPage() {
               Terima kasih! Tagihan <span className="font-semibold text-white">{invoice.invoiceNumber}</span> telah lunas.
             </p>
 
-            {/* Display receipt proof in success page */}
-            {typeof window !== "undefined" && localStorage.getItem(`payment_proof_${invoice.id}`) && (
-              <div className="rounded-xl p-4 mb-5 text-left border border-slate-700/30"
-                style={{ background: 'oklch(0.14 0.03 265)' }}>
-                <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-2 flex items-center gap-1.5">
-                  <ImageIcon className="h-3.5 w-3.5" /> Bukti Pembayaran Manual Anda
-                </span>
-                <img 
-                  src={localStorage.getItem(`payment_proof_${invoice.id}`) || ""} 
-                  alt="Bukti Transfer Pelanggan" 
-                  className="w-full h-36 object-contain rounded-lg border border-slate-700/50 bg-slate-900" 
-                />
-              </div>
-            )}
+
 
             <div className="rounded-xl p-4 mb-6 text-left space-y-2"
               style={{ background: 'oklch(0.14 0.03 265)', border: '1px solid oklch(0.24 0.04 265)' }}>
@@ -191,7 +132,7 @@ export default function CustomerPaymentPage() {
               </div>
               <div className="flex justify-between text-sm">
                 <span style={{ color: 'oklch(0.65 0.04 265)' }}>Metode</span>
-                <span className="font-medium text-white">{localStorage.getItem(`payment_proof_${invoice.id}`) ? "Transfer Manual (Struk)" : "Transfer Virtual Account"}</span>
+                <span className="font-medium text-white">Transfer Virtual Account</span>
               </div>
             </div>
             <div className="flex items-center justify-center gap-2 text-xs mb-6"
@@ -311,52 +252,7 @@ export default function CustomerPaymentPage() {
               )}
             </Button>
 
-            {/* Manual Upload Section */}
-            <div className="mt-5 pt-5 border-t border-slate-700/50 space-y-4">
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                <Upload className="h-4 w-4" style={{ color: 'oklch(0.60 0.22 264)' }} />
-                Atau Upload Bukti Pembayaran Manual
-              </p>
-              
-              <div className="rounded-xl p-4 bg-slate-700/10 border border-slate-700/35">
-                <input 
-                  type="file" 
-                  id="receipt-upload" 
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="hidden" 
-                />
-                <label 
-                  htmlFor="receipt-upload" 
-                  className="flex flex-col items-center justify-center p-4 border border-dashed border-slate-700/60 rounded-lg cursor-pointer hover:bg-slate-700/20 transition-all min-h-[90px]"
-                >
-                  {receiptPreview ? (
-                    <img src={receiptPreview} alt="Preview" className="h-28 object-contain rounded-md bg-slate-900 p-1" />
-                  ) : (
-                    <div className="text-center space-y-1">
-                      <p className="text-xs font-bold text-white flex items-center gap-1.5 justify-center">
-                        Pilih File Gambar Struk
-                      </p>
-                      <p className="text-[10px] text-slate-400 font-medium">Format JPG, PNG (Maks 5MB)</p>
-                    </div>
-                  )}
-                </label>
-                
-                {receiptPreview && (
-                  <Button
-                    onClick={uploadReceipt}
-                    disabled={isProcessing}
-                    className="w-full mt-3.5 h-10 text-xs font-black rounded-xl text-white bg-gradient-to-r from-emerald-600 to-emerald-700 cursor-pointer shadow-md"
-                  >
-                    {isProcessing ? (
-                      <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Mengirimkan Bukti...</>
-                    ) : (
-                      "Kirim Bukti Pembayaran"
-                    )}
-                  </Button>
-                )}
-              </div>
-            </div>
+
 
           </div>
         </div>
