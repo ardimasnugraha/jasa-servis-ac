@@ -12,6 +12,12 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'userId is required' }, { status: 400 });
     }
 
+    // Validate if userId is a valid UUID format to avoid Prisma/PostgreSQL crash
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(userId)) {
+      return NextResponse.json({ error: 'Invalid userId format' }, { status: 400 });
+    }
+
     const currentUser = await prisma.user.findUnique({
       where: { id: userId },
     });
@@ -21,10 +27,13 @@ export async function GET(request: Request) {
     }
 
     if (currentUser.role === 'ADMIN') {
-      // Find all non-admin users
+      // Find all non-admin users (handling nullable role)
       const users = await prisma.user.findMany({
         where: {
-          role: { not: 'ADMIN' },
+          OR: [
+            { role: { not: 'ADMIN' } },
+            { role: null },
+          ],
         },
         select: {
           id: true,
@@ -65,9 +74,9 @@ export async function GET(request: Request) {
         })
       );
 
-      // Sort by last message date, putting users who messaged recently first.
-      // Users with no messages go to the bottom.
+      // Sort by last message date stably (newest first, no messages last)
       list.sort((a, b) => {
+        if (!a.lastMessageAt && !b.lastMessageAt) return 0;
         if (!a.lastMessageAt) return 1;
         if (!b.lastMessageAt) return -1;
         return new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime();
@@ -139,3 +148,4 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+
