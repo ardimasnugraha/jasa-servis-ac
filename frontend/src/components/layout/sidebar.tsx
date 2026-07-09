@@ -13,6 +13,7 @@ import {
   BellRing,
   LogOut,
   BarChart3,
+  MessageSquare,
 } from 'lucide-react';
 
 const navigation = [
@@ -24,6 +25,7 @@ const navigation = [
   { name: 'Invoice',     href: '/invoices',     icon: FileText },
   { name: 'Pembayaran',  href: '/payments',     icon: CreditCard },
   { name: 'Laporan',     href: '/reports',      icon: BarChart3 },
+  { name: 'Chat',        href: '/dashboard/chat', icon: MessageSquare },
   { name: 'Pengaturan',  href: '/settings',     icon: Settings },
 ];
 

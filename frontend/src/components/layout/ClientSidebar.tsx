@@ -2,12 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, ClipboardList, Receipt, LogOut, User, Wrench } from 'lucide-react';
+import { Home, ClipboardList, Receipt, LogOut, User, Wrench, MessageSquare } from 'lucide-react';
 
 const navigation = [
   { name: 'Beranda',       href: '/client/dashboard', icon: Home },
   { name: 'Pesan Servis',  href: '/client/booking',   icon: ClipboardList },
   { name: 'Tagihan Saya',  href: '/client/invoices',  icon: Receipt },
+  { name: 'Chat Support',  href: '/client/chat',      icon: MessageSquare },
 ];
 
 export function ClientSidebar({ closeMobileMenu }: { closeMobileMenu?: () => void }) {

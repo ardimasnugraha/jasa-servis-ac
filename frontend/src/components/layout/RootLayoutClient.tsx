@@ -60,7 +60,7 @@ function ClientHeader() {
           <Link href="#" className="hover:text-gray-900 transition-colors flex items-center gap-1">
             <Users className="h-3.5 w-3.5" /> Jadi Mitra
           </Link>
-          <Link href="#" className="hover:text-gray-900 transition-colors flex items-center gap-1">
+          <Link href={user ? (user.role === "ADMIN" ? "/dashboard/chat" : "/client/chat") : "/login"} className="hover:text-gray-900 transition-colors flex items-center gap-1">
             <MessageSquare className="h-3.5 w-3.5" /> Chat
           </Link>
           <Link href={user ? (user.role === "ADMIN" ? "/dashboard" : "/client/dashboard") : "/login"} className="hover:text-gray-900 transition-colors">
