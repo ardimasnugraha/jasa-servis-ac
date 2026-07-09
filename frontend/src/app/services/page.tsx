@@ -124,7 +124,7 @@ export default function ServicesPage() {
             </span>
             Laporan Servis
           </h1>
-          <p className="mt-1 text-sm text-slate-500 font-medium">Catat dan tinjau hasil pengerjaan servis AC Anda.</p>
+          <p className="mt-1 text-sm text-slate-500 font-medium">Catat dan tinjau hasil pengerjaan servis Anda.</p>
         </div>
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -197,8 +197,8 @@ export default function ServicesPage() {
       {/* Summary Cards Section (Colorful Blocks to Match Invoice Layout) */}
       <div className="grid gap-5 sm:grid-cols-3">
         {/* Card 1: Green Card (Total Nilai Servis / Pendapatan) */}
-        <div className="rounded-[2rem] p-6 text-white relative overflow-hidden shadow-sm flex flex-col justify-between min-h-[125px] transition-all hover:scale-[1.01]"
-          className="bg-gray-900 text-white">
+        <div className="rounded-[2rem] p-6 text-white relative overflow-hidden shadow-sm flex flex-col justify-between min-h-[125px] transition-all hover:scale-[1.01] bg-gray-900">
+
           <div className="absolute -top-3 -right-3 h-16 w-16 rounded-full bg-white/10" />
           <div className="absolute -bottom-6 -right-6 h-16 w-16 rounded-full bg-white/5" />
           <CheckCircle2 className="h-5.5 w-5.5 text-white/80" />
@@ -238,7 +238,7 @@ export default function ServicesPage() {
         <div className="p-6 pb-4 border-b border-gray-200/55 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <CardTitle className="text-base font-bold text-gray-900">Riwayat Laporan Servis</CardTitle>
-            <CardDescription className="text-xs text-gray-500 mt-0.5">Daftar detail penanganan pengerjaan servis AC oleh teknisi.</CardDescription>
+            <CardDescription className="text-xs text-gray-500 mt-0.5">Daftar detail penanganan pengerjaan servis oleh teknisi.</CardDescription>
           </div>
 
           {/* Search bar */}
@@ -334,9 +334,9 @@ export default function ServicesPage() {
           <DialogHeader className="border-b border-gray-200 pb-4">
             <DialogTitle className="text-lg font-black text-gray-900 flex items-center gap-2.5">
               <FileText className="h-5.5 w-5.5 text-gray-900" />
-              Detail Laporan Servis AC
+              Detail Laporan Servis
             </DialogTitle>
-            <DialogDescription className="text-xs text-gray-500">Rincian hasil penanganan masalah teknis unit AC.</DialogDescription>
+            <DialogDescription className="text-xs text-gray-500">Rincian hasil penanganan masalah teknis unit.</DialogDescription>
           </DialogHeader>
 
           {selectedReport && (
@@ -388,7 +388,7 @@ export default function ServicesPage() {
 
               {/* Diagnosis box */}
               <div className="space-y-2">
-                <h4 className="text-[10px] font-bold uppercase tracking-wider text-gray-500 border-b border-gray-200 pb-1">Diagnosis Masalah AC</h4>
+                <h4 className="text-[10px] font-bold uppercase tracking-wider text-gray-500 border-b border-gray-200 pb-1">Diagnosis Masalah </h4>
                 <div className="p-3.5 bg-rose-500/5 rounded-xl border border-rose-500/10 text-rose-800 leading-relaxed flex gap-2.5 items-start">
                   <ShieldAlert className="h-4.5 w-4.5 text-rose-500 shrink-0 mt-0.5" />
                   <p className="font-bold">"{selectedReport.diagnosis}"</p>
