@@ -82,7 +82,7 @@ export default function ClientDashboard() {
             Dashboard Pemesanan
           </span>
           <h1 className="text-3xl font-black text-[#0d2d2a] tracking-tight mt-2.5">
-            Kelola Layanan Servis AC Anda
+            Kelola Layanan Jasa Servis Anda
           </h1>
           <p className="text-[#577b78] text-sm mt-1">
             Pantau status pesanan, jadwal teknisi, dan tagihan Anda di satu tempat.
@@ -123,7 +123,7 @@ export default function ClientDashboard() {
             </div>
             <h2 className="text-3xl font-extrabold tracking-tight">Halo, {user?.fullname}! 👋</h2>
             <p className="text-white/80 text-sm leading-relaxed">
-              Kami siap memberikan pelayanan perbaikan dan cuci AC terbaik dengan teknisi ahli. AC Anda bermasalah? Hubungi kami kapan saja.
+              Kami siap memberikan pelayanan perbaikan dan servis terbaik dengan teknisi ahli. Peralatan Anda bermasalah? Hubungi kami kapan saja.
             </p>
           </div>
 
@@ -326,7 +326,7 @@ export default function ClientDashboard() {
                 <Wrench className="h-4.5 w-4.5 text-[#0d6e6a]" />
                 Layanan Cepat
               </CardTitle>
-              <CardDescription className="text-[11px] text-[#577b78]">Pilih kategori servis AC terbaik kami.</CardDescription>
+              <CardDescription className="text-[11px] text-[#577b78]">Pilih kategori servis terbaik kami.</CardDescription>
             </CardHeader>
             <CardContent className="p-4 space-y-2">
               {[
@@ -354,7 +354,7 @@ export default function ClientDashboard() {
           <div className="bg-[#ebf5f3]/40 border border-[#e0edea] rounded-3xl p-6 text-center space-y-4">
             <h4 className="font-bold text-sm text-[#0d2d2a]">Butuh Bantuan Mendesak?</h4>
             <p className="text-xs text-[#577b78] leading-relaxed">
-              Jika Anda memiliki kendala AC yang butuh penanganan segera, silakan hubungi tim Customer Service kami lewat WhatsApp.
+              Jika Anda memiliki kendala yang butuh penanganan segera, silakan hubungi tim Customer Service kami lewat WhatsApp.
             </p>
             <Link href="https://wa.me/628123456789" target="_blank">
               <Button className="w-full h-10 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md">
