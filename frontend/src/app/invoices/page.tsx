@@ -189,7 +189,8 @@ export default function InvoicesPage() {
                       if (val) {
                         const selectedB = bookings.find(b => b.id === val);
                         if (selectedB) {
-                          setSubtotal(getAutoPrice(selectedB.complaint || selectedB.bookingCode || "").toString());
+                          const cost = selectedB.totalEstimatedCost ? selectedB.totalEstimatedCost.toString() : getAutoPrice(selectedB.complaint || selectedB.bookingCode || "").toString();
+                          setSubtotal(cost);
                         }
                       } else {
                         setSubtotal("0");

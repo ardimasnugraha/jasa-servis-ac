@@ -12,14 +12,19 @@ import { Loader2, ArrowLeft, Calendar, Clock, Wrench, Sparkles, AlertCircle, Che
 import Link from "next/link";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { getAutoPrice } from "@/lib/utils";
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select";
 
 const QUICK_SUGGESTIONS = [
-  "Cuci AC (Cleaning)",
-  "Tambah Freon R32",
-  "Bongkar Pasang AC",
-  "Perbaikan AC Rusak / Bocor",
-  "Perbaikan AC Mati Total",
-  "AC Berisik / Mengeluarkan Bau"
+  "Tukang Bangunan / Sipil",
+  "Tukang Cat Dinding",
+  "Tukang Las & Besi",
+  "Tukang Listrik & Kabel",
+  "Tukang Kayu & Meubel",
+  "Tukang Pipa & Saluran Air",
+  "Tukang Taman & Lanskap",
+  "Tukang Atap & Plafon"
 ];
 
 const TIME_SLOTS = [
@@ -40,6 +45,38 @@ export default function ClientBookingPage() {
   const [bookingTime, setBookingTime] = useState("");
   const [complaint, setComplaint] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // New Handyman Sewa States
+  const [rateType, setRateType] = useState("DAILY");
+  const [durationDays, setDurationDays] = useState(1);
+  const [numWorkers, setNumWorkers] = useState(1);
+  const [materialOption, setMaterialOption] = useState("JASA_SAJA");
+
+  const getBaseDailyRate = (srv: string) => {
+    const clean = srv.toLowerCase();
+    if (clean.includes("las") || clean.includes("besi")) return 200000;
+    if (clean.includes("bangunan") || clean.includes("sipil")) return 180000;
+    if (clean.includes("cat")) return 150000;
+    if (clean.includes("listrik") || clean.includes("kabel")) return 175000;
+    if (clean.includes("kayu") || clean.includes("meubel")) return 180000;
+    if (clean.includes("pipa") || clean.includes("saluran")) return 165000;
+    if (clean.includes("taman")) return 140000;
+    if (clean.includes("atap") || clean.includes("plafon")) return 190000;
+    return 160000;
+  };
+
+  const calculateCost = () => {
+    if (rateType === "DAILY") {
+      const baseDaily = getBaseDailyRate(complaint);
+      const labor = baseDaily * numWorkers * durationDays;
+      const material = materialOption === "ALL_IN" ? 150000 * numWorkers * durationDays : 0;
+      return labor + material;
+    }
+    if (rateType === "PROJECT") {
+      return materialOption === "ALL_IN" ? 1500000 : 1000000;
+    }
+    return materialOption === "ALL_IN" ? 750000 : 500000;
+  };
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -82,12 +119,17 @@ export default function ClientBookingPage() {
           bookingDate,
           bookingTime,
           complaint,
+          rateType,
+          durationDays: rateType === "DAILY" ? durationDays : null,
+          numWorkers: rateType === "DAILY" ? numWorkers : null,
+          materialOption,
+          totalEstimatedCost: calculateCost(),
         }),
       });
 
-      if (!response.ok) throw new Error("Gagal memesan servis");
+      if (!response.ok) throw new Error("Gagal memesan sewa tukang");
 
-      alert("Pemesanan berhasil! Teknisi kami akan segera menghubungi Anda.");
+      alert("Pemesanan berhasil! Tukang/mitra kami akan segera menghubungi Anda.");
       router.push("/client/dashboard");
     } catch (error) {
       console.error(error);
@@ -172,10 +214,10 @@ export default function ClientBookingPage() {
         <CardHeader className="bg-gray-100/10 pb-6 border-b border-gray-200/60 pt-8 px-8">
           <CardTitle className="text-xl font-extrabold flex items-center text-gray-900 gap-2">
             <Wrench className="h-5.5 w-5.5 text-gray-900" />
-            Formulir Pemesanan Jasa Servis
+            Formulir Sewa Tukang / Mitra Kerja
           </CardTitle>
           <CardDescription className="text-gray-500 text-xs">
-            Langkah {step} dari 3: {step === 1 ? "Jelaskan permasalahan Anda" : step === 2 ? "Pilih tanggal dan waktu kunjungan" : "Pilih teknisi pilihan Anda & konfirmasi"}
+            Langkah {step} dari 3: {step === 1 ? "Atur jenis pekerjaan & durasi" : step === 2 ? "Pilih tanggal dan waktu kunjungan" : "Pilih tukang pilihan Anda & konfirmasi"}
           </CardDescription>
         </CardHeader>
 
@@ -186,10 +228,10 @@ export default function ClientBookingPage() {
             {step === 1 && (
               <div className="space-y-6 animate-in fade-in duration-300">
                 <div className="space-y-2.5">
-                  <Label htmlFor="complaint" className="text-gray-600 font-bold text-sm">Detail Masalah / Keluhan</Label>
+                  <Label htmlFor="complaint" className="text-gray-600 font-bold text-sm">Jelaskan Proyek / Kebutuhan Tukang</Label>
                   <Textarea
                     id="complaint"
-                    placeholder="Jelaskan kendala Anda secara detail agar teknisi kami dapat mempersiapkan peralatan yang tepat (contoh: AC kurang dingin, bocor air, atau cuci AC berkala...)"
+                    placeholder="Jelaskan pekerjaan secara detail agar tukang kami dapat mempersiapkan peralatan yang tepat (contoh: Pengecatan tembok ruang tamu, pembuatan kanopi carport, renovasi lantai keramik kamar mandi...)"
                     value={complaint}
                     onChange={(e) => setComplaint(e.target.value)}
                     required
@@ -215,6 +257,77 @@ export default function ClientBookingPage() {
                         {suggestion}
                       </button>
                     ))}
+                  </div>
+                </div>
+
+                {/* Handyman Configuration Panel */}
+                <div className="bg-gray-50/50 border border-gray-200/70 rounded-2xl p-5 space-y-4">
+                  <h4 className="text-xs font-extrabold text-gray-900 uppercase tracking-wide flex items-center gap-1.5">
+                    ⚙️ Konfigurasi Sewa Tukang
+                  </h4>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <Label className="text-xs font-bold text-gray-600">Tipe Sewa</Label>
+                      <Select value={rateType} onValueChange={setRateType}>
+                        <SelectTrigger className="rounded-xl bg-white"><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="DAILY">Harian (Daily Rate)</SelectItem>
+                          <SelectItem value="PROJECT">Borongan (Project-based)</SelectItem>
+                          <SelectItem value="UNIT">Per Unit / Pekerjaan Flat</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <Label className="text-xs font-bold text-gray-600">Cakupan Kerja</Label>
+                      <Select value={materialOption} onValueChange={setMaterialOption}>
+                        <SelectTrigger className="rounded-xl bg-white"><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="JASA_SAJA">Hanya Jasa Tukang (Tanpa Alat/Bahan)</SelectItem>
+                          <SelectItem value="ALL_IN">All-In (Jasa + Alat & Bahan Baku Dasar)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  {rateType === "DAILY" && (
+                    <div className="grid grid-cols-2 gap-4 pt-3 border-t border-gray-200/50">
+                      <div className="space-y-1.5">
+                        <Label className="text-xs font-bold text-gray-600">Jumlah Tukang</Label>
+                        <div className="flex items-center gap-2">
+                          <button type="button" onClick={() => setNumWorkers(Math.max(1, numWorkers - 1))} className="h-9 w-9 rounded-xl border border-gray-200 bg-white font-bold hover:bg-gray-100 flex items-center justify-center cursor-pointer">-</button>
+                          <span className="font-extrabold text-sm w-8 text-center text-gray-900">{numWorkers}</span>
+                          <button type="button" onClick={() => setNumWorkers(Math.min(10, numWorkers + 1))} className="h-9 w-9 rounded-xl border border-gray-200 bg-white font-bold hover:bg-gray-100 flex items-center justify-center cursor-pointer">+</button>
+                        </div>
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <Label className="text-xs font-bold text-gray-600">Durasi Sewa (Hari)</Label>
+                        <div className="flex items-center gap-2">
+                          <button type="button" onClick={() => setDurationDays(Math.max(1, durationDays - 1))} className="h-9 w-9 rounded-xl border border-gray-200 bg-white font-bold hover:bg-gray-100 flex items-center justify-center cursor-pointer">-</button>
+                          <span className="font-extrabold text-sm w-8 text-center text-gray-900">{durationDays}</span>
+                          <button type="button" onClick={() => setDurationDays(Math.min(30, durationDays + 1))} className="h-9 w-9 rounded-xl border border-gray-200 bg-white font-bold hover:bg-gray-100 flex items-center justify-center cursor-pointer">+</button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Real-time Estimate Card */}
+                  <div className="mt-3 p-4 bg-gray-900 text-white rounded-xl flex items-center justify-between">
+                    <div>
+                      <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Estimasi Biaya Sementara</p>
+                      <p className="text-lg font-black mt-0.5">Rp {calculateCost().toLocaleString('id-ID')}</p>
+                    </div>
+                    <div className="text-right text-[10px] text-gray-300 font-medium leading-normal">
+                      {rateType === "DAILY" ? (
+                        <p>{numWorkers} Tukang × {durationDays} Hari<br/>{materialOption === "ALL_IN" ? "+ Material All-In" : "Jasa Saja"}</p>
+                      ) : rateType === "PROJECT" ? (
+                        <p>Estimasi Borongan Awal<br/>(Bisa dinegosiasikan)</p>
+                      ) : (
+                        <p>Tarif Flat Per Pekerjaan</p>
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -388,10 +501,10 @@ export default function ClientBookingPage() {
 
                 {/* Ringkasan Pemesanan */}
                 <div className="bg-gray-100/25 border border-gray-200/60 rounded-2xl p-5 space-y-3">
-                  <h4 className="font-extrabold text-xs text-gray-900 uppercase tracking-wide">Ringkasan Layanan</h4>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs text-gray-500">
+                  <h4 className="font-extrabold text-xs text-gray-900 uppercase tracking-wide">Ringkasan Sewa Tukang</h4>
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-xs text-gray-500">
                     <div className="space-y-1">
-                      <span className="font-bold text-gray-600">Keluhan / Kebutuhan:</span>
+                      <span className="font-bold text-gray-600">Kebutuhan / Proyek:</span>
                       <p className="font-semibold text-gray-900 truncate">{complaint}</p>
                     </div>
                     <div className="space-y-1">
@@ -399,15 +512,22 @@ export default function ClientBookingPage() {
                       <p className="font-semibold text-gray-900">{bookingDate} pukul {bookingTime}</p>
                     </div>
                     <div className="space-y-1">
-                      <span className="font-bold text-gray-600">Teknisi Pilihan:</span>
+                      <span className="font-bold text-gray-600">Pilihan Tukang:</span>
+                      <p className="font-semibold text-gray-900 truncate">
+                        {technicianId ? technicians.find(t => t.id === technicianId)?.fullname || "Pilihan Tukang" : "Pilihan Otomatis"}
+                      </p>
+                    </div>
+                    <div className="space-y-1">
+                      <span className="font-bold text-gray-600">Konfigurasi Sewa:</span>
                       <p className="font-semibold text-gray-900">
-                        {technicianId ? technicians.find(t => t.id === technicianId)?.fullname || "Teknisi Pilihan" : "Pilihan Otomatis"}
+                        {rateType === "DAILY" ? `${numWorkers} Tukang, ${durationDays} Hari` : rateType === "PROJECT" ? "Borongan" : "Per Unit"}<br/>
+                        <span className="text-[10px] text-gray-500 font-bold">({materialOption === "ALL_IN" ? "All-In" : "Jasa Saja"})</span>
                       </p>
                     </div>
                     <div className="space-y-1">
                       <span className="font-bold text-gray-600">Estimasi Biaya:</span>
-                      <p className="font-extrabold text-gray-900">
-                        Rp {getAutoPrice(complaint).toLocaleString('id-ID')}
+                      <p className="font-extrabold text-gray-900 text-sm">
+                        Rp {calculateCost().toLocaleString('id-ID')}
                       </p>
                     </div>
                   </div>

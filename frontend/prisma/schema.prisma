@@ -77,9 +77,15 @@ model Booking {
   technicianId    String?      @db.Uuid @map("technician_id")
   bookingDate     DateTime?    @db.Date @map("booking_date")
   bookingTime     DateTime?    @db.Time @map("booking_time")
-  complaint       String?
-  status          String?      @db.VarChar(30)
-  createdAt       DateTime?    @default(now()) @map("created_at")
+  complaint          String?
+  status             String?      @db.VarChar(30)
+  createdAt          DateTime?    @default(now()) @map("created_at")
+
+  rateType           String?      @db.VarChar(30) @map("rate_type")
+  durationDays       Int?         @map("duration_days")
+  numWorkers         Int?         @map("num_workers")
+  materialOption     String?      @db.VarChar(30) @map("material_option")
+  totalEstimatedCost Decimal?     @db.Decimal(12, 2) @map("total_estimated_cost")
 
   customer        Customer?    @relation(fields: [customerId], references: [id])
   technician      Technician?  @relation(fields: [technicianId], references: [id])

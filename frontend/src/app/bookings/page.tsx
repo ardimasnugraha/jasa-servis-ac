@@ -32,6 +32,11 @@ type Booking = {
   bookingDate: string;
   bookingTime: string;
   createdAt: string;
+  rateType?: string;
+  durationDays?: number;
+  numWorkers?: number;
+  materialOption?: string;
+  totalEstimatedCost?: number;
   technician?: {
     id: string;
     fullname: string;
@@ -311,6 +316,37 @@ export default function BookingsPage() {
                 </div>
               </div>
 
+              {/* Rincian Sewa Tukang */}
+              <div className="space-y-2">
+                <h4 className="text-sm font-bold border-b pb-1">Konfigurasi Sewa & Estimasi Biaya</h4>
+                <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 p-3.5 rounded-xl bg-muted/20 border text-xs">
+                  <div>
+                    <span className="text-muted-foreground block mb-0.5">Tipe Sewa</span>
+                    <span className="font-bold text-gray-900">{selectedBooking.rateType === "DAILY" ? "Harian (Daily Rate)" : selectedBooking.rateType === "PROJECT" ? "Borongan (Proyek)" : "Per Unit"}</span>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground block mb-0.5">Cakupan Kerja</span>
+                    <span className="font-bold text-gray-900">{selectedBooking.materialOption === "ALL_IN" ? "All-In (Jasa + Bahan)" : "Hanya Jasa Tukang"}</span>
+                  </div>
+                  {selectedBooking.rateType === "DAILY" && (
+                    <>
+                      <div>
+                        <span className="text-muted-foreground block mb-0.5">Jumlah Tukang</span>
+                        <span className="font-bold text-gray-900">{selectedBooking.numWorkers} Orang</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground block mb-0.5">Durasi Kerja</span>
+                        <span className="font-bold text-gray-900">{selectedBooking.durationDays} Hari</span>
+                      </div>
+                    </>
+                  )}
+                  <div className="col-span-2 pt-2 border-t mt-1 flex justify-between items-center">
+                    <span className="font-bold text-gray-700">Estimasi Biaya Total</span>
+                    <span className="text-sm font-black text-gray-900">Rp {(selectedBooking.totalEstimatedCost || 0).toLocaleString('id-ID')}</span>
+                  </div>
+                </div>
+              </div>
+
               {/* Teknisi */}
               <div className="space-y-2">
                 <h4 className="text-sm font-bold border-b pb-1">Teknisi yang Ditugaskan</h4>
@@ -364,7 +400,7 @@ export default function BookingsPage() {
             <Table className="min-w-[650px] md:min-w-full">
               <TableHeader>
                 <TableRow style={{ borderColor: 'var(--border)' }}>
-                  {['Kode', 'Pelanggan', 'Keluhan', 'Jadwal', 'Status', ''].map((h, i) => (
+                  {['Kode', 'Pelanggan', 'Kebutuhan', 'Tipe Sewa', 'Estimasi', 'Jadwal', 'Status', ''].map((h, i) => (
                     <TableHead key={i} className="text-xs font-semibold uppercase tracking-wide py-3 px-5" style={{ color: 'var(--muted-foreground)' }}>{h}</TableHead>
                   ))}
                 </TableRow>
@@ -372,8 +408,8 @@ export default function BookingsPage() {
               <TableBody>
                 {filtered.length === 0 && !loading && (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center h-32 text-sm" style={{ color: 'var(--muted-foreground)' }}>
-                      Belum ada riwayat pemesanan servis.
+                    <TableCell colSpan={8} className="text-center h-32 text-sm" style={{ color: 'var(--muted-foreground)' }}>
+                      Belum ada riwayat pemesanan sewa tukang.
                     </TableCell>
                   </TableRow>
                 )}
@@ -386,7 +422,19 @@ export default function BookingsPage() {
                       </span>
                     </TableCell>
                     <TableCell className="py-4 px-5 font-semibold text-sm" style={{ color: 'var(--foreground)' }}>{booking.customer}</TableCell>
-                    <TableCell className="py-4 px-5 text-sm max-w-[180px] truncate" style={{ color: 'var(--muted-foreground)' }}>{booking.complaint}</TableCell>
+                    <TableCell className="py-4 px-5 text-sm max-w-[150px] truncate" style={{ color: 'var(--muted-foreground)' }}>{booking.complaint}</TableCell>
+                    <TableCell className="py-4 px-5 text-xs">
+                      <div className="flex flex-col gap-0.5">
+                        <span className="font-bold text-gray-900">{booking.rateType === "DAILY" ? "Harian" : booking.rateType === "PROJECT" ? "Borongan" : "Per Unit"}</span>
+                        <span className="text-[10px] text-gray-500 font-medium">
+                          {booking.rateType === "DAILY" ? `${booking.numWorkers} Orang • ${booking.durationDays} Hari` : "Borongan Proyek"}
+                          {` (${booking.materialOption === "ALL_IN" ? "All-In" : "Jasa Saja"})`}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="py-4 px-5 font-extrabold text-xs text-gray-900 tabular-nums">
+                      Rp {(booking.totalEstimatedCost || 0).toLocaleString('id-ID')}
+                    </TableCell>
                     <TableCell className="py-4 px-5">
                       <div className="flex flex-col gap-0.5">
                         <div className="flex items-center text-xs gap-1" style={{ color: 'var(--muted-foreground)' }}>
