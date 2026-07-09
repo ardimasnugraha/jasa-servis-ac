@@ -319,36 +319,6 @@ export default function ClientDashboard() {
 
         {/* Sidebar Widgets (Right, 1 col) */}
         <div className="space-y-6">
-          {/* Quick Categories booking shortcuts */}
-          <Card className="border border-[#e0edea] bg-white/70 backdrop-blur-md shadow-sm rounded-3xl overflow-hidden">
-            <CardHeader className="pb-4 border-b border-[#e0edea]/60">
-              <CardTitle className="text-sm font-extrabold text-[#0d2d2a] flex items-center gap-2">
-                <Wrench className="h-4.5 w-4.5 text-[#0d6e6a]" />
-                Layanan Cepat
-              </CardTitle>
-              <CardDescription className="text-[11px] text-[#577b78]">Pilih kategori servis terbaik kami.</CardDescription>
-            </CardHeader>
-            <CardContent className="p-4 space-y-2">
-              {[
-                { name: 'Cuci AC Berkala', price: 'Rp 75.000', service: 'Cuci AC (Cleaning)' },
-                { name: 'Tambah Freon R32', price: 'Rp 150.000', service: 'Isi Freon (R32/R410)' },
-                { name: 'Bongkar Pasang AC', price: 'Rp 350.000', service: 'Bongkar Pasang AC' },
-                { name: 'Perbaikan AC Bocor/Mati', price: 'Estimasi teknisi', service: 'Perbaikan AC Rusak' }
-              ].map((serv, idx) => (
-                <div 
-                  key={idx}
-                  onClick={() => router.push(`/client/booking?service=${encodeURIComponent(serv.service)}`)}
-                  className="group flex justify-between items-center p-3 rounded-xl hover:bg-[#0d6e6a]/5 border border-transparent hover:border-[#0d6e6a]/10 transition-all duration-200 cursor-pointer"
-                >
-                  <div>
-                    <h5 className="font-bold text-xs text-slate-800 group-hover:text-[#0d6e6a] transition-colors">{serv.name}</h5>
-                    <p className="text-[10px] text-slate-400 mt-0.5 font-medium">{serv.price}</p>
-                  </div>
-                  <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-[#0d6e6a] transition-all group-hover:translate-x-0.5" />
-                </div>
-              ))}
-            </CardContent>
-          </Card>
 
           {/* Need help support */}
           <div className="bg-[#ebf5f3]/40 border border-[#e0edea] rounded-3xl p-6 text-center space-y-4">
