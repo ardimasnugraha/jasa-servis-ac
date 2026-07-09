@@ -39,58 +39,56 @@ function ClientHeader() {
   };
 
   return (
-    <header className="bg-[#1e3d75] text-white shadow-md select-none w-full border-b border-white/10 shrink-0">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
+    <header className="bg-white/80 backdrop-blur-md text-gray-900 shadow-sm select-none w-full border-b border-black/[0.06] shrink-0">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-3.5 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
-          <div className="h-9 w-9 bg-yellow-400 rounded-lg flex items-center justify-center text-[#1e3d75] shadow-sm">
-            <Wrench className="h-5 w-5 font-bold" />
+        <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
+          <div className="h-8 w-8 bg-gray-900 rounded-lg flex items-center justify-center shadow-sm">
+            <Wrench className="h-4 w-4 text-white" />
           </div>
           <div>
-            <span className="text-lg font-black tracking-tight block leading-none">SERVIS KITA</span>
-            <span className="text-[9px] font-semibold text-yellow-400 uppercase tracking-widest">Ahli & Profesional</span>
+            <span className="text-sm font-black tracking-tight block leading-none text-gray-900">SERVIS KITA</span>
+            <span className="text-[9px] font-semibold text-gray-400 uppercase tracking-widest">Ahli & Profesional</span>
           </div>
         </Link>
 
         {/* Middle Nav - Links */}
-        <nav className="hidden md:flex items-center gap-6 text-xs font-semibold text-white/90">
-          <Link href="#" className="hover:text-yellow-400 transition-colors flex items-center gap-1">
+        <nav className="hidden md:flex items-center gap-6 text-xs font-semibold text-gray-500">
+          <Link href="#" className="hover:text-gray-900 transition-colors flex items-center gap-1">
             <HelpCircle className="h-3.5 w-3.5" /> Bantuan
           </Link>
-          <Link href="#" className="hover:text-yellow-400 transition-colors flex items-center gap-1">
+          <Link href="#" className="hover:text-gray-900 transition-colors flex items-center gap-1">
             <Users className="h-3.5 w-3.5" /> Jadi Mitra
           </Link>
-          <Link href="#" className="hover:text-yellow-400 transition-colors flex items-center gap-1">
+          <Link href="#" className="hover:text-gray-900 transition-colors flex items-center gap-1">
             <MessageSquare className="h-3.5 w-3.5" /> Chat
           </Link>
-          <Link href={user ? (user.role === "ADMIN" ? "/dashboard" : "/client/dashboard") : "/login"} className="hover:text-yellow-400 transition-colors">
+          <Link href={user ? (user.role === "ADMIN" ? "/dashboard" : "/client/dashboard") : "/login"} className="hover:text-gray-900 transition-colors">
             Pesanan
           </Link>
         </nav>
 
-        {/* Right Nav - Cart & Profile/Auth */}
-        <div className="flex items-center gap-3">
+        {/* Right Nav */}
+        <div className="flex items-center gap-2.5">
           {/* Cart */}
-          <div className="relative cursor-pointer p-1.5 hover:bg-white/10 rounded-full transition-all">
-            <ShoppingBag className="h-4.5 w-4.5 text-white" />
-            <span className="absolute top-0.5 right-0.5 h-3.5 w-3.5 bg-red-500 rounded-full text-[8px] font-bold flex items-center justify-center text-white border border-[#1e3d75]">
-              0
-            </span>
+          <div className="relative cursor-pointer p-1.5 hover:bg-gray-100 rounded-lg transition-all">
+            <ShoppingBag className="h-4 w-4 text-gray-600" />
+            <span className="absolute top-0.5 right-0.5 h-3.5 w-3.5 bg-red-500 rounded-full text-[8px] font-bold flex items-center justify-center text-white border-2 border-white">0</span>
           </div>
 
           {/* Login / Register or Profile */}
           {user ? (
             <div className="flex items-center gap-2">
               <Link href={user.role === "ADMIN" ? "/dashboard" : "/client/dashboard"}>
-                <Button variant="ghost" className="h-8 px-3 rounded-lg border border-white/20 hover:bg-white/10 hover:text-white text-[11px] font-bold gap-1.5">
+                <Button variant="ghost" className="h-8 px-3 rounded-lg border border-gray-200 hover:bg-gray-100 text-gray-700 hover:text-gray-900 text-[11px] font-bold gap-1.5">
                   <User className="h-3 w-3" />
                   {user.fullname ? user.fullname.split(" ")[0] : "Akun"}
                 </Button>
               </Link>
-              <Button 
+              <Button
                 onClick={handleLogout}
-                variant="ghost" 
-                className="h-8 w-8 p-0 rounded-lg hover:bg-red-500/20 text-red-300 hover:text-red-100"
+                variant="ghost"
+                className="h-8 w-8 p-0 rounded-lg hover:bg-red-50 text-red-400 hover:text-red-500"
                 title="Keluar"
               >
                 <LogOut className="h-3.5 w-3.5" />
@@ -99,12 +97,12 @@ function ClientHeader() {
           ) : (
             <div className="flex items-center gap-2">
               <Link href="/login">
-                <Button variant="ghost" className="h-8 px-3 rounded-lg border border-white/20 hover:bg-white/10 hover:text-white text-[11px] font-semibold flex items-center gap-1">
+                <Button variant="ghost" className="h-8 px-3 rounded-lg border border-gray-200 hover:bg-gray-100 text-gray-700 text-[11px] font-semibold flex items-center gap-1">
                   <User className="h-3 w-3" /> Login
                 </Button>
               </Link>
-              <span className="text-white/20 text-xs">|</span>
-              <Link href="/register" className="text-[11px] font-semibold hover:text-yellow-400 transition-colors">
+              <span className="text-gray-300 text-xs">|</span>
+              <Link href="/register" className="text-[11px] font-semibold text-gray-600 hover:text-gray-900 transition-colors">
                 Daftar
               </Link>
             </div>
@@ -122,7 +120,6 @@ export function RootLayoutClient({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
   const [authorized, setAuthorized] = useState(false);
 
-  // Cek apakah halaman adalah halaman Admin/Teknisi/Owner internal
   const isAdminRoute = pathname?.startsWith("/dashboard") || 
                        pathname?.startsWith("/customers") || 
                        pathname?.startsWith("/technicians") || 
@@ -165,50 +162,51 @@ export function RootLayoutClient({ children }: { children: React.ReactNode }) {
       }
     }
     
-    if (isAuth) {
-      setAuthorized(true);
-    }
+    if (isAuth) setAuthorized(true);
   }, [pathname, isAdminRoute, isClientRoute, router]);
 
-  if (!mounted) return null; // Avoid hydration mismatch
+  if (!mounted) return null;
 
   if (!authorized) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center bg-slate-50 select-none">
+      <div className="flex h-screen w-screen items-center justify-center bg-gray-50 select-none">
         <div className="flex flex-col items-center gap-4">
-          <div className="h-10 w-10 rounded-full border-4 border-transparent border-t-[#0d6e6a] animate-spin" />
-          <p className="text-xs font-semibold text-[#577b78] tracking-wide">Memeriksa Otorisasi Akses...</p>
+          <div className="h-10 w-10 rounded-full border-4 border-gray-200 border-t-gray-900 animate-spin" />
+          <p className="text-xs font-semibold text-gray-500 tracking-wide">Memeriksa Otorisasi Akses...</p>
         </div>
       </div>
     );
   }
 
-  // Jika bukan rute admin (artinya rute publik /, /login, /register, /pay/*, atau /client/*)
   if (!isAdminRoute) {
     if (pathname === "/login" || pathname === "/register" || pathname?.startsWith("/pay/")) {
-      return <main className="flex-1 overflow-y-auto bg-slate-950 text-white">{children}</main>;
+      return <main className="flex-1 overflow-y-auto bg-gray-50 text-gray-900">{children}</main>;
     }
 
-    // Gunakan full-screen layout lebar penuh tanpa sidebar
+    if (isClientRoute) {
+      return (
+        <div className="min-h-screen w-full text-gray-900 flex flex-col blob-bg" style={{ background: 'linear-gradient(135deg, #ebebeb 0%, #f5f5f5 50%, #e8e8e8 100%)' }}>
+          <ClientHeader />
+          <main className="flex-grow w-full">{children}</main>
+        </div>
+      );
+    }
+
     return (
-      <div className="min-h-screen w-full bg-slate-50 text-slate-800 flex flex-col">
-        {/* Render header untuk /client/* (halaman / memiliki header kustom tersendiri) */}
-        {isClientRoute && <ClientHeader />}
-        <main className="flex-grow w-full">
-          {children}
-        </main>
+      <div className="min-h-screen w-full blob-bg flex flex-col" style={{ background: 'linear-gradient(135deg, #ebebeb 0%, #f5f5f5 50%, #e8e8e8 100%)' }}>
+        <main className="flex-grow w-full">{children}</main>
       </div>
     );
   }
 
-  // Fallback untuk Admin / Teknisi / Owner Dashboard (menggunakan layout sidebar bawaan)
+  // Admin / Dashboard Layout
   return (
-    <div className="h-screen w-screen flex items-center justify-center p-0 md:p-5 lg:p-6 bg-gradient-to-tr from-[#bfe7e2] via-[#edf7f5] to-[#ebdff7] overflow-hidden select-none">
-      <div className="w-full h-full max-w-7xl bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_24px_85px_rgba(13,110,106,0.06)] rounded-none md:rounded-[2.5rem] flex overflow-hidden relative">
+    <div className="h-screen w-screen flex items-center justify-center p-0 md:p-4 lg:p-5 overflow-hidden select-none blob-bg" style={{ background: 'linear-gradient(145deg, #e8e8e8 0%, #f5f5f5 45%, #ebebeb 100%)' }}>
+      <div className="w-full h-full max-w-[1440px] bg-white/50 backdrop-blur-xl border border-white/70 shadow-[0_24px_85px_rgba(0,0,0,0.06)] rounded-none md:rounded-[2.5rem] flex overflow-hidden relative">
         
         {/* Mobile Sidebar overlay */}
         {sidebarOpen && (
-          <div className="md:hidden fixed inset-0 z-40 bg-black/30 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
+          <div className="md:hidden fixed inset-0 z-40 bg-black/20 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
         )}
         
         {/* Mobile Sidebar drawer */}

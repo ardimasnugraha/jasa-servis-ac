@@ -4,10 +4,9 @@ import { API_BASE_URL } from "@/config";
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Users, DollarSign, Wrench, Clock, TrendingUp, ArrowUpRight } from "lucide-react";
+import { Users, DollarSign, Wrench, Clock, TrendingUp, ArrowUpRight, ArrowDownRight } from "lucide-react";
 import {
-  Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid,
-  Area, AreaChart
+  Area, AreaChart, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid,
 } from "recharts";
 
 type DashboardData = {
@@ -40,7 +39,6 @@ const statCards = (data: DashboardData | null) => [
     value: `Rp ${(data?.totalRevenue || 0).toLocaleString("id-ID")}`,
     sub: "Dari seluruh invoice lunas",
     icon: DollarSign,
-    iconBg: "bg-emerald-50 text-emerald-600",
     change: "+12.5%",
     changeType: "up",
   },
@@ -49,7 +47,6 @@ const statCards = (data: DashboardData | null) => [
     value: `${data?.totalCustomers || 0}`,
     sub: "Pelanggan terdaftar",
     icon: Users,
-    iconBg: "bg-blue-50 text-blue-500",
     change: "+8.2%",
     changeType: "up",
   },
@@ -58,7 +55,6 @@ const statCards = (data: DashboardData | null) => [
     value: `${data?.todayServices || 0}`,
     sub: "Jadwal servis aktif",
     icon: Wrench,
-    iconBg: "bg-purple-50 text-purple-500",
     change: "+4.1%",
     changeType: "up",
   },
@@ -67,38 +63,26 @@ const statCards = (data: DashboardData | null) => [
     value: `${data?.pendingServices || 0}`,
     sub: "Booking belum selesai",
     icon: Clock,
-    iconBg: "bg-amber-50 text-amber-500",
     change: "-3.0%",
     changeType: "down",
   },
 ];
 
-const statusColor: Record<string, string> = {
-  COMPLETED: "oklch(0.60 0.18 160)",
-  SELESAI:   "oklch(0.60 0.18 160)",
-  PENDING:   "oklch(0.70 0.18 75)",
-  MENUNGGU:  "oklch(0.70 0.18 75)",
-  SCHEDULED: "oklch(0.45 0.14 185)",
-  TERJADWAL: "oklch(0.45 0.14 185)",
-};
-
-const statusBg: Record<string, string> = {
-  COMPLETED: "oklch(0.60 0.18 160 / 0.12)",
-  SELESAI:   "oklch(0.60 0.18 160 / 0.12)",
-  PENDING:   "oklch(0.70 0.18 75 / 0.12)",
-  MENUNGGU:  "oklch(0.70 0.18 75 / 0.12)",
-  SCHEDULED: "oklch(0.45 0.14 185 / 0.12)",
-  TERJADWAL: "oklch(0.45 0.14 185 / 0.12)",
+const statusStyles: Record<string, { color: string; bg: string; label: string }> = {
+  COMPLETED: { color: "#16a34a", bg: "rgba(22,163,74,0.08)", label: "Selesai" },
+  SELESAI:   { color: "#16a34a", bg: "rgba(22,163,74,0.08)", label: "Selesai" },
+  PENDING:   { color: "#d97706", bg: "rgba(217,119,6,0.08)",  label: "Menunggu" },
+  MENUNGGU:  { color: "#d97706", bg: "rgba(217,119,6,0.08)",  label: "Menunggu" },
+  SCHEDULED: { color: "#374151", bg: "rgba(55,65,81,0.08)",   label: "Terjadwal" },
+  TERJADWAL: { color: "#374151", bg: "rgba(55,65,81,0.08)",   label: "Terjadwal" },
 };
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="rounded-2xl border px-4 py-3 shadow-xl text-sm bg-white border-[#e0edea] text-[#0d2d2a]">
-        <p className="font-semibold mb-1">{label}</p>
-        <p className="font-bold text-[#0d6e6a]">
-          Rp {payload[0].value.toLocaleString("id-ID")}
-        </p>
+      <div className="rounded-xl border px-4 py-3 shadow-xl text-xs bg-white border-gray-200 text-gray-900">
+        <p className="font-semibold mb-1 text-gray-500">{label}</p>
+        <p className="font-bold text-gray-900">Rp {payload[0].value.toLocaleString("id-ID")}</p>
       </div>
     );
   }
@@ -119,12 +103,7 @@ export default function Home() {
   if (loading) {
     return (
       <div className="flex h-full items-center justify-center">
-        <div className="relative">
-          <div className="h-12 w-12 rounded-full border-2 border-transparent animate-spin"
-            style={{ borderTopColor: 'oklch(0.45 0.14 185)', borderRightColor: 'oklch(0.55 0.18 200)' }} />
-          <div className="absolute inset-2 rounded-full border border-transparent animate-spin animation-delay-150"
-            style={{ borderTopColor: 'oklch(0.70 0.15 310)', animationDirection: 'reverse' }} />
-        </div>
+        <div className="h-10 w-10 rounded-full border-4 border-gray-200 border-t-gray-900 animate-spin" />
       </div>
     );
   }
@@ -132,21 +111,17 @@ export default function Home() {
   const cards = statCards(data);
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="space-y-5 animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Header */}
       <div className="flex flex-col gap-1">
         <div className="flex items-center gap-2">
-          <h1 className="text-3xl font-bold tracking-tight text-[#0d2d2a]">
-            Dashboard
-          </h1>
-          <span className="flex items-center gap-1 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#ebf5f3] text-[#0d6e6a]">
-            <span className="h-1.5 w-1.5 rounded-full animate-pulse bg-[#0d6e6a]" />
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Dashboard</h1>
+          <span className="flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">
+            <span className="h-1.5 w-1.5 rounded-full animate-pulse bg-green-500" />
             Live
           </span>
         </div>
-        <p className="text-[#577b78]">
-          Selamat datang kembali! Berikut ringkasan operasional servis AC hari ini.
-        </p>
+        <p className="text-sm text-gray-400">Berikut ringkasan operasional servis hari ini.</p>
       </div>
 
       {/* Stat Cards */}
@@ -154,25 +129,23 @@ export default function Home() {
         {cards.map((card, i) => (
           <div
             key={i}
-            className="relative rounded-3xl p-5 bg-white/75 border border-[#e0edea] shadow-[0_8px_30px_rgba(13,110,106,0.02)] overflow-hidden hover-scale cursor-default flex flex-col justify-between min-h-[140px]"
+            className="relative rounded-2xl p-5 bg-white/80 border border-gray-200/60 shadow-sm hover:shadow-md transition-shadow overflow-hidden cursor-default flex flex-col justify-between min-h-[130px] backdrop-blur-sm"
           >
-            <div className="relative z-10 w-full flex flex-col h-full justify-between">
-              <div className="flex items-center justify-between mb-3">
-                <div className={`h-9 w-9 rounded-2xl ${card.iconBg.split(' ')[0]} flex items-center justify-center`}>
-                  <card.icon className={`h-4.5 w-4.5 ${card.iconBg.split(' ')[1]}`} />
-                </div>
-                <span className={`flex items-center gap-0.5 text-xs font-bold px-2 py-0.5 rounded-full ${
-                  card.changeType === 'up' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-500'
-                }`}>
-                  <ArrowUpRight className="h-3 w-3" />
-                  {card.change}
-                </span>
+            <div className="flex items-center justify-between mb-4">
+              <div className="h-9 w-9 rounded-xl bg-gray-100 flex items-center justify-center">
+                <card.icon className="h-4.5 w-4.5 text-gray-700" />
               </div>
-              <div>
-                <div className="text-xs font-semibold text-[#577b78]">{card.title}</div>
-                <div className="text-2xl font-extrabold text-[#0d2d2a] mt-0.5 tracking-tight">{card.value}</div>
-                <div className="text-[10px] text-[#577b78]/60 mt-1">{card.sub}</div>
-              </div>
+              <span className={`flex items-center gap-0.5 text-xs font-bold px-2 py-0.5 rounded-full ${
+                card.changeType === 'up' ? 'bg-gray-900/5 text-gray-700' : 'bg-red-50 text-red-500'
+              }`}>
+                {card.changeType === 'up' ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
+                {card.change}
+              </span>
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-gray-400">{card.title}</div>
+              <div className="text-2xl font-extrabold text-gray-900 mt-0.5 tracking-tight">{card.value}</div>
+              <div className="text-[10px] text-gray-400 mt-0.5">{card.sub}</div>
             </div>
           </div>
         ))}
@@ -181,52 +154,40 @@ export default function Home() {
       {/* Charts row */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         {/* Revenue chart */}
-        <Card className="col-span-4 rounded-3xl border border-[#e0edea] shadow-[0_8px_30px_rgba(13,110,106,0.02)] bg-white/75 backdrop-blur-md pb-2">
+        <Card className="col-span-4 rounded-2xl border border-gray-200/60 shadow-sm bg-white/80 backdrop-blur-sm pb-2">
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-base font-bold text-[#0d2d2a]">
+              <CardTitle className="text-sm font-bold text-gray-900">
                 Overview Pendapatan Mingguan
               </CardTitle>
-              <div className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-[#ebf5f3] text-[#0d6e6a]">
-                <TrendingUp className="h-3.5 w-3.5" />
+              <div className="flex items-center gap-1.5 text-[10px] font-bold px-2.5 py-1 rounded-full bg-gray-100 text-gray-500">
+                <TrendingUp className="h-3 w-3" />
                 +18.2% vs minggu lalu
               </div>
             </div>
           </CardHeader>
           <CardContent className="pl-2">
-            <div className="h-[260px] w-full">
+            <div className="h-[240px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={defaultData} margin={{ top: 5, right: 20, left: 0, bottom: 0 }}>
                   <defs>
                     <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="oklch(0.45 0.14 185)" stopOpacity={0.25} />
-                      <stop offset="95%" stopColor="oklch(0.45 0.14 185)" stopOpacity={0} />
+                      <stop offset="5%" stopColor="#111111" stopOpacity={0.12} />
+                      <stop offset="95%" stopColor="#111111" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(13, 110, 106, 0.05)" vertical={false} />
-                  <XAxis
-                    dataKey="name"
-                    stroke="#577b78"
-                    fontSize={12}
-                    tickLine={false}
-                    axisLine={false}
-                  />
-                  <YAxis
-                    stroke="#577b78"
-                    fontSize={11}
-                    tickLine={false}
-                    axisLine={false}
-                    tickFormatter={(v) => `${v / 1000}k`}
-                  />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.04)" vertical={false} />
+                  <XAxis dataKey="name" stroke="#9ca3af" fontSize={11} tickLine={false} axisLine={false} />
+                  <YAxis stroke="#9ca3af" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(v) => `${v / 1000}k`} />
                   <Tooltip content={<CustomTooltip />} />
                   <Area
                     type="monotone"
                     dataKey="total"
-                    stroke="oklch(0.45 0.14 185)"
-                    strokeWidth={2.5}
+                    stroke="#111111"
+                    strokeWidth={2}
                     fill="url(#colorRevenue)"
-                    dot={{ fill: 'oklch(0.45 0.14 185)', strokeWidth: 1.5, r: 3.5, stroke: '#ffffff' }}
-                    activeDot={{ r: 5, stroke: '#ffffff', strokeWidth: 1.5 }}
+                    dot={{ fill: '#111111', strokeWidth: 2, r: 3, stroke: '#ffffff' }}
+                    activeDot={{ r: 4.5, stroke: '#ffffff', strokeWidth: 2 }}
                   />
                 </AreaChart>
               </ResponsiveContainer>
@@ -235,55 +196,40 @@ export default function Home() {
         </Card>
 
         {/* Recent bookings */}
-        <Card className="col-span-3 rounded-3xl border border-[#e0edea] shadow-[0_8px_30px_rgba(13,110,106,0.02)] bg-white/75 backdrop-blur-md">
+        <Card className="col-span-3 rounded-2xl border border-gray-200/60 shadow-sm bg-white/80 backdrop-blur-sm">
           <CardHeader className="pb-3">
-            <CardTitle className="text-base font-bold text-[#0d2d2a]">
-              Booking Terbaru
-            </CardTitle>
+            <CardTitle className="text-sm font-bold text-gray-900">Booking Terbaru</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
+            <div className="space-y-2">
               {(!data?.recentBookings || data.recentBookings.length === 0) && (
-                <div className="text-center py-8 rounded-xl" style={{ background: 'var(--muted)', color: 'var(--muted-foreground)' }}>
-                  <Wrench className="h-8 w-8 mx-auto mb-2 opacity-40" />
-                  <p className="text-sm">Belum ada pemesanan.</p>
+                <div className="text-center py-8 rounded-xl bg-gray-50">
+                  <Wrench className="h-7 w-7 mx-auto mb-2 text-gray-300" />
+                  <p className="text-xs text-gray-400">Belum ada pemesanan.</p>
                 </div>
               )}
-              {data?.recentBookings?.map((booking) => (
-                <div
-                  key={booking.id}
-                  className="flex items-center gap-3 p-3 rounded-xl transition-colors hover:bg-muted/50"
-                >
-                  <Avatar className="h-9 w-9 flex-shrink-0">
-                    <AvatarFallback
-                      className="text-xs font-bold text-white"
-                      style={{ background: 'linear-gradient(135deg, oklch(0.45 0.14 185), oklch(0.55 0.18 200))' }}
-                    >
-                      {booking.customer.substring(0, 2).toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold truncate text-[#0d2d2a]">
-                      {booking.customer}
-                    </p>
-                    <p className="text-xs truncate text-[#577b78]">
-                      {booking.type}
-                    </p>
+              {data?.recentBookings?.map((booking) => {
+                const style = statusStyles[booking.status] || { color: "#6b7280", bg: "rgba(107,114,128,0.08)", label: booking.status };
+                return (
+                  <div key={booking.id} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors">
+                    <Avatar className="h-8 w-8 flex-shrink-0">
+                      <AvatarFallback className="text-[10px] font-bold text-white bg-gray-900">
+                        {booking.customer.substring(0, 2).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-semibold truncate text-gray-900">{booking.customer}</p>
+                      <p className="text-[10px] truncate text-gray-400">{booking.type}</p>
+                    </div>
+                    <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                      <span className="text-[10px] text-gray-400">{booking.date}</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full font-medium" style={{ background: style.bg, color: style.color }}>
+                        {style.label}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex flex-col items-end gap-1 flex-shrink-0">
-                    <span className="text-xs text-[#577b78]">{booking.date}</span>
-                    <span
-                      className="text-xs px-2 py-0.5 rounded-full font-medium"
-                      style={{
-                        background: statusBg[booking.status] || 'var(--muted)',
-                        color: statusColor[booking.status] || 'var(--muted-foreground)',
-                      }}
-                    >
-                      {booking.status}
-                    </span>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </CardContent>
         </Card>

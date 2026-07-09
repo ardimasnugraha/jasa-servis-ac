@@ -18,8 +18,8 @@ type ReportData = {
 };
 
 const COLORS = [
-  'oklch(0.55 0.18 160)',
-  'oklch(0.60 0.22 25)',
+  '#111111',
+  '#dc2626',
 ];
 
 const weekData = [
@@ -38,7 +38,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
       <div className="rounded-xl border px-4 py-3 shadow-xl text-sm"
         style={{ background: 'var(--card)', borderColor: 'var(--border)', color: 'var(--foreground)' }}>
         <p className="font-semibold mb-1">{label}</p>
-        <p style={{ color: 'oklch(0.55 0.18 160)' }}>Rp {payload[0].value.toLocaleString('id-ID')}</p>
+        <p style={{ color: '#111111' }}>Rp {payload[0].value.toLocaleString('id-ID')}</p>
       </div>
     );
   }
@@ -60,7 +60,7 @@ export default function ReportsPage() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="h-10 w-10 rounded-full border-2 border-transparent animate-spin"
-          style={{ borderTopColor: 'oklch(0.55 0.18 160)', borderRightColor: 'oklch(0.58 0.22 264)' }} />
+          style={{ borderTopColor: '#111111', borderRightColor: '#374151' }} />
       </div>
     );
   }
@@ -73,22 +73,22 @@ export default function ReportsPage() {
   const statCards = [
     {
       label: 'Total Pemasukan', value: `Rp ${(data?.totalRevenue || 0).toLocaleString('id-ID')}`,
-      sub: 'Semua waktu', gradient: 'linear-gradient(135deg, oklch(0.55 0.18 160), oklch(0.52 0.20 185))',
+      sub: 'Semua waktu', gradient: 'linear-gradient(135deg, #111111, #1f2937)',
       icon: DollarSign,
     },
     {
       label: 'Pemasukan Bulan Ini', value: `Rp ${(data?.thisMonthRevenue || 0).toLocaleString('id-ID')}`,
-      sub: 'Sejak awal bulan', gradient: 'linear-gradient(135deg, oklch(0.58 0.22 264), oklch(0.55 0.22 295))',
+      sub: 'Sejak awal bulan', gradient: 'linear-gradient(135deg, #1f2937, #374151)',
       icon: Wallet,
     },
     {
       label: 'Piutang Belum Lunas', value: `Rp ${(data?.totalReceivables || 0).toLocaleString('id-ID')}`,
-      sub: 'Harus ditagih', gradient: 'linear-gradient(135deg, oklch(0.60 0.22 25), oklch(0.55 0.20 350))',
+      sub: 'Harus ditagih', gradient: 'linear-gradient(135deg, #dc2626, #ef4444)',
       icon: AlertCircle,
     },
     {
       label: 'Servis Selesai', value: `${data?.completedBookings || 0}`,
-      sub: `Dari ${data?.totalCustomers || 0} pelanggan`, gradient: 'linear-gradient(135deg, oklch(0.55 0.22 295), oklch(0.50 0.22 310))',
+      sub: `Dari ${data?.totalCustomers || 0} pelanggan`, gradient: 'linear-gradient(135deg, #374151, #4b5563)',
       icon: CheckSquare,
     },
   ];
@@ -98,8 +98,7 @@ export default function ReportsPage() {
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold tracking-tight flex items-center gap-3" style={{ color: 'var(--foreground)' }}>
-          <span className="h-10 w-10 rounded-xl flex items-center justify-center text-white"
-            style={{ background: 'linear-gradient(135deg, oklch(0.60 0.22 264), oklch(0.55 0.22 295))' }}>
+          <span className="h-10 w-10 rounded-xl flex items-center justify-center text-white bg-gray-900">
             <BarChart3 className="h-5 w-5" />
           </span>
           Laporan Keuangan
@@ -111,7 +110,7 @@ export default function ReportsPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {statCards.map((card, i) => (
           <div key={i} className="rounded-2xl p-5 text-white relative overflow-hidden hover-scale"
-            style={{ background: card.gradient, boxShadow: '0 6px 24px oklch(0 0 0 / 0.15)' }}>
+            style={{ background: card.gradient, boxShadow: '0 4px 14px rgba(0,0,0,0.08)' }}>
             <div className="absolute -top-4 -right-4 h-20 w-20 rounded-full bg-white/10" />
             <div className="absolute -bottom-6 -right-6 h-16 w-16 rounded-full bg-white/5" />
             <div className="relative z-10">
@@ -135,8 +134,7 @@ export default function ReportsPage() {
               <CardTitle className="text-base font-bold" style={{ color: 'var(--foreground)' }}>
                 Pendapatan Mingguan
               </CardTitle>
-              <span className="flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full"
-                style={{ background: 'oklch(0.55 0.18 160 / 0.12)', color: 'oklch(0.50 0.18 160)' }}>
+              <span className="flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-gray-100 text-gray-700">
                 <TrendingUp className="h-3.5 w-3.5" /> +18.2%
               </span>
             </div>
@@ -147,13 +145,13 @@ export default function ReportsPage() {
                 <BarChart data={weekData} margin={{ top: 5, right: 20, left: 0, bottom: 0 }}>
                   <defs>
                     <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="oklch(0.58 0.22 264)" stopOpacity={1} />
-                      <stop offset="100%" stopColor="oklch(0.55 0.22 295)" stopOpacity={0.8} />
+                      <stop offset="0%" stopColor="#111111" stopOpacity={1} />
+                      <stop offset="100%" stopColor="#4b5563" stopOpacity={0.8} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.88 0.01 265 / 0.5)" vertical={false} />
-                  <XAxis dataKey="name" stroke="oklch(0.65 0.03 265)" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis stroke="oklch(0.65 0.03 265)" fontSize={11} tickLine={false} axisLine={false}
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" vertical={false} />
+                  <XAxis dataKey="name" stroke="#9ca3af" fontSize={12} tickLine={false} axisLine={false} />
+                  <YAxis stroke="#9ca3af" fontSize={11} tickLine={false} axisLine={false}
                     tickFormatter={v => `${v / 1000}k`} />
                   <Tooltip content={<CustomTooltip />} />
                   <Bar dataKey="value" fill="url(#barGrad)" radius={[6, 6, 0, 0]} />
@@ -171,10 +169,10 @@ export default function ReportsPage() {
           <CardContent>
             <div className="space-y-4">
               {[
-                { dot: 'oklch(0.55 0.18 160)', text: <>Total uang masuk bersih: <strong>Rp {(data?.totalRevenue || 0).toLocaleString('id-ID')}</strong></> },
-                { dot: 'oklch(0.58 0.22 264)', text: <>Omset bulan ini: <strong>Rp {(data?.thisMonthRevenue || 0).toLocaleString('id-ID')}</strong></> },
-                { dot: 'oklch(0.60 0.22 25)',  text: <>Piutang belum ditagih: <strong style={{ color: 'oklch(0.60 0.22 25)' }}>Rp {(data?.totalReceivables || 0).toLocaleString('id-ID')}</strong></> },
-                { dot: 'oklch(0.55 0.22 295)', text: <>{data?.completedBookings || 0} <strong>pesanan servis selesai</strong> dari {data?.totalCustomers || 0} pelanggan.</> },
+                { dot: '#111111', text: <>Total uang masuk bersih: <strong>Rp {(data?.totalRevenue || 0).toLocaleString('id-ID')}</strong></> },
+                { dot: '#374151', text: <>Omset bulan ini: <strong>Rp {(data?.thisMonthRevenue || 0).toLocaleString('id-ID')}</strong></> },
+                { dot: '#dc2626', text: <>Piutang belum ditagih: <strong style={{ color: '#dc2626' }}>Rp {(data?.totalReceivables || 0).toLocaleString('id-ID')}</strong></> },
+                { dot: '#4b5563', text: <>{data?.completedBookings || 0} <strong>pesanan servis selesai</strong> dari {data?.totalCustomers || 0} pelanggan.</> },
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3 p-3 rounded-xl transition-colors hover:bg-muted/50">
                   <div className="h-2 w-2 rounded-full mt-1.5 flex-shrink-0" style={{ background: item.dot }} />

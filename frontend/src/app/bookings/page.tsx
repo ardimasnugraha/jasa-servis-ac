@@ -41,14 +41,14 @@ type Booking = {
 };
 
 const statusConfig: Record<string, { label: string; color: string; bg: string }> = {
-  COMPLETED: { label: 'Selesai',   color: 'oklch(0.50 0.18 160)', bg: 'oklch(0.55 0.18 160 / 0.12)' },
-  SELESAI:   { label: 'Selesai',   color: 'oklch(0.50 0.18 160)', bg: 'oklch(0.55 0.18 160 / 0.12)' },
-  PENDING:   { label: 'Menunggu',  color: 'oklch(0.60 0.18 75)',  bg: 'oklch(0.70 0.18 75 / 0.12)'  },
-  MENUNGGU:  { label: 'Menunggu',  color: 'oklch(0.60 0.18 75)',  bg: 'oklch(0.70 0.18 75 / 0.12)'  },
-  SCHEDULED: { label: 'Terjadwal', color: 'oklch(0.58 0.22 264)', bg: 'oklch(0.58 0.22 264 / 0.12)' },
-  TERJADWAL: { label: 'Terjadwal', color: 'oklch(0.58 0.22 264)', bg: 'oklch(0.58 0.22 264 / 0.12)' },
-  CANCELLED: { label: 'Dibatal',   color: 'oklch(0.60 0.22 25)',  bg: 'oklch(0.60 0.22 25 / 0.12)'  },
-  DIBATALKAN:{ label: 'Dibatal',   color: 'oklch(0.60 0.22 25)',  bg: 'oklch(0.60 0.22 25 / 0.12)'  },
+  COMPLETED: { label: 'Selesai',   color: '#16a34a', bg: 'rgba(22,163,74,0.08)'   },
+  SELESAI:   { label: 'Selesai',   color: '#16a34a', bg: 'rgba(22,163,74,0.08)'   },
+  PENDING:   { label: 'Menunggu',  color: '#d97706', bg: 'rgba(217,119,6,0.08)'   },
+  MENUNGGU:  { label: 'Menunggu',  color: '#d97706', bg: 'rgba(217,119,6,0.08)'   },
+  SCHEDULED: { label: 'Terjadwal', color: '#374151', bg: 'rgba(55,65,81,0.08)'    },
+  TERJADWAL: { label: 'Terjadwal', color: '#374151', bg: 'rgba(55,65,81,0.08)'    },
+  CANCELLED: { label: 'Dibatal',   color: '#dc2626', bg: 'rgba(220,38,38,0.08)'   },
+  DIBATALKAN:{ label: 'Dibatal',   color: '#dc2626', bg: 'rgba(220,38,38,0.08)'   },
 };
 
 export default function BookingsPage() {
@@ -151,7 +151,7 @@ export default function BookingsPage() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="h-10 w-10 rounded-full border-2 border-transparent animate-spin"
-          style={{ borderTopColor: 'oklch(0.60 0.22 264)', borderRightColor: 'oklch(0.62 0.22 295)' }} />
+          style={{ borderTopColor: '#111111', borderRightColor: '#374151' }} />
       </div>
     );
   }
@@ -162,7 +162,7 @@ export default function BookingsPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight flex items-center gap-3" style={{ color: 'var(--foreground)' }}>
             <span className="h-10 w-10 rounded-xl flex items-center justify-center text-white"
-              style={{ background: 'linear-gradient(135deg, oklch(0.55 0.18 160), oklch(0.52 0.20 185))' }}>
+              style={{ background: '#111111' }}>
               <CalendarIcon className="h-5 w-5" />
             </span>
             Booking Servis
@@ -172,8 +172,7 @@ export default function BookingsPage() {
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger render={
-            <Button className="gap-2 rounded-xl font-semibold h-10 px-5 text-white shadow-lg"
-              style={{ background: 'linear-gradient(135deg, oklch(0.55 0.18 160), oklch(0.52 0.20 185))', boxShadow: '0 4px 14px oklch(0.55 0.18 160 / 0.35)' }}>
+            <Button className="gap-2 rounded-xl font-semibold h-10 px-5 bg-gray-900 text-white hover:bg-gray-800 shadow-sm">
               <Plus className="h-4 w-4" /> Buat Booking
             </Button>
           } />
@@ -218,8 +217,7 @@ export default function BookingsPage() {
                 </div>
               </div>
               <DialogFooter>
-                <Button type="submit" disabled={isSubmitting} className="rounded-xl text-white"
-                  style={{ background: 'linear-gradient(135deg, oklch(0.55 0.18 160), oklch(0.52 0.20 185))' }}>
+                <Button type="submit" disabled={isSubmitting} className="rounded-xl bg-gray-900 text-white hover:bg-gray-800">
                   {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Menyimpan...</> : "Simpan Booking"}
                 </Button>
               </DialogFooter>
@@ -253,7 +251,7 @@ export default function BookingsPage() {
             </div>
             <DialogFooter>
               <Button type="submit" disabled={isStatusUpdating} className="rounded-xl text-white"
-                style={{ background: 'linear-gradient(135deg, oklch(0.58 0.22 264), oklch(0.55 0.22 295))' }}>
+                style={{ background: 'linear-gradient(135deg, #374151, oklch(0.55 0.22 295))' }}>
                 {isStatusUpdating ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Menyimpan...</> : "Update Status"}
               </Button>
             </DialogFooter>
@@ -266,7 +264,7 @@ export default function BookingsPage() {
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold flex items-center gap-2">
-              Detail Booking: <span className="font-mono text-base px-2 py-0.5 rounded bg-[#0d6e6a]/10 text-[#0d6e6a]">{selectedBooking?.bookingCode || "BKG-???"}</span>
+              Detail Booking: <span className="font-mono text-base px-2 py-0.5 rounded bg-gray-900/10 text-gray-900">{selectedBooking?.bookingCode || "BKG-???"}</span>
             </DialogTitle>
             <DialogDescription>Informasi lengkap pesanan servis AC pelanggan.</DialogDescription>
           </DialogHeader>
@@ -319,7 +317,7 @@ export default function BookingsPage() {
                 {selectedBooking.technician ? (
                   <div className="p-3 rounded-xl border bg-card flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-full bg-[#0d6e6a]/10 flex items-center justify-center font-bold text-[#0d6e6a] text-sm">
+                      <div className="h-10 w-10 rounded-full bg-gray-900/10 flex items-center justify-center font-bold text-gray-900 text-sm">
                         {selectedBooking.technician.fullname.substring(0, 2).toUpperCase()}
                       </div>
                       <div>
@@ -329,7 +327,7 @@ export default function BookingsPage() {
                     </div>
                     <div className="text-right">
                       <p className="text-xs font-semibold text-muted-foreground">No. Telepon</p>
-                      <p className="text-xs font-bold text-[#0d6e6a]">{selectedBooking.technician.phone}</p>
+                      <p className="text-xs font-bold text-gray-900">{selectedBooking.technician.phone}</p>
                     </div>
                   </div>
                 ) : (
@@ -342,7 +340,7 @@ export default function BookingsPage() {
           )}
           <DialogFooter>
             <Button onClick={() => setDetailDialogOpen(false)} className="rounded-xl w-full text-white"
-              style={{ background: 'linear-gradient(135deg, oklch(0.55 0.18 160), oklch(0.52 0.20 185))' }}>
+              style={{ background: '#111111' }}>
               Tutup
             </Button>
           </DialogFooter>
@@ -383,7 +381,7 @@ export default function BookingsPage() {
                   <TableRow key={booking.id} className="hover:bg-muted/40 transition-colors" style={{ borderColor: 'var(--border)' }}>
                     <TableCell className="py-4 px-5">
                       <span className="font-mono text-xs font-bold px-2 py-1 rounded-lg"
-                        style={{ background: 'oklch(0.58 0.22 264 / 0.1)', color: 'oklch(0.55 0.22 264)' }}>
+                        style={{ background: 'oklch(0.58 0.22 264 / 0.1)', color: '#374151' }}>
                         {booking.bookingCode || "BKG-???"}
                       </span>
                     </TableCell>

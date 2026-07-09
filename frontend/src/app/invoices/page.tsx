@@ -146,7 +146,7 @@ export default function InvoicesPage() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="h-10 w-10 rounded-full border-2 border-transparent animate-spin"
-          style={{ borderTopColor: 'oklch(0.60 0.22 264)', borderRightColor: 'oklch(0.55 0.18 160)' }} />
+          style={{ borderTopColor: '#111111', borderRightColor: '#374151' }} />
       </div>
     );
   }
@@ -157,20 +157,19 @@ export default function InvoicesPage() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight flex items-center gap-3 text-[#0d2d2a]">
+          <h1 className="text-3xl font-extrabold tracking-tight flex items-center gap-3 text-gray-900">
             <span className="h-10 w-10 rounded-xl flex items-center justify-center text-white"
-              style={{ background: 'linear-gradient(135deg, oklch(0.60 0.22 25), oklch(0.55 0.20 350))' }}>
+              style={{ background: '#111111' }}>
               <FileText className="h-5 w-5" />
             </span>
             Invoice
           </h1>
-          <p className="mt-1.5 text-sm text-[#577b78]">Kelola dan pantau tagihan pelanggan.</p>
+          <p className="mt-1.5 text-sm text-gray-500">Kelola dan pantau tagihan pelanggan.</p>
         </div>
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger render={
-            <Button className="gap-2 rounded-2xl font-bold h-11 px-6 text-white cursor-pointer transition-all hover:scale-[1.02]"
-              style={{ background: 'linear-gradient(135deg, oklch(0.60 0.22 25), oklch(0.55 0.20 350))', boxShadow: '0 4px 14px oklch(0.60 0.22 25 / 0.3)' }}>
+            <Button className="gap-2 rounded-2xl font-bold h-11 px-6 bg-gray-900 hover:bg-gray-800 text-white cursor-pointer transition-all hover:scale-[1.02] shadow-sm">
               <Plus className="h-4.5 w-4.5" /> Buat Invoice
             </Button>
           } />
@@ -207,8 +206,7 @@ export default function InvoicesPage() {
                 ))}
               </div>
               <DialogFooter>
-                <Button type="submit" disabled={isSubmitting} className="rounded-xl text-white w-full h-11 font-bold cursor-pointer"
-                  style={{ background: 'linear-gradient(135deg, oklch(0.60 0.22 25), oklch(0.55 0.20 350))' }}>
+                <Button type="submit" disabled={isSubmitting} className="rounded-xl bg-gray-900 hover:bg-gray-800 text-white w-full h-11 font-bold cursor-pointer">
                   {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Menyimpan...</> : "Terbitkan Invoice"}
                 </Button>
               </DialogFooter>
@@ -220,12 +218,12 @@ export default function InvoicesPage() {
       {/* Summary cards */}
       <div className="grid grid-cols-3 gap-4">
         {[
-          { label: 'Total Pendapatan', value: `Rp ${totalRevenue.toLocaleString('id-ID')}`, gradient: 'linear-gradient(135deg, oklch(0.55 0.18 160), oklch(0.52 0.20 185))', icon: CheckCircle2 },
-          { label: 'Invoice Lunas', value: paidCount, gradient: 'linear-gradient(135deg, oklch(0.58 0.22 264), oklch(0.55 0.22 295))', icon: FileText },
-          { label: 'Belum Dibayar', value: unpaidCount, gradient: 'linear-gradient(135deg, oklch(0.60 0.22 25), oklch(0.55 0.20 350))', icon: AlertCircle },
+          { label: 'Total Pendapatan', value: `Rp ${totalRevenue.toLocaleString('id-ID')}`, gradient: 'linear-gradient(135deg, #111111, #1f2937)', icon: CheckCircle2 },
+          { label: 'Invoice Lunas', value: paidCount, gradient: 'linear-gradient(135deg, #1f2937, #374151)', icon: FileText },
+          { label: 'Belum Dibayar', value: unpaidCount, gradient: 'linear-gradient(135deg, #dc2626, #ef4444)', icon: AlertCircle },
         ].map((card, i) => (
           <div key={i} className="rounded-2xl p-5 text-white relative overflow-hidden"
-            style={{ background: card.gradient, boxShadow: '0 4px 20px oklch(0 0 0 / 0.15)' }}>
+            style={{ background: card.gradient, boxShadow: '0 4px 14px rgba(0,0,0,0.08)' }}>
             <div className="absolute -top-3 -right-3 h-16 w-16 rounded-full bg-white/10" />
             <card.icon className="h-5 w-5 text-white/70 mb-2" />
             <div className="text-2xl font-bold">{card.value}</div>
@@ -258,8 +256,7 @@ export default function InvoicesPage() {
               </div>
             </div>
             <DialogFooter>
-              <Button type="submit" disabled={isPaying} className="rounded-xl text-white"
-                style={{ background: 'linear-gradient(135deg, oklch(0.55 0.18 160), oklch(0.52 0.20 185))' }}>
+              <Button type="submit" disabled={isPaying} className="rounded-xl text-white bg-gray-900 hover:bg-gray-800">
                 {isPaying ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Memproses...</> : <><CreditCard className="mr-2 h-4 w-4" /> Lunasi Sekarang</>}
               </Button>
             </DialogFooter>
@@ -268,39 +265,39 @@ export default function InvoicesPage() {
       </Dialog>
 
       {/* Table */}
-      <Card className="rounded-[2rem] border border-[#e0edea] bg-white overflow-hidden shadow-sm">
+      <Card className="rounded-[2rem] border border-gray-200 bg-white overflow-hidden shadow-sm">
         <CardHeader className="pb-3 px-6 pt-5">
-          <CardTitle className="text-base font-bold text-[#0d2d2a]">Daftar Tagihan</CardTitle>
+          <CardTitle className="text-base font-bold text-gray-900">Daftar Tagihan</CardTitle>
         </CardHeader>
         <CardContent className="px-0 pb-0">
           <Table>
             <TableHeader className="bg-slate-50/50">
               <TableRow style={{ borderColor: 'var(--border)' }}>
                 {['No. Invoice', 'Pelanggan', 'Total Tagihan', 'Status', 'Aksi'].map((h, i) => (
-                  <TableHead key={h} className={`text-xs font-bold uppercase tracking-wider py-4 px-6 text-[#577b78] ${i === 4 ? 'text-right' : ''}`}>{h}</TableHead>
+                  <TableHead key={h} className={`text-xs font-bold uppercase tracking-wider py-4 px-6 text-gray-500 ${i === 4 ? 'text-right' : ''}`}>{h}</TableHead>
                 ))}
               </TableRow>
             </TableHeader>
             <TableBody>
               {invoices.length === 0 && !loading && (
-                <TableRow><TableCell colSpan={5} className="text-center h-32 text-sm text-[#577b78]" style={{ color: 'var(--muted-foreground)' }}>Belum ada invoice diterbitkan.</TableCell></TableRow>
+                <TableRow><TableCell colSpan={5} className="text-center h-32 text-sm text-gray-500" style={{ color: 'var(--muted-foreground)' }}>Belum ada invoice diterbitkan.</TableCell></TableRow>
               )}
               {invoices.map(inv => {
                 const isPaid = inv.status === 'PAID';
                 return (
                   <TableRow key={inv.id} className="hover:bg-muted/30 transition-colors" style={{ borderColor: 'var(--border)' }}>
                     <TableCell className="py-4.5 px-6">
-                      <div className="font-mono text-xs font-bold text-[#0d6e6a]">{inv.invoiceNumber}</div>
-                      <div className="text-xs mt-0.5 text-[#577b78]">Ref: {inv.bookingCode}</div>
+                      <div className="font-mono text-xs font-bold text-gray-900">{inv.invoiceNumber}</div>
+                      <div className="text-xs mt-0.5 text-gray-500">Ref: {inv.bookingCode}</div>
                     </TableCell>
-                    <TableCell className="py-4.5 px-6 font-bold text-sm text-[#0d2d2a]">{inv.customerName}</TableCell>
-                    <TableCell className="py-4.5 px-6 font-extrabold text-sm text-[#0d2d2a]">
+                    <TableCell className="py-4.5 px-6 font-bold text-sm text-gray-900">{inv.customerName}</TableCell>
+                    <TableCell className="py-4.5 px-6 font-extrabold text-sm text-gray-900">
                       Rp {Number(inv.total).toLocaleString('id-ID')}
                     </TableCell>
                     <TableCell className="py-4.5 px-6">
                       <span className="text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider" style={{
-                        background: isPaid ? 'oklch(0.55 0.18 160 / 0.12)' : 'oklch(0.60 0.22 25 / 0.12)',
-                        color: isPaid ? 'oklch(0.50 0.18 160)' : 'oklch(0.60 0.22 25)',
+                        background: isPaid ? 'rgba(22,163,74,0.08)' : 'rgba(220,38,38,0.08)',
+                        color: isPaid ? '#16a34a' : '#dc2626',
                       }}>
                         {isPaid ? 'Lunas' : 'Belum Bayar'}
                       </span>
@@ -312,7 +309,7 @@ export default function InvoicesPage() {
                             <Button 
                               variant="outline" 
                               size="sm" 
-                              className="rounded-xl h-8.5 px-3 text-xs bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 border-emerald-500/25 cursor-pointer font-bold flex items-center gap-1 shadow-sm"
+                              className="rounded-xl h-8.5 px-3 text-xs bg-gray-500/10 hover:bg-gray-500/20 text-gray-700 border-emerald-500/25 cursor-pointer font-bold flex items-center gap-1 shadow-sm"
                               onClick={() => {
                                 const proof = localStorage.getItem(`payment_proof_${inv.id}`);
                                 setSelectedProofInvoice(inv);
@@ -325,12 +322,11 @@ export default function InvoicesPage() {
                           )
                         ) : (
                           <>
-                            <Button variant="outline" size="sm" className="rounded-xl h-8 text-xs gap-1 border-[#e0edea] text-[#577b78] hover:bg-slate-50 cursor-pointer"
+                            <Button variant="outline" size="sm" className="rounded-xl h-8 text-xs gap-1 border-gray-200 text-gray-500 hover:bg-slate-50 cursor-pointer"
                               onClick={() => handleCopy(inv.id)}>
                               {copiedId === inv.id ? <><Check className="h-3.5 w-3.5 text-green-500" /> Disalin!</> : <><Copy className="h-3.5 w-3.5" /> Link</>}
                             </Button>
-                            <Button size="sm" className="rounded-xl h-8 text-xs text-white cursor-pointer transition-all active:scale-[0.98]"
-                              style={{ background: 'linear-gradient(135deg, oklch(0.55 0.18 160), oklch(0.52 0.20 185))' }}
+                            <Button size="sm" className="rounded-xl h-8 text-xs text-white cursor-pointer transition-all active:scale-[0.98] bg-gray-900 hover:bg-gray-800"
                               onClick={() => { setSelectedInvoiceId(inv.id); setPaymentMethod("TRANSFER BANK"); setPayDialogOpen(true); }}>
                               Bayar
                             </Button>
@@ -348,29 +344,29 @@ export default function InvoicesPage() {
 
       {/* Proof Dialog */}
       <Dialog open={proofDialogOpen} onOpenChange={setProofDialogOpen}>
-        <DialogContent className="sm:max-w-[420px] rounded-[2rem] border border-[#e0edea] select-none">
-          <DialogHeader className="border-b border-[#e0edea] pb-3">
-            <DialogTitle className="text-base font-extrabold text-[#0d2d2a] flex items-center gap-2">
-              <ImageIcon className="h-5 w-5 text-emerald-600" />
+        <DialogContent className="sm:max-w-[420px] rounded-[2rem] border border-gray-200 select-none">
+          <DialogHeader className="border-b border-gray-200 pb-3">
+            <DialogTitle className="text-base font-extrabold text-gray-900 flex items-center gap-2">
+              <ImageIcon className="h-5 w-5 text-gray-700" />
               Bukti Transfer Pembayaran
             </DialogTitle>
-            <DialogDescription className="text-xs text-[#577b78]">Dokumen berkas struk transfer pembayaran manual pelanggan.</DialogDescription>
+            <DialogDescription className="text-xs text-gray-500">Dokumen berkas struk transfer pembayaran manual pelanggan.</DialogDescription>
           </DialogHeader>
           {selectedProofInvoice && (
             <div className="space-y-4 py-2 font-semibold">
-              <div className="grid grid-cols-2 text-xs gap-y-2 p-4 bg-slate-50 border border-[#e0edea] rounded-2xl">
+              <div className="grid grid-cols-2 text-xs gap-y-2 p-4 bg-slate-50 border border-gray-200 rounded-2xl">
                 <span className="text-slate-400">No. Invoice</span>
-                <span className="text-[#0d2d2a] text-right font-bold">{selectedProofInvoice.invoiceNumber}</span>
+                <span className="text-gray-900 text-right font-bold">{selectedProofInvoice.invoiceNumber}</span>
                 <span className="text-slate-400">Nama Pelanggan</span>
-                <span className="text-[#0d2d2a] text-right">{selectedProofInvoice.customerName}</span>
+                <span className="text-gray-900 text-right">{selectedProofInvoice.customerName}</span>
                 <span className="text-slate-400">Total Nominal</span>
-                <span className="text-[#0d2d2a] text-right font-extrabold">Rp {Number(selectedProofInvoice.total).toLocaleString('id-ID')}</span>
+                <span className="text-gray-900 text-right font-extrabold">Rp {Number(selectedProofInvoice.total).toLocaleString('id-ID')}</span>
               </div>
-              <div className="border border-[#e0edea] rounded-2xl overflow-hidden shadow-sm bg-slate-50 p-2 flex items-center justify-center min-h-[220px]">
+              <div className="border border-gray-200 rounded-2xl overflow-hidden shadow-sm bg-slate-50 p-2 flex items-center justify-center min-h-[220px]">
                 <img 
                   src={selectedProofBase64 || ""} 
                   alt="Bukti Transfer Pelanggan" 
-                  className="max-w-full max-h-[300px] object-contain rounded-lg shadow-sm border border-[#e0edea]/60 bg-white" 
+                  className="max-w-full max-h-[300px] object-contain rounded-lg shadow-sm border border-gray-200/60 bg-white" 
                 />
               </div>
             </div>
@@ -378,7 +374,7 @@ export default function InvoicesPage() {
           <DialogFooter>
             <Button 
               onClick={() => setProofDialogOpen(false)} 
-              className="rounded-xl w-full text-white font-bold h-11 bg-[#0d6e6a] hover:bg-[#0d6e6a]/90 cursor-pointer shadow-md transition-all active:scale-[0.98]"
+              className="rounded-xl w-full text-white font-bold h-11 bg-gray-900 hover:bg-gray-900/90 cursor-pointer shadow-md transition-all active:scale-[0.98]"
             >
               Tutup Berkas Struk
             </Button>

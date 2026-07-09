@@ -27,10 +27,10 @@ const methodIcon: Record<string, React.ReactNode> = {
 };
 
 const methodColor: Record<string, string> = {
-  'TRANSFER BANK': 'bg-blue-500/10 text-blue-600',
-  'E-WALLET':      'bg-purple-500/10 text-purple-600',
-  'CASH':          'bg-emerald-500/10 text-emerald-600',
-  'CREDIT CARD':   'bg-rose-500/10 text-rose-600',
+  'TRANSFER BANK': 'bg-gray-100 text-gray-700 border border-gray-200',
+  'E-WALLET':      'bg-gray-100 text-gray-700 border border-gray-200',
+  'CASH':          'bg-gray-100 text-gray-700 border border-gray-200',
+  'CREDIT CARD':   'bg-gray-100 text-gray-700 border border-gray-200',
 };
 
 export default function PaymentsPage() {
@@ -59,7 +59,7 @@ export default function PaymentsPage() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="h-10 w-10 rounded-full border-2 border-transparent animate-spin"
-          style={{ borderTopColor: 'oklch(0.60 0.22 264)', borderRightColor: 'oklch(0.55 0.18 160)' }} />
+          style={{ borderTopColor: '#111111', borderRightColor: '#374151' }} />
       </div>
     );
   }
@@ -69,71 +69,70 @@ export default function PaymentsPage() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight flex items-center gap-3 text-[#0d2d2a]">
-            <span className="h-10 w-10 rounded-xl flex items-center justify-center text-white"
-              style={{ background: 'linear-gradient(135deg, #0d6e6a, #128a85)' }}>
+          <h1 className="text-3xl font-extrabold tracking-tight flex items-center gap-3 text-gray-900">
+            <span className="h-10 w-10 rounded-xl flex items-center justify-center text-white bg-gray-900 hover:bg-gray-800">
               <Wallet className="h-5 w-5" />
             </span>
             Buku Kas
           </h1>
-          <p className="mt-1.5 text-sm text-[#577b78]">Catatan seluruh arus uang masuk dari pelanggan.</p>
+          <p className="mt-1.5 text-sm text-gray-500">Catatan seluruh arus uang masuk dari pelanggan.</p>
         </div>
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#577b78]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
           <Input placeholder="Cari pelanggan atau invoice..." value={search} onChange={e => setSearch(e.target.value)}
-            className="pl-9 rounded-xl h-10 w-64 bg-white/50 border-[#e0edea] text-[#0d2d2a] placeholder:text-[#577b78]/40 focus-visible:ring-[#0d6e6a]" />
+            className="pl-9 rounded-xl h-10 w-64 bg-white/50 border-gray-200 text-gray-900 placeholder:text-gray-500/40 focus-visible:ring-gray-900" />
         </div>
       </div>
 
       {/* Summary cards */}
       <div className="grid grid-cols-3 gap-4">
         {/* Total Uang Masuk */}
-        <div className="rounded-[2rem] p-5 bg-white/70 backdrop-blur-xl border border-[#e0edea] shadow-[0_8px_30px_rgba(13,110,106,0.02)] relative overflow-hidden flex flex-col justify-between min-h-[120px]">
+        <div className="rounded-[2rem] p-5 bg-white/70 backdrop-blur-xl border border-gray-200 shadow-[0_8px_30px_rgba(0,0,0,0.02)] relative overflow-hidden flex flex-col justify-between min-h-[120px]">
           <div className="flex justify-between items-start">
-            <div className="h-9 w-9 rounded-xl bg-[#0d6e6a]/10 flex items-center justify-center text-[#0d6e6a]">
+            <div className="h-9 w-9 rounded-xl bg-gray-900/10 flex items-center justify-center text-gray-900">
               <TrendingUp className="h-4.5 w-4.5" />
             </div>
-            <span className="text-[10px] font-bold text-[#577b78] uppercase tracking-wider">Semua Waktu</span>
+            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Semua Waktu</span>
           </div>
           <div className="mt-4">
-            <div className="text-2xl font-extrabold text-[#0d2d2a] tracking-tight">{`Rp ${totalRevenue.toLocaleString('id-ID')}`}</div>
-            <div className="text-xs text-[#577b78] mt-0.5">Total Uang Masuk</div>
+            <div className="text-2xl font-extrabold text-gray-900 tracking-tight">{`Rp ${totalRevenue.toLocaleString('id-ID')}`}</div>
+            <div className="text-xs text-gray-500 mt-0.5">Total Uang Masuk</div>
           </div>
         </div>
 
         {/* Masuk Hari Ini */}
-        <div className="rounded-[2rem] p-5 bg-white/70 backdrop-blur-xl border border-[#e0edea] shadow-[0_8px_30px_rgba(13,110,106,0.02)] relative overflow-hidden flex flex-col justify-between min-h-[120px]">
+        <div className="rounded-[2rem] p-5 bg-white/70 backdrop-blur-xl border border-gray-200 shadow-[0_8px_30px_rgba(0,0,0,0.02)] relative overflow-hidden flex flex-col justify-between min-h-[120px]">
           <div className="flex justify-between items-start">
-            <div className="h-9 w-9 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600">
+            <div className="h-9 w-9 rounded-xl bg-gray-900/10 flex items-center justify-center text-gray-900">
               <ArrowUpRight className="h-4.5 w-4.5" />
             </div>
-            <span className="text-[10px] font-bold text-[#577b78] uppercase tracking-wider">Hari Ini</span>
+            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Hari Ini</span>
           </div>
           <div className="mt-4">
-            <div className="text-2xl font-extrabold text-[#0d2d2a] tracking-tight">{`Rp ${todayRevenue.toLocaleString('id-ID')}`}</div>
-            <div className="text-xs text-[#577b78] mt-0.5">Masuk Hari Ini</div>
+            <div className="text-2xl font-extrabold text-gray-900 tracking-tight">{`Rp ${todayRevenue.toLocaleString('id-ID')}`}</div>
+            <div className="text-xs text-gray-500 mt-0.5">Masuk Hari Ini</div>
           </div>
         </div>
 
         {/* Total Transaksi */}
-        <div className="rounded-[2rem] p-5 bg-white/70 backdrop-blur-xl border border-[#e0edea] shadow-[0_8px_30px_rgba(13,110,106,0.02)] relative overflow-hidden flex flex-col justify-between min-h-[120px]">
+        <div className="rounded-[2rem] p-5 bg-white/70 backdrop-blur-xl border border-gray-200 shadow-[0_8px_30px_rgba(0,0,0,0.02)] relative overflow-hidden flex flex-col justify-between min-h-[120px]">
           <div className="flex justify-between items-start">
-            <div className="h-9 w-9 rounded-xl bg-[#0d6e6a]/10 flex items-center justify-center text-[#0d6e6a]">
+            <div className="h-9 w-9 rounded-xl bg-gray-900/10 flex items-center justify-center text-gray-900">
               <Wallet className="h-4.5 w-4.5" />
             </div>
-            <span className="text-[10px] font-bold text-[#577b78] uppercase tracking-wider">Semua Pembayaran</span>
+            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Semua Pembayaran</span>
           </div>
           <div className="mt-4">
-            <div className="text-2xl font-extrabold text-[#0d2d2a] tracking-tight">{payments.length} Transaksi</div>
-            <div className="text-xs text-[#577b78] mt-0.5">Total Transaksi Sukses</div>
+            <div className="text-2xl font-extrabold text-gray-900 tracking-tight">{payments.length} Transaksi</div>
+            <div className="text-xs text-gray-500 mt-0.5">Total Transaksi Sukses</div>
           </div>
         </div>
       </div>
 
       {/* Table */}
-      <Card className="rounded-[2rem] border border-[#e0edea] bg-white/70 backdrop-blur-xl shadow-xl shadow-[#0d6e6a]/3 overflow-hidden">
+      <Card className="rounded-[2rem] border border-gray-200 bg-white/70 backdrop-blur-xl shadow-xl shadow-gray-900/3 overflow-hidden">
         <CardHeader className="pb-3 px-6 pt-5">
-          <CardTitle className="text-base font-bold text-[#0d2d2a]">Riwayat Pembayaran</CardTitle>
+          <CardTitle className="text-base font-bold text-gray-900">Riwayat Pembayaran</CardTitle>
         </CardHeader>
         <CardContent className="px-0 pb-0">
           <div className="overflow-x-auto w-full">
@@ -141,14 +140,14 @@ export default function PaymentsPage() {
               <TableHeader>
                 <TableRow style={{ borderColor: 'var(--border)' }}>
                   {['Tanggal', 'No. Invoice', 'Pelanggan', 'Metode', 'Nominal', 'Status'].map((h, i) => (
-                    <TableHead key={h} className={`text-xs font-semibold uppercase tracking-wide py-3 px-5 text-[#577b78] ${i === 4 ? 'text-right' : ''}`}>{h}</TableHead>
+                    <TableHead key={h} className={`text-xs font-semibold uppercase tracking-wide py-3 px-5 text-gray-500 ${i === 4 ? 'text-right' : ''}`}>{h}</TableHead>
                   ))}
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filtered.length === 0 && !loading && (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center h-32 text-sm text-[#577b78]">
+                    <TableCell colSpan={6} className="text-center h-32 text-sm text-gray-500">
                       {search ? 'Tidak ada hasil pencarian.' : 'Belum ada riwayat pembayaran.'}
                     </TableCell>
                   </TableRow>
@@ -157,26 +156,26 @@ export default function PaymentsPage() {
                   const mc = methodColor[p.paymentMethod] || 'bg-muted text-muted-foreground';
                   return (
                     <TableRow key={p.id} className="hover:bg-muted/40 transition-colors" style={{ borderColor: 'var(--border)' }}>
-                      <TableCell className="py-4 px-5 text-xs text-[#577b78]">
+                      <TableCell className="py-4 px-5 text-xs text-gray-500">
                         {new Date(p.paymentDate).toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </TableCell>
                       <TableCell className="py-4 px-5">
-                        <span className="font-mono text-xs font-bold px-2 py-1 rounded-lg bg-[#0d6e6a]/10 text-[#0d6e6a]">
+                        <span className="font-mono text-xs font-bold px-2 py-1 rounded-lg bg-gray-900/10 text-gray-900">
                           {p.invoiceNumber}
                         </span>
                       </TableCell>
-                      <TableCell className="py-4 px-5 font-semibold text-sm text-[#0d2d2a]">{p.customerName}</TableCell>
+                      <TableCell className="py-4 px-5 font-semibold text-sm text-gray-900">{p.customerName}</TableCell>
                       <TableCell className="py-4 px-5">
                         <span className={`flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full w-fit ${mc}`}>
                           {methodIcon[p.paymentMethod] || <Wallet className="h-4 w-4" />}
                           {p.paymentMethod}
                         </span>
                       </TableCell>
-                      <TableCell className="py-4 px-5 text-right font-extrabold text-[#0d6e6a] text-sm">
+                      <TableCell className="py-4 px-5 text-right font-extrabold text-gray-900 text-sm">
                         + Rp {Number(p.amount).toLocaleString('id-ID')}
                       </TableCell>
                       <TableCell className="py-4 px-5">
-                        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600">
+                        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-gray-500/10 text-gray-700">
                           Sukses ✓
                         </span>
                       </TableCell>

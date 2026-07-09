@@ -224,21 +224,21 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
-            <div className="h-9 w-9 bg-yellow-400 rounded-lg flex items-center justify-center text-[#1e3d75] shadow-sm">
+            <div className="h-9 w-9 bg-white rounded-lg flex items-center justify-center text-gray-900 shadow-sm">
               <Wrench className="h-5 w-5 font-bold" />
             </div>
             <div>
-              <span className={`text-lg font-black tracking-tight block leading-none ${scrolled ? "text-[#1e3d75]" : "text-white"}`}>SERVIS KITA</span>
-              <span className="text-[9px] font-semibold text-yellow-500 uppercase tracking-widest">Ahli & Profesional</span>
+              <span className={`text-lg font-black tracking-tight block leading-none ${scrolled ? "text-[#111111]" : "text-white"}`}>SERVIS KITA</span>
+              <span className="text-[9px] font-semibold text-gray-300 uppercase tracking-widest">Ahli & Profesional</span>
             </div>
           </Link>
 
           {/* Links */}
           <nav className="hidden md:flex items-center gap-6 text-xs font-bold uppercase tracking-wider">
-            <Link href="#" className="hover:text-yellow-500 transition-colors">Bantuan</Link>
-            <Link href="#" className="hover:text-yellow-500 transition-colors">Jadi Mitra</Link>
-            <Link href="#" className="hover:text-yellow-500 transition-colors">Chat</Link>
-            <Link href={user ? (user.role === "ADMIN" ? "/dashboard" : "/client/dashboard") : "/login"} className="hover:text-yellow-500 transition-colors">Pesanan</Link>
+            <Link href="#" className="hover:text-gray-300 transition-colors">Bantuan</Link>
+            <Link href="#" className="hover:text-gray-300 transition-colors">Jadi Mitra</Link>
+            <Link href="#" className="hover:text-gray-300 transition-colors">Chat</Link>
+            <Link href={user ? (user.role === "ADMIN" ? "/dashboard" : "/client/dashboard") : "/login"} className="hover:text-gray-300 transition-colors">Pesanan</Link>
           </nav>
 
           {/* Profile / Auth / Cart */}
@@ -278,7 +278,7 @@ export default function Home() {
                   </Button>
                 </Link>
                 <span className="text-white/20 text-xs">|</span>
-                <Link href="/register" className={`text-xs font-semibold hover:text-yellow-500 transition-colors ${scrolled ? "text-slate-800" : "text-white"}`}>
+                <Link href="/register" className={`text-xs font-semibold hover:text-gray-300 transition-colors ${scrolled ? "text-slate-800" : "text-white"}`}>
                   Daftar
                 </Link>
               </div>
@@ -288,10 +288,10 @@ export default function Home() {
       </header>
 
       {/* 2. HERO SECTION & GRID CATEGORY */}
-      <div className="bg-[#1e3d75] text-white relative overflow-hidden pt-28 pb-16">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#193363] via-[#1e3d75] to-[#254d91]" />
+      <div className="bg-[#111111] text-white relative overflow-hidden pt-28 pb-16">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#193363] via-[#111111] to-[#254d91]" />
         <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-blue-500/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/4" />
-        <div className="absolute bottom-0 left-0 w-[30rem] h-[30rem] bg-[#0d6e6a]/10 rounded-full blur-3xl pointer-events-none translate-y-1/2 -translate-x-1/4" />
+        <div className="absolute bottom-0 left-0 w-[30rem] h-[30rem] bg-[#111111]/10 rounded-full blur-3xl pointer-events-none translate-y-1/2 -translate-x-1/4" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 text-center">
           {/* Main Headline */}
@@ -299,7 +299,7 @@ export default function Home() {
             Kami Hadir untuk Memudahkan Kebutuhan Anda
           </h1>
           {/* Sub-headline */}
-          <p className="text-yellow-400 text-xs md:text-sm font-bold uppercase tracking-widest mb-10 max-w-2xl mx-auto">
+          <p className="text-gray-300 text-xs md:text-sm font-bold uppercase tracking-widest mb-10 max-w-2xl mx-auto">
             Tukang Profesional + 10 Kategori + Jaminan Refund + Pencarian Terdekat + Live Chat + Transaksi Aman
           </p>
 
@@ -313,7 +313,7 @@ export default function Home() {
                   onClick={() => setSelectedCategory(c.id)}
                   className={`cursor-pointer rounded-2xl p-4 flex flex-col items-center justify-center text-center transition-all ${
                     isSelected
-                      ? "bg-yellow-400 text-[#1e3d75] shadow-lg scale-105"
+                      ? "bg-gray-300 text-[#111111] shadow-lg scale-105"
                       : "bg-white/10 text-white hover:bg-white/15"
                   }`}
                 >
@@ -330,7 +330,7 @@ export default function Home() {
               <button
                 key={idx}
                 onClick={() => handleBooking(sub)}
-                className="text-[11px] font-bold px-4 py-2 bg-white/10 hover:bg-yellow-400 hover:text-[#1e3d75] text-white border border-white/10 hover:border-yellow-400 transition-all rounded-full flex items-center gap-1.5"
+                className="text-[11px] font-bold px-4 py-2 bg-white/10 hover:bg-gray-300 hover:text-[#111111] text-white border border-white/10 hover:border-gray-300 transition-all rounded-full flex items-center gap-1.5"
               >
                 {sub}
                 <Sparkles className="h-3 w-3 opacity-60" />
@@ -362,7 +362,7 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={handleGPSDetect}
-                  className="ml-2 h-9 px-4 bg-blue-50 hover:bg-blue-100 text-[#1e3d75] rounded-full flex items-center gap-1 transition-all text-[10px] font-bold shrink-0"
+                  className="ml-2 h-9 px-4 bg-blue-50 hover:bg-blue-100 text-[#111111] rounded-full flex items-center gap-1 transition-all text-[10px] font-bold shrink-0"
                   disabled={gpsLoading}
                 >
                   <Navigation className={`h-3 w-3 text-blue-600 ${gpsLoading ? "animate-pulse" : ""}`} />
@@ -391,7 +391,7 @@ export default function Home() {
               {/* Cari Tukang Button */}
               <Button 
                 type="submit" 
-                className="w-full md:w-auto h-12 px-8 bg-yellow-400 hover:bg-yellow-500 text-[#1e3d75] font-extrabold text-sm rounded-full flex items-center justify-center gap-2 shadow-md transition-all shrink-0 hover:scale-[1.02]"
+                className="w-full md:w-auto h-12 px-8 bg-gray-900 hover:bg-gray-800 text-white font-extrabold text-sm rounded-full flex items-center justify-center gap-2 shadow-md transition-all shrink-0 hover:scale-[1.02]"
               >
                 <Search className="h-4.5 w-4.5" />
                 Cari Tukang
@@ -399,7 +399,7 @@ export default function Home() {
             </form>
 
             {gpsStatus && (
-              <div className="absolute left-1/2 -translate-x-1/2 -bottom-10 bg-[#1bb2aa] text-white font-bold text-xs py-1.5 px-4 rounded-xl shadow-lg border border-white/20 animate-in fade-in slide-in-from-top-2 duration-300 z-20">
+              <div className="absolute left-1/2 -translate-x-1/2 -bottom-10 bg-[#374151] text-white font-bold text-xs py-1.5 px-4 rounded-xl shadow-lg border border-white/20 animate-in fade-in slide-in-from-top-2 duration-300 z-20">
                 {gpsStatus}
               </div>
             )}
@@ -430,7 +430,7 @@ export default function Home() {
 
           {/* 2. 10 Kategori */}
           <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex gap-4 items-start hover:shadow-md transition-all">
-            <div className="h-12 w-12 bg-[#1bb2aa]/10 rounded-2xl flex items-center justify-center text-[#1bb2aa] shrink-0 border border-[#1bb2aa]/15">
+            <div className="h-12 w-12 bg-[#374151]/10 rounded-2xl flex items-center justify-center text-[#374151] shrink-0 border border-[#374151]/15">
               <Grid className="h-6 w-6" />
             </div>
             <div>
@@ -482,7 +482,7 @@ export default function Home() {
 
           {/* 6. Transaksi Aman */}
           <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex gap-4 items-start hover:shadow-md transition-all">
-            <div className="h-12 w-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-600 shrink-0 border border-emerald-500/15">
+            <div className="h-12 w-12 bg-gray-100 rounded-2xl flex items-center justify-center text-gray-700 shrink-0 border border-emerald-500/15">
               <ShieldCheck className="h-6 w-6" />
             </div>
             <div>
@@ -499,7 +499,7 @@ export default function Home() {
       <section className="bg-slate-100 py-16">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="text-center mb-12">
-            <span className="text-xs bg-[#ebf3f1] text-[#0d6e6a] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Langkah Mudah</span>
+            <span className="text-xs bg-[#ebf3f1] text-[#111111] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Langkah Mudah</span>
             <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 mt-2">Pesan Tukang Profesional dalam Hitungan Menit</h2>
           </div>
 
@@ -527,7 +527,7 @@ export default function Home() {
               }
             ].map((step, idx) => (
               <div key={idx} className="bg-white rounded-3xl p-6 border border-slate-200/50 shadow-sm flex flex-col items-center text-center relative z-10">
-                <div className="h-10 w-10 bg-yellow-400 text-[#1e3d75] font-black text-lg rounded-full flex items-center justify-center mb-4 shadow-md">
+                <div className="h-10 w-10 bg-gray-300 text-[#111111] font-black text-lg rounded-full flex items-center justify-center mb-4 shadow-md">
                   {step.step}
                 </div>
                 <h4 className="font-extrabold text-sm text-slate-800 mb-2">{step.title}</h4>
@@ -589,7 +589,7 @@ export default function Home() {
 
               <div className="p-5 flex-1 flex flex-col justify-between">
                 <div>
-                  <h4 className="font-extrabold text-sm text-slate-800 leading-snug group-hover:text-[#1e3d75] transition-colors">{port.title}</h4>
+                  <h4 className="font-extrabold text-sm text-slate-800 leading-snug group-hover:text-[#111111] transition-colors">{port.title}</h4>
                   <p className="text-[11px] text-slate-500 mt-2 leading-relaxed line-clamp-3">{port.desc}</p>
                 </div>
 
@@ -599,7 +599,7 @@ export default function Home() {
                     <span className="text-xs font-bold text-slate-700">{port.mitra}</span>
                   </div>
                   <div className="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-lg">
-                    <Star className="h-3 w-3 fill-yellow-400 text-yellow-400 shrink-0" />
+                    <Star className="h-3 w-3 fill-gray-300 text-gray-300 shrink-0" />
                     <span className="text-[10px] font-black text-yellow-700">5.0</span>
                   </div>
                 </div>
@@ -704,11 +704,11 @@ export default function Home() {
               <article key={i} className="bg-white rounded-3xl p-6 border border-slate-200/60 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
                 <div>
                   <span className="bg-blue-50 text-blue-700 text-[9px] font-bold px-2 py-0.5 rounded-md self-start">{blog.tag}</span>
-                  <h4 className="font-extrabold text-sm text-slate-800 mt-3 leading-snug group-hover:text-[#1e3d75] transition-colors">{blog.title}</h4>
+                  <h4 className="font-extrabold text-sm text-slate-800 mt-3 leading-snug group-hover:text-[#111111] transition-colors">{blog.title}</h4>
                   <p className="text-[11px] text-slate-500 mt-2 leading-relaxed line-clamp-4">{blog.desc}</p>
                 </div>
                 <div className="border-t border-slate-100 pt-4 mt-6 flex justify-end">
-                  <Link href="#" className="text-[11px] font-bold text-[#1e3d75] group-hover:text-blue-500 transition-colors flex items-center gap-1">
+                  <Link href="#" className="text-[11px] font-bold text-[#111111] group-hover:text-blue-500 transition-colors flex items-center gap-1">
                     Baca <ArrowRight className="h-3 w-3 shrink-0" />
                   </Link>
                 </div>
@@ -720,14 +720,14 @@ export default function Home() {
 
       {/* 9. JADI MITRA CTA */}
       <section className="bg-white py-16">
-        <div className="max-w-5xl mx-auto px-4 md:px-8 text-center bg-gradient-to-br from-[#ebf5f3] to-slate-50 border border-[#e0edea] rounded-[2.5rem] p-8 md:p-12 shadow-sm">
-          <span className="bg-[#0d6e6a] text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Kesempatan Bermitra</span>
-          <h3 className="text-2xl md:text-3xl font-extrabold text-[#0d2d2a] mt-3">Mau Jadi Mitra Servis Kita?</h3>
+        <div className="max-w-5xl mx-auto px-4 md:px-8 text-center bg-gradient-to-br from-[#f5f5f5] to-slate-50 border border-[#e5e7eb] rounded-[2.5rem] p-8 md:p-12 shadow-sm">
+          <span className="bg-[#111111] text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Kesempatan Bermitra</span>
+          <h3 className="text-2xl md:text-3xl font-extrabold text-[#111111] mt-3">Mau Jadi Mitra Servis Kita?</h3>
           <p className="text-slate-500 text-sm mt-3 leading-relaxed max-w-lg mx-auto">
             Nikmati fitur terbaru untuk terhubung dengan customer dengan 10 Kategori Lebih Pekerjaan! Tersedia di seluruh wilayah Indonesia.
           </p>
           <div className="mt-8 flex justify-center gap-4">
-            <Button className="h-11 px-8 rounded-xl font-bold bg-[#0d6e6a] hover:bg-[#128a85] text-white shadow-md">
+            <Button className="h-11 px-8 rounded-xl font-bold bg-[#111111] hover:bg-[#374151] text-white shadow-md">
               Daftar Sekarang
             </Button>
           </div>
@@ -736,9 +736,9 @@ export default function Home() {
 
       {/* 10. DOWNLOAD MOBILE APP BANNER */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-16">
-        <div className="rounded-[2.5rem] bg-gradient-to-br from-[#1e3d75] to-[#122547] text-white p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
+        <div className="rounded-[2.5rem] bg-gradient-to-br from-gray-900 to-[#122547] text-white p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
           <div className="max-w-xl text-center md:text-left">
-            <span className="bg-yellow-400 text-[#1e3d75] text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Aplikasi Seluler</span>
+            <span className="bg-gray-300 text-[#111111] text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Aplikasi Seluler</span>
             <h3 className="text-2xl md:text-3xl font-extrabold text-white mt-3 leading-tight tracking-tight">Cari tukang terdekat dengan mudah, aman dan cepat. Servis Kita selalu gercep!</h3>
             <p className="text-sm text-white/80 mt-3">Download Mobile App di:</p>
             <div className="flex flex-wrap gap-3 mt-6 justify-center md:justify-start">
@@ -764,7 +764,7 @@ export default function Home() {
             <div className="h-60 w-32 bg-slate-900 border-4 border-slate-800 rounded-3xl shadow-xl flex items-center justify-center p-3 relative">
               <div className="absolute top-1 left-1/2 -translate-x-1/2 w-10 h-2 bg-slate-800 rounded-full" />
               <div className="h-full w-full bg-slate-800 rounded-xl flex flex-col items-center justify-center text-center p-2 text-white">
-                <Wrench className="h-8 w-8 text-yellow-400 mb-2 animate-bounce" />
+                <Wrench className="h-8 w-8 text-gray-300 mb-2 animate-bounce" />
                 <span className="text-[9px] font-black tracking-widest leading-none">SERVIS KITA</span>
                 <span className="text-[6px] text-white/50 uppercase tracking-widest mt-1">App</span>
               </div>
@@ -779,7 +779,7 @@ export default function Home() {
           {/* Col 1 */}
           <div className="col-span-2 md:col-span-1 space-y-4">
             <Link href="/" className="flex items-center gap-2 hover:opacity-90">
-              <div className="h-8 w-8 bg-yellow-400 rounded-lg flex items-center justify-center text-slate-900">
+              <div className="h-8 w-8 bg-white/90 rounded-lg flex items-center justify-center text-gray-900">
                 <Wrench className="h-4.5 w-4.5 font-bold" />
               </div>
               <span className="text-base font-black text-white tracking-tight">SERVIS KITA</span>

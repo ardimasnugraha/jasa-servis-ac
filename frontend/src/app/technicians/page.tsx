@@ -33,11 +33,11 @@ type Technician = {
 };
 
 const techGradients = [
-  'linear-gradient(135deg, oklch(0.55 0.22 295), oklch(0.50 0.22 310))',
-  'linear-gradient(135deg, oklch(0.55 0.22 264), oklch(0.50 0.22 278))',
-  'linear-gradient(135deg, oklch(0.55 0.18 185), oklch(0.52 0.20 200))',
-  'linear-gradient(135deg, oklch(0.68 0.20 55), oklch(0.63 0.20 40))',
-  'linear-gradient(135deg, oklch(0.60 0.22 15), oklch(0.55 0.20 350))',
+  'linear-gradient(135deg, #1f2937, #374151)',
+  'linear-gradient(135deg, #374151, #4b5563)',
+  'linear-gradient(135deg, #111111, #1f2937)',
+  'linear-gradient(135deg, #4b5563, #1f2937)',
+  'linear-gradient(135deg, #111111, #4b5563)',
 ];
 
 export default function TechniciansPage() {
@@ -86,7 +86,7 @@ export default function TechniciansPage() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="h-10 w-10 rounded-full border-2 border-transparent animate-spin"
-          style={{ borderTopColor: 'oklch(0.55 0.22 295)', borderRightColor: 'oklch(0.60 0.22 264)' }} />
+          style={{ borderTopColor: '#111111', borderRightColor: '#374151' }} />
       </div>
     );
   }
@@ -98,7 +98,7 @@ export default function TechniciansPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight flex items-center gap-3" style={{ color: 'var(--foreground)' }}>
             <span className="h-10 w-10 rounded-xl flex items-center justify-center text-white"
-              style={{ background: 'linear-gradient(135deg, oklch(0.55 0.22 295), oklch(0.50 0.22 310))' }}>
+              style={{ background: 'linear-gradient(135deg, #1f2937, #374151)' }}>
               <Wrench className="h-5 w-5" />
             </span>
             Teknisi
@@ -111,8 +111,7 @@ export default function TechniciansPage() {
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger render={
-            <Button className="gap-2 rounded-xl font-semibold h-10 px-5 text-white"
-              style={{ background: 'linear-gradient(135deg, oklch(0.55 0.22 295), oklch(0.50 0.22 310))', boxShadow: '0 4px 14px oklch(0.55 0.22 295 / 0.35)' }}>
+            <Button className="gap-2 rounded-xl font-semibold h-10 px-5 bg-gray-900 hover:bg-gray-800 text-white shadow-sm">
               <Plus className="h-4 w-4" /> Tambah Teknisi
             </Button>
           } />
@@ -136,8 +135,7 @@ export default function TechniciansPage() {
                 ))}
               </div>
               <DialogFooter>
-                <Button type="submit" disabled={isSubmitting} className="rounded-xl text-white"
-                  style={{ background: 'linear-gradient(135deg, oklch(0.55 0.22 295), oklch(0.50 0.22 310))' }}>
+                <Button type="submit" disabled={isSubmitting} className="rounded-xl bg-gray-900 hover:bg-gray-800 text-white">
                   {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Menyimpan...</> : "Simpan Teknisi"}
                 </Button>
               </DialogFooter>
@@ -151,7 +149,7 @@ export default function TechniciansPage() {
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold flex items-center gap-2">
-              Detail Teknisi: <span className="font-semibold text-[#0d6e6a]">{selectedTechnician?.fullname || 'Tanpa Nama'}</span>
+              Detail Teknisi: <span className="font-semibold text-gray-900">{selectedTechnician?.fullname || 'Tanpa Nama'}</span>
             </DialogTitle>
             <DialogDescription>Profil dan riwayat penugasan servis AC teknisi.</DialogDescription>
           </DialogHeader>
@@ -159,8 +157,8 @@ export default function TechniciansPage() {
             <div className="space-y-6 py-4">
               {/* Profil Singkat */}
               <div className="flex items-center gap-4 p-4 rounded-xl bg-muted/50 border border-muted">
-                <Avatar className="h-14 w-14 ring-2 ring-[#0d6e6a]/20">
-                  <AvatarFallback className="text-lg font-bold text-white bg-[#0d6e6a]">
+                <Avatar className="h-14 w-14 ring-2 ring-gray-900/20">
+                  <AvatarFallback className="text-lg font-bold text-white bg-gray-900">
                     {(selectedTechnician.fullname || 'TK').substring(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
@@ -175,7 +173,7 @@ export default function TechniciansPage() {
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div className="p-3 rounded-lg border bg-card text-center">
                   <span className="text-xs text-muted-foreground block mb-1">Status Keaktifan</span>
-                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#0d6e6a]/10 text-[#0d6e6a]">
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-gray-900/10 text-gray-900">
                     ● {selectedTechnician.status || 'Aktif'}
                   </span>
                 </div>
@@ -196,7 +194,7 @@ export default function TechniciansPage() {
                       <div key={booking.id} className="p-3 rounded-xl border bg-card text-xs flex items-center justify-between">
                         <div>
                           <div className="flex items-center gap-1.5 mb-1">
-                            <span className="font-mono font-bold text-[#0d6e6a]">
+                            <span className="font-mono font-bold text-gray-900">
                               {booking.bookingCode || 'BKG-???'}
                             </span>
                             <span className="text-[10px] text-muted-foreground">
@@ -207,8 +205,8 @@ export default function TechniciansPage() {
                         </div>
                         <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
                           style={{
-                            background: booking.status === 'SELESAI' || booking.status === 'COMPLETED' ? 'oklch(0.55 0.18 160 / 0.12)' : 'oklch(0.70 0.18 75 / 0.12)',
-                            color: booking.status === 'SELESAI' || booking.status === 'COMPLETED' ? 'oklch(0.50 0.18 160)' : 'oklch(0.60 0.18 75)',
+                            background: booking.status === 'SELESAI' || booking.status === 'COMPLETED' ? 'rgba(22,163,74,0.08)' : 'rgba(217,119,6,0.08)',
+                            color: booking.status === 'SELESAI' || booking.status === 'COMPLETED' ? '#16a34a' : '#d97706',
                           }}>
                           {booking.status === 'SELESAI' || booking.status === 'COMPLETED' ? 'Selesai' : 'Pending/Terjadwal'}
                         </span>
@@ -224,8 +222,7 @@ export default function TechniciansPage() {
             </div>
           )}
           <DialogFooter>
-            <Button onClick={() => setDetailDialogOpen(false)} className="rounded-xl w-full text-white"
-              style={{ background: 'linear-gradient(135deg, oklch(0.55 0.22 295), oklch(0.50 0.22 310))' }}>
+            <Button onClick={() => setDetailDialogOpen(false)} className="rounded-xl w-full bg-gray-900 hover:bg-gray-800 text-white">
               Tutup
             </Button>
           </DialogFooter>
@@ -278,7 +275,7 @@ export default function TechniciansPage() {
               <div className="mt-4 pt-3 flex items-center justify-between"
                 style={{ borderTop: '1px solid var(--border)' }}>
                 <span className="text-xs font-semibold px-2.5 py-1 rounded-full"
-                  style={{ background: 'oklch(0.55 0.18 160 / 0.12)', color: 'oklch(0.50 0.18 160)' }}>
+                  style={{ background: 'rgba(22,163,74,0.08)', color: '#16a34a' }}>
                   ● Aktif
                 </span>
                 <Button 

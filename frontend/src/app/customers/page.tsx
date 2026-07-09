@@ -40,11 +40,11 @@ type Customer = {
 };
 
 const avatarGradients = [
-  'linear-gradient(135deg, oklch(0.55 0.22 264), oklch(0.50 0.22 278))',
-  'linear-gradient(135deg, oklch(0.55 0.18 185), oklch(0.52 0.20 200))',
-  'linear-gradient(135deg, oklch(0.55 0.22 295), oklch(0.50 0.22 310))',
-  'linear-gradient(135deg, oklch(0.68 0.20 55), oklch(0.63 0.20 40))',
-  'linear-gradient(135deg, oklch(0.60 0.22 15), oklch(0.55 0.20 350))',
+  'linear-gradient(135deg, #374151, oklch(0.50 0.22 278))',
+  'linear-gradient(135deg, #1f2937, #374151))',
+  'linear-gradient(135deg, #1f2937, #374151))',
+  'linear-gradient(135deg, #1f2937, #374151))',
+  'linear-gradient(135deg, #1f2937, #374151))',
 ];
 
 export default function CustomersPage() {
@@ -100,7 +100,7 @@ export default function CustomersPage() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="h-10 w-10 rounded-full border-2 border-transparent animate-spin"
-          style={{ borderTopColor: 'oklch(0.60 0.22 264)', borderRightColor: 'oklch(0.62 0.22 295)' }} />
+          style={{ borderTopColor: '#111111', borderRightColor: '#374151' }} />
       </div>
     );
   }
@@ -112,7 +112,7 @@ export default function CustomersPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight flex items-center gap-3" style={{ color: 'var(--foreground)' }}>
             <span className="h-10 w-10 rounded-xl flex items-center justify-center text-white"
-              style={{ background: 'linear-gradient(135deg, oklch(0.60 0.22 264), oklch(0.55 0.22 295))' }}>
+              style={{ background: 'linear-gradient(135deg, #1f2937, #374151))' }}>
               <Users className="h-5 w-5" />
             </span>
             Pelanggan
@@ -125,7 +125,7 @@ export default function CustomersPage() {
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger render={
             <Button className="gap-2 rounded-xl font-semibold h-10 px-5 text-white shadow-lg"
-              style={{ background: 'linear-gradient(135deg, oklch(0.58 0.22 264), oklch(0.55 0.22 295))', boxShadow: '0 4px 14px oklch(0.58 0.22 264 / 0.35)' }}>
+              style={{ background: 'linear-gradient(135deg, #374151, oklch(0.55 0.22 295))', boxShadow: '0 4px 14px oklch(0.58 0.22 264 / 0.35)' }}>
               <Plus className="h-4 w-4" /> Tambah Pelanggan
             </Button>
           } />
@@ -157,7 +157,7 @@ export default function CustomersPage() {
               </div>
               <DialogFooter>
                 <Button type="submit" disabled={isSubmitting} className="rounded-xl text-white"
-                  style={{ background: 'linear-gradient(135deg, oklch(0.58 0.22 264), oklch(0.55 0.22 295))' }}>
+                  style={{ background: 'linear-gradient(135deg, #374151, oklch(0.55 0.22 295))' }}>
                   {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Menyimpan...</> : "Simpan Pelanggan"}
                 </Button>
               </DialogFooter>
@@ -171,7 +171,7 @@ export default function CustomersPage() {
         <DialogContent className="sm:max-w-[550px] max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold flex items-center gap-2">
-              Detail Pelanggan: <span className="font-semibold text-[#0d6e6a]">{selectedCustomer?.fullname || 'Tanpa Nama'}</span>
+              Detail Pelanggan: <span className="font-semibold text-gray-900">{selectedCustomer?.fullname || 'Tanpa Nama'}</span>
             </DialogTitle>
             <DialogDescription>Profil, aset AC, dan riwayat pesanan servis pelanggan.</DialogDescription>
           </DialogHeader>
@@ -180,8 +180,8 @@ export default function CustomersPage() {
               {/* Profil Singkat */}
               <div className="p-4 rounded-xl bg-muted/50 border border-muted space-y-3">
                 <div className="flex items-center gap-4">
-                  <Avatar className="h-14 w-14 ring-2 ring-[#0d6e6a]/20">
-                    <AvatarFallback className="text-lg font-bold text-white bg-[#0d6e6a]">
+                  <Avatar className="h-14 w-14 ring-2 ring-gray-900/20">
+                    <AvatarFallback className="text-lg font-bold text-white bg-gray-900">
                       {(selectedCustomer.fullname || 'U').substring(0, 2).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
@@ -195,15 +195,15 @@ export default function CustomersPage() {
                 
                 <div className="pt-2 border-t border-muted/80 space-y-1.5 text-xs text-muted-foreground">
                   <div className="flex items-center gap-2">
-                    <Phone className="h-3.5 w-3.5 text-[#0d6e6a]" />
+                    <Phone className="h-3.5 w-3.5 text-gray-900" />
                     <span>{selectedCustomer.phone || "Tidak ada nomor telepon"}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Mail className="h-3.5 w-3.5 text-[#0d6e6a]" />
+                    <Mail className="h-3.5 w-3.5 text-gray-900" />
                     <span className="break-all">{selectedCustomer.email || "Tidak ada email"}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <MapPin className="h-3.5 w-3.5 text-[#0d6e6a] flex-shrink-0" />
+                    <MapPin className="h-3.5 w-3.5 text-gray-900 flex-shrink-0" />
                     <span>{selectedCustomer.address || "Tidak ada alamat"}</span>
                   </div>
                 </div>
@@ -212,14 +212,14 @@ export default function CustomersPage() {
               {/* Daftar Aset AC */}
               <div className="space-y-2">
                 <h4 className="text-sm font-bold border-b pb-1 flex items-center gap-1.5">
-                  <Wrench className="h-4 w-4 text-[#0d6e6a]" /> Daftar Aset AC ({selectedCustomer.acUnits?.length || 0})
+                  <Wrench className="h-4 w-4 text-gray-900" /> Daftar Aset AC ({selectedCustomer.acUnits?.length || 0})
                 </h4>
                 {selectedCustomer.acUnits && selectedCustomer.acUnits.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {selectedCustomer.acUnits.map((unit) => (
                       <div key={unit.id} className="p-3 rounded-xl border bg-card text-xs space-y-1">
                         <div className="flex justify-between items-center font-bold">
-                          <span className="text-[#0d6e6a]">{unit.brand || 'Merek Lain'}</span>
+                          <span className="text-gray-900">{unit.brand || 'Merek Lain'}</span>
                           <span className="text-muted-foreground">{unit.pk ? `${unit.pk} PK` : '—'}</span>
                         </div>
                         <p className="text-muted-foreground">Tipe: {unit.type || 'Standard'}</p>
@@ -241,7 +241,7 @@ export default function CustomersPage() {
               {/* Riwayat Pemesanan */}
               <div className="space-y-2">
                 <h4 className="text-sm font-bold border-b pb-1 flex items-center gap-1.5">
-                  <Calendar className="h-4 w-4 text-[#0d6e6a]" /> Riwayat Pemesanan ({selectedCustomer.bookings?.length || 0})
+                  <Calendar className="h-4 w-4 text-gray-900" /> Riwayat Pemesanan ({selectedCustomer.bookings?.length || 0})
                 </h4>
                 {selectedCustomer.bookings && selectedCustomer.bookings.length > 0 ? (
                   <div className="max-h-48 overflow-y-auto space-y-2 pr-1">
@@ -249,7 +249,7 @@ export default function CustomersPage() {
                       <div key={booking.id} className="p-3 rounded-xl border bg-card text-xs flex items-center justify-between gap-4">
                         <div className="space-y-1">
                           <div className="flex items-center gap-1.5">
-                            <span className="font-mono font-bold text-[#0d6e6a]">
+                            <span className="font-mono font-bold text-gray-900">
                               {booking.bookingCode || 'BKG-???'}
                             </span>
                             <span className="text-[10px] text-muted-foreground">
@@ -260,8 +260,8 @@ export default function CustomersPage() {
                         </div>
                         <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full flex-shrink-0"
                           style={{
-                            background: booking.status === 'SELESAI' || booking.status === 'COMPLETED' ? 'oklch(0.55 0.18 160 / 0.12)' : 'oklch(0.70 0.18 75 / 0.12)',
-                            color: booking.status === 'SELESAI' || booking.status === 'COMPLETED' ? 'oklch(0.50 0.18 160)' : 'oklch(0.60 0.18 75)',
+                            background: booking.status === 'SELESAI' || booking.status === 'COMPLETED' ? 'rgba(22,163,74,0.08)' : 'rgba(217,119,6,0.08)',
+                            color: booking.status === 'SELESAI' || booking.status === 'COMPLETED' ? 'oklch(0.50 0.18 160)' : '#d97706',
                           }}>
                           {booking.status === 'SELESAI' || booking.status === 'COMPLETED' ? 'Selesai' : 'Pending/Terjadwal'}
                         </span>
@@ -278,7 +278,7 @@ export default function CustomersPage() {
           )}
           <DialogFooter>
             <Button onClick={() => setDetailDialogOpen(false)} className="rounded-xl w-full text-white"
-              style={{ background: 'linear-gradient(135deg, oklch(0.58 0.22 264), oklch(0.55 0.22 295))' }}>
+              style={{ background: 'linear-gradient(135deg, #374151, oklch(0.55 0.22 295))' }}>
               Tutup
             </Button>
           </DialogFooter>
