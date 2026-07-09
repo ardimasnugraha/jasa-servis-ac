@@ -270,7 +270,7 @@ export default function ClientBookingPage() {
                     <div className="space-y-1.5">
                       <Label className="text-xs font-bold text-gray-600">Tipe Sewa</Label>
                       <Select value={rateType} onValueChange={setRateType}>
-                        <SelectTrigger className="rounded-xl bg-white"><SelectValue /></SelectTrigger>
+                        <SelectTrigger className="rounded-xl bg-white w-full flex justify-between items-center h-10 border-gray-200"><SelectValue /></SelectTrigger>
                         <SelectContent>
                           <SelectItem value="DAILY">Harian (Daily Rate)</SelectItem>
                           <SelectItem value="PROJECT">Borongan (Project-based)</SelectItem>
@@ -282,7 +282,7 @@ export default function ClientBookingPage() {
                     <div className="space-y-1.5">
                       <Label className="text-xs font-bold text-gray-600">Cakupan Kerja</Label>
                       <Select value={materialOption} onValueChange={setMaterialOption}>
-                        <SelectTrigger className="rounded-xl bg-white"><SelectValue /></SelectTrigger>
+                        <SelectTrigger className="rounded-xl bg-white w-full flex justify-between items-center h-10 border-gray-200"><SelectValue /></SelectTrigger>
                         <SelectContent>
                           <SelectItem value="JASA_SAJA">Hanya Jasa Tukang (Tanpa Alat/Bahan)</SelectItem>
                           <SelectItem value="ALL_IN">All-In (Jasa + Alat & Bahan Baku Dasar)</SelectItem>
