@@ -176,14 +176,27 @@ export function RootLayoutClient({ children }: { children: React.ReactNode }) {
     if (isAuth) setAuthorized(true);
   }, [pathname, isAdminRoute, isClientRoute, router]);
 
-  if (!mounted) return null;
+  if (!mounted) {
+    const isProtectedRoute = isAdminRoute || isClientRoute;
+    if (isProtectedRoute) {
+      return (
+        <div className="min-h-screen w-full flex items-center justify-center bg-background text-foreground select-none">
+          <div className="flex flex-col items-center gap-4">
+            <div className="h-10 w-10 rounded-full border-4 border-muted border-t-foreground animate-spin" />
+            <p className="text-xs font-semibold text-muted-foreground tracking-wide">Memuat Sistem...</p>
+          </div>
+        </div>
+      );
+    }
+    return <>{children}</>;
+  }
 
   if (!authorized) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center bg-gray-50 select-none">
+      <div className="min-h-screen w-full flex items-center justify-center bg-background text-foreground select-none">
         <div className="flex flex-col items-center gap-4">
-          <div className="h-10 w-10 rounded-full border-4 border-gray-200 border-t-gray-900 animate-spin" />
-          <p className="text-xs font-semibold text-gray-500 tracking-wide">Memeriksa Otorisasi Akses...</p>
+          <div className="h-10 w-10 rounded-full border-4 border-muted border-t-foreground animate-spin" />
+          <p className="text-xs font-semibold text-muted-foreground tracking-wide">Memeriksa Otorisasi Akses...</p>
         </div>
       </div>
     );

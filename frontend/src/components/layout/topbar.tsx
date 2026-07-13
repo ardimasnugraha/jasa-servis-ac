@@ -146,7 +146,7 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
                 {initials}
               </AvatarFallback>
             </Avatar>
-            <div className="flex flex-col items-start text-left">
+            <div className="hidden sm:flex flex-col items-start text-left">
               <span className="text-xs font-semibold leading-none text-gray-900">
                 {user?.fullname || 'Admin'}
               </span>
