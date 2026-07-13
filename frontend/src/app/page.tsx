@@ -127,7 +127,7 @@ const CITY_DATA = [
   { name: "Trenggalek", lat: -8.0500, lon: 111.7167 },
   { name: "Tuban", lat: -6.8970, lon: 112.0645 },
   { name: "Tulungagung", lat: -8.0667, lon: 111.9000 }
-].sort((a, b) => a.name.localeCompare(b.name));
+].sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
 
 export default function Home() {
   const router = useRouter();
