@@ -44,17 +44,32 @@ export default function AdminChatPage() {
 
   // Load current user from localStorage
   useEffect(() => {
-    const userData = localStorage.getItem("user");
+    let userData = null;
+    try {
+      userData = localStorage.getItem("user");
+    } catch (e) {
+      console.error(e);
+    }
     if (!userData) {
       router.push("/login");
       return;
     }
-    const parsed = JSON.parse(userData);
-    if (parsed.role !== "ADMIN") {
-      router.push("/");
+    
+    let parsed = null;
+    try {
+      parsed = JSON.parse(userData);
+      if (parsed.role !== "ADMIN") {
+        router.push("/");
+        return;
+      }
+      setCurrentUser(parsed);
+    } catch (e) {
+      console.error(e);
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      router.push("/login");
       return;
     }
-    setCurrentUser(parsed);
   }, [router]);
 
   // Load contacts (customers)

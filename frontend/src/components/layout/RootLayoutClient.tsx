@@ -24,9 +24,13 @@ function ClientHeader() {
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      setUser(JSON.parse(userData));
+    try {
+      const userData = localStorage.getItem("user");
+      if (userData) {
+        setUser(JSON.parse(userData));
+      }
+    } catch (e) {
+      console.error("Failed to parse user from localStorage", e);
     }
   }, []);
 
@@ -135,8 +139,15 @@ export function RootLayoutClient({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     setMounted(true);
     
-    const userData = localStorage.getItem("user");
-    const user = userData ? JSON.parse(userData) : null;
+    let user = null;
+    try {
+      const userData = localStorage.getItem("user");
+      user = userData ? JSON.parse(userData) : null;
+    } catch (e) {
+      console.error("Corrupted user localStorage data, clearing...", e);
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+    }
 
     let isAuth = true;
     if (isAdminRoute) {

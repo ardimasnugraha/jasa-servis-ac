@@ -149,9 +149,15 @@ export default function Home() {
     window.addEventListener("scroll", handleScroll);
     
     // Check if user is logged in
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      setUser(JSON.parse(userData));
+    try {
+      const userData = localStorage.getItem("user");
+      if (userData) {
+        setUser(JSON.parse(userData));
+      }
+    } catch (e) {
+      console.error(e);
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
     }
     
     return () => window.removeEventListener("scroll", handleScroll);

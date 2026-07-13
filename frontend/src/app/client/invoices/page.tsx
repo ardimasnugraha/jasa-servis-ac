@@ -15,10 +15,25 @@ export default function ClientInvoicesPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const userData = localStorage.getItem("user");
+    let userData = null;
+    try {
+      userData = localStorage.getItem("user");
+    } catch (e) {
+      console.error(e);
+    }
     if (!userData) { router.push("/login"); return; }
-    const parsedUser = JSON.parse(userData);
-    setUser(parsedUser);
+    
+    let parsedUser = null;
+    try {
+      parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
+    } catch (e) {
+      console.error(e);
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      router.push("/login");
+      return;
+    }
     fetch(`${API_BASE_URL}/api/invoices`)
       .then(res => res.json())
       .then(data => {

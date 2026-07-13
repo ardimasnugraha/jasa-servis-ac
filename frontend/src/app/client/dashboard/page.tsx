@@ -27,11 +27,26 @@ export default function ClientDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const userData = localStorage.getItem("user");
+    let userData = null;
+    try {
+      userData = localStorage.getItem("user");
+    } catch (e) {
+      console.error(e);
+    }
     if (!userData) { router.push("/login"); return; }
-    const parsedUser = JSON.parse(userData);
-    if (parsedUser.role !== "USER") { router.push("/dashboard"); return; }
-    setUser(parsedUser);
+    
+    let parsedUser = null;
+    try {
+      parsedUser = JSON.parse(userData);
+      if (parsedUser.role !== "USER") { router.push("/dashboard"); return; }
+      setUser(parsedUser);
+    } catch (e) {
+      console.error(e);
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      router.push("/login");
+      return;
+    }
 
     Promise.all([
       fetch(`${API_BASE_URL}/api/bookings`).then(res => res.json()),

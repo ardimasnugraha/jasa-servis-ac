@@ -79,13 +79,28 @@ export default function ClientBookingPage() {
   };
 
   useEffect(() => {
-    const userData = localStorage.getItem("user");
+    let userData = null;
+    try {
+      userData = localStorage.getItem("user");
+    } catch (e) {
+      console.error(e);
+    }
+    
     if (!userData) {
       const currentSearch = window.location.search;
       router.push(`/login?redirect=/client/booking${currentSearch}`);
       return;
     }
-    setUser(JSON.parse(userData));
+    
+    try {
+      setUser(JSON.parse(userData));
+    } catch (e) {
+      console.error(e);
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      router.push("/login");
+      return;
+    }
 
     const searchParams = new URLSearchParams(window.location.search);
     const serviceParam = searchParams.get("service");
