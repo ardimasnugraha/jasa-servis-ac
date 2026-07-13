@@ -67,6 +67,32 @@ export async function POST(request: Request) {
       totalEstimatedCost
     } = await request.json();
 
+    let finalTechnicianId = technicianId || null;
+
+    if (!finalTechnicianId) {
+      // Cari semua teknisi yang berstatus 'Aktif'
+      const activeTechnicians = await prisma.technician.findMany({
+        where: {
+          status: 'Aktif',
+        },
+        include: {
+          bookings: true,
+        },
+      });
+
+      // Cari teknisi yang tidak sedang dalam pengerjaan (status selain SELESAI, DIBATALKAN, CANCELLED)
+      const availableTechnician = activeTechnicians.find((tech) => {
+        const hasOngoingBooking = tech.bookings.some(
+          (b) => b.status !== 'SELESAI' && b.status !== 'DIBATALKAN' && b.status !== 'CANCELLED' && b.status !== 'DIBATAL'
+        );
+        return !hasOngoingBooking;
+      });
+
+      if (availableTechnician) {
+        finalTechnicianId = availableTechnician.id;
+      }
+    }
+
     const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
     const randomStr = Math.floor(1000 + Math.random() * 9000).toString();
     const bookingCode = `BKG-${dateStr}-${randomStr}`;
@@ -75,7 +101,7 @@ export async function POST(request: Request) {
       data: {
         bookingCode,
         customerId: customerId || null,
-        technicianId: technicianId || null,
+        technicianId: finalTechnicianId,
         bookingDate: bookingDate ? new Date(bookingDate) : null,
         bookingTime: (bookingTime && bookingTime.includes(':')) ? new Date(`1970-01-01T${bookingTime}:00Z`) : null,
         complaint,
