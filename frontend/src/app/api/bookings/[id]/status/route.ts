@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prismaClient';
+import { updateTechnicianStatus } from '@/lib/technicianStatusHelper';
 
 export async function PATCH(
   request: Request,
@@ -13,6 +14,10 @@ export async function PATCH(
       where: { id },
       data: { status },
     });
+
+    if (updatedBooking.technicianId) {
+      await updateTechnicianStatus(updatedBooking.technicianId);
+    }
 
     return NextResponse.json(updatedBooking);
   } catch (error) {

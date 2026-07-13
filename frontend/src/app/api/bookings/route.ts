@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prismaClient';
+import { updateTechnicianStatus } from '@/lib/technicianStatusHelper';
 
 export const dynamic = 'force-dynamic';
 
@@ -70,17 +71,19 @@ export async function POST(request: Request) {
     let finalTechnicianId = technicianId || null;
 
     if (!finalTechnicianId) {
-      // Cari semua teknisi yang berstatus 'Aktif'
+      // Cari semua teknisi yang statusnya bukan 'sedang dalam pekerjaan'
       const activeTechnicians = await prisma.technician.findMany({
         where: {
-          status: 'Aktif',
+          NOT: {
+            status: 'sedang dalam pekerjaan',
+          },
         },
         include: {
           bookings: true,
         },
       });
 
-      // Cari teknisi yang tidak sedang dalam pengerjaan (status selain SELESAI, DIBATALKAN, CANCELLED)
+      // Cari teknisi yang tidak sedang dalam pengerjaan (status selain SELESAI, DIBATALKAN, CANCELLED, DIBATAL)
       const availableTechnician = activeTechnicians.find((tech) => {
         const hasOngoingBooking = tech.bookings.some(
           (b) => b.status !== 'SELESAI' && b.status !== 'DIBATALKAN' && b.status !== 'CANCELLED' && b.status !== 'DIBATAL'
@@ -113,6 +116,10 @@ export async function POST(request: Request) {
         totalEstimatedCost: totalEstimatedCost ? parseFloat(totalEstimatedCost.toString()) : null,
       },
     });
+
+    if (finalTechnicianId) {
+      await updateTechnicianStatus(finalTechnicianId);
+    }
 
     return NextResponse.json(newBooking, { status: 201 });
   } catch (error) {

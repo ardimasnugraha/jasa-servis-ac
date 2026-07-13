@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prismaClient';
 import { getAutoPrice } from '@/lib/utils';
+import { updateTechnicianStatus } from '@/lib/technicianStatusHelper';
 
 export const dynamic = 'force-dynamic';
 
@@ -67,10 +68,14 @@ export async function POST(request: Request) {
     });
 
     // Update booking status
-    await prisma.booking.update({
+    const updatedBooking = await prisma.booking.update({
       where: { id: bookingId },
       data: { status: 'SELESAI' },
     });
+
+    if (updatedBooking.technicianId) {
+      await updateTechnicianStatus(updatedBooking.technicianId);
+    }
 
     return NextResponse.json(newReport, { status: 201 });
   } catch (error) {

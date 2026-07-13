@@ -204,7 +204,16 @@ export default function BookingsPage() {
                   <div className="col-span-3">
                     <Select value={technicianId} onValueChange={(val) => setTechnicianId(val || "")} required>
                       <SelectTrigger className="rounded-xl"><SelectValue placeholder="Pilih Teknisi" /></SelectTrigger>
-                      <SelectContent>{technicians.map(t => <SelectItem key={t.id} value={t.id}>{t.fullname} ({t.specialty || 'Umum'})</SelectItem>)}</SelectContent>
+                      <SelectContent>
+                        {technicians.map(t => {
+                          const isBusy = t.status === 'sedang dalam pekerjaan';
+                          return (
+                            <SelectItem key={t.id} value={t.id} disabled={isBusy}>
+                              {t.fullname} ({t.specialty || 'Umum'}){isBusy ? ' — Sedang dalam Pekerjaan' : ''}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
                     </Select>
                   </div>
                 </div>

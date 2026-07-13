@@ -475,7 +475,7 @@ export default function ClientBookingPage() {
                     {/* List Kartu Teknisi */}
                     {technicians.map((t, idx) => {
                       const isSelected = technicianId === t.id;
-                      const isBusy = t.bookings && t.bookings.some((b: any) => b.status !== "SELESAI" && b.status !== "BATAL");
+                      const isBusy = t.status === 'sedang dalam pekerjaan' || (t.bookings && t.bookings.some((b: any) => b.status !== "SELESAI" && b.status !== "BATAL" && b.status !== "DIBATALKAN" && b.status !== "CANCELLED" && b.status !== "DIBATAL"));
                       const colors = [
                         'bg-gray-900 text-white',
                         'bg-indigo-600 text-white',
@@ -489,7 +489,7 @@ export default function ClientBookingPage() {
                           key={t.id}
                           onClick={() => {
                             if (isBusy) {
-                              alert("Teknisi ini sedang bertugas dan tidak dapat dipilih saat ini.");
+                              alert("Teknisi ini sedang dalam pekerjaan dan tidak dapat dipilih saat ini.");
                               return;
                             }
                             setTechnicianId(t.id);
@@ -513,7 +513,7 @@ export default function ClientBookingPage() {
                               <h5 className="font-extrabold text-xs text-gray-900 truncate">{t.fullname}</h5>
                               <p className="text-[10px] text-gray-500 mt-0.5 truncate font-semibold">Spesialis: {t.specialty || 'General'}</p>
                               {isBusy && (
-                                <span className="text-[9px] text-amber-700 font-bold bg-amber-50 border border-amber-200/50 px-2 py-0.5 rounded-md mt-1.5 inline-block">Sedang Bertugas</span>
+                                <span className="text-[9px] text-amber-700 font-bold bg-amber-50 border border-amber-200/50 px-2 py-0.5 rounded-md mt-1.5 inline-block">Sedang dalam Pekerjaan</span>
                               )}
                             </div>
                           </div>
