@@ -52,7 +52,7 @@ export async function POST(request: Request) {
         where: { id: bookingId }
       });
       if (booking) {
-        parsedTotalCost = getAutoPrice(booking.complaint || booking.bookingCode);
+        parsedTotalCost = booking.totalEstimatedCost ? Number(booking.totalEstimatedCost) : getAutoPrice(booking.complaint || booking.bookingCode);
       }
     }
 

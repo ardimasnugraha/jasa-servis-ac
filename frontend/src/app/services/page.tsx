@@ -148,7 +148,8 @@ export default function ServicesPage() {
                       if (val) {
                         const selectedB = bookings.find(b => b.id === val);
                         if (selectedB) {
-                          setTotalCost(getAutoPrice(selectedB.complaint || selectedB.bookingCode || "").toString());
+                          const est = selectedB.totalEstimatedCost;
+                          setTotalCost(est ? est.toString() : getAutoPrice(selectedB.complaint || selectedB.bookingCode || "").toString());
                         }
                       } else {
                         setTotalCost("0");
