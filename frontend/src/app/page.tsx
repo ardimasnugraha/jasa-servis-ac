@@ -38,6 +38,97 @@ interface Category {
   subcategories: string[];
 }
 
+const CITY_DATA = [
+  // Eksisting & Banten/DKI
+  { name: "Jakarta", lat: -6.2088, lon: 106.8456 },
+  { name: "Tangerang", lat: -6.1702, lon: 106.6403 },
+  { name: "Depok", lat: -6.4025, lon: 106.7942 },
+  // Jawa Barat
+  { name: "Bandung", lat: -6.9175, lon: 107.6191 },
+  { name: "Bekasi", lat: -6.2383, lon: 106.9756 },
+  { name: "Bogor", lat: -6.5971, lon: 106.8060 },
+  { name: "Cimahi", lat: -6.8723, lon: 107.5436 },
+  { name: "Cirebon", lat: -6.7320, lon: 108.5523 },
+  { name: "Sukabumi", lat: -6.9275, lon: 106.9256 },
+  { name: "Tasikmalaya", lat: -7.3195, lon: 108.2040 },
+  { name: "Banjar", lat: -7.3745, lon: 108.5381 },
+  { name: "Ciamis", lat: -7.3276, lon: 108.3551 },
+  { name: "Cianjur", lat: -6.8168, lon: 107.1425 },
+  { name: "Garut", lat: -7.2279, lon: 107.9087 },
+  { name: "Indramayu", lat: -6.3276, lon: 108.3249 },
+  { name: "Karawang", lat: -6.3227, lon: 107.2898 },
+  { name: "Kuningan", lat: -6.9757, lon: 108.4831 },
+  { name: "Majalengka", lat: -6.8362, lon: 108.2269 },
+  { name: "Pangandaran", lat: -7.6938, lon: 108.6534 },
+  { name: "Purwakarta", lat: -6.5562, lon: 107.4451 },
+  { name: "Subang", lat: -6.5714, lon: 107.7587 },
+  { name: "Sumedang", lat: -6.8587, lon: 107.9208 },
+  // Jawa Tengah
+  { name: "Semarang", lat: -6.9666, lon: 110.4167 },
+  { name: "Surakarta (Solo)", lat: -7.5666, lon: 110.8166 },
+  { name: "Magelang", lat: -7.4797, lon: 110.2177 },
+  { name: "Pekalongan", lat: -6.8886, lon: 109.6753 },
+  { name: "Salatiga", lat: -7.3305, lon: 110.5084 },
+  { name: "Tegal", lat: -6.8694, lon: 109.1402 },
+  { name: "Banjarnegara", lat: -7.3985, lon: 109.6961 },
+  { name: "Banyumas", lat: -7.5154, lon: 109.2885 },
+  { name: "Batang", lat: -6.9142, lon: 109.7346 },
+  { name: "Blora", lat: -6.9691, lon: 111.4150 },
+  { name: "Boyolali", lat: -7.5332, lon: 110.5960 },
+  { name: "Brebes", lat: -6.8711, lon: 109.0435 },
+  { name: "Cilacap", lat: -7.7279, lon: 109.0069 },
+  { name: "Demak", lat: -6.8906, lon: 110.6396 },
+  { name: "Grobogan", lat: -7.0864, lon: 110.9209 },
+  { name: "Jepara", lat: -6.5828, lon: 110.6664 },
+  { name: "Karanganyar", lat: -7.5954, lon: 110.9485 },
+  { name: "Kebumen", lat: -7.6687, lon: 109.6517 },
+  { name: "Kendal", lat: -6.9201, lon: 110.1989 },
+  { name: "Klaten", lat: -7.7126, lon: 110.6033 },
+  { name: "Kudus", lat: -6.8048, lon: 110.8405 },
+  { name: "Pati", lat: -6.7561, lon: 111.0378 },
+  { name: "Pemalang", lat: -6.8920, lon: 109.3804 },
+  { name: "Purbalingga", lat: -7.3875, lon: 109.3629 },
+  { name: "Purworejo", lat: -7.7153, lon: 110.0105 },
+  { name: "Rembang", lat: -6.7083, lon: 111.3411 },
+  { name: "Sragen", lat: -7.4286, lon: 111.0205 },
+  { name: "Sukoharjo", lat: -7.6766, lon: 110.8291 },
+  { name: "Temanggung", lat: -7.3168, lon: 110.1706 },
+  { name: "Wonogiri", lat: -7.8078, lon: 110.9250 },
+  { name: "Wonosobo", lat: -7.3622, lon: 109.9004 },
+  // Jawa Timur
+  { name: "Surabaya", lat: -7.2504, lon: 112.7688 },
+  { name: "Malang", lat: -7.9797, lon: 112.6304 },
+  { name: "Batu", lat: -7.8671, lon: 112.5239 },
+  { name: "Blitar", lat: -8.0954, lon: 112.1609 },
+  { name: "Kediri", lat: -7.8228, lon: 112.0118 },
+  { name: "Madiun", lat: -7.6298, lon: 111.5239 },
+  { name: "Mojokerto", lat: -7.4726, lon: 112.4338 },
+  { name: "Pasuruan", lat: -7.6453, lon: 112.9075 },
+  { name: "Probolinggo", lat: -7.7500, lon: 113.2167 },
+  { name: "Bangkalan", lat: -7.0278, lon: 112.7441 },
+  { name: "Banyuwangi", lat: -8.2192, lon: 114.3692 },
+  { name: "Bojonegoro", lat: -7.1500, lon: 111.8833 },
+  { name: "Bondowoso", lat: -7.9281, lon: 113.8219 },
+  { name: "Gresik", lat: -7.1593, lon: 112.6516 },
+  { name: "Jember", lat: -8.1721, lon: 113.7000 },
+  { name: "Jombang", lat: -7.5458, lon: 112.2333 },
+  { name: "Lamongan", lat: -7.1182, lon: 112.4150 },
+  { name: "Lumajang", lat: -8.1333, lon: 113.2167 },
+  { name: "Magetan", lat: -7.6500, lon: 111.3333 },
+  { name: "Nganjuk", lat: -7.6000, lon: 111.9000 },
+  { name: "Ngawi", lat: -7.4000, lon: 111.4500 },
+  { name: "Pacitan", lat: -8.2000, lon: 111.1000 },
+  { name: "Pamekasan", lat: -7.1600, lon: 113.4800 },
+  { name: "Ponorogo", lat: -7.8667, lon: 111.4667 },
+  { name: "Sampang", lat: -7.2000, lon: 113.2500 },
+  { name: "Sidoarjo", lat: -7.4478, lon: 112.7183 },
+  { name: "Situbondo", lat: -7.7000, lon: 114.0000 },
+  { name: "Sumenep", lat: -7.0167, lon: 113.8667 },
+  { name: "Trenggalek", lat: -8.0500, lon: 111.7167 },
+  { name: "Tuban", lat: -6.8970, lon: 112.0645 },
+  { name: "Tulungagung", lat: -8.0667, lon: 111.9000 }
+].sort((a, b) => a.name.localeCompare(b.name));
+
 export default function Home() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
@@ -48,7 +139,7 @@ export default function Home() {
   const [gpsStatus, setGpsStatus] = useState("");
   const [scrolled, setScrolled] = useState(false);
   
-  const locations = ["Jakarta", "Tangerang", "Bekasi", "Depok", "Bogor", "Bandung", "Surabaya"];
+  const locations = CITY_DATA.map(c => c.name);
 
   // Handle sticky header scroll effect
   useEffect(() => {
@@ -219,16 +310,7 @@ export default function Home() {
         let closestCity = "Jakarta";
         let minDistance = Infinity;
 
-        // Koordinat statis untuk mencocokkan dengan daftar lokasi yang tersedia
-        const cityCoordinates: Record<string, {lat: number, lon: number}> = {
-          "Jakarta": { lat: -6.2088, lon: 106.8456 },
-          "Tangerang": { lat: -6.1702, lon: 106.6403 },
-          "Bekasi": { lat: -6.2383, lon: 106.9756 },
-          "Depok": { lat: -6.4025, lon: 106.7942 },
-          "Bogor": { lat: -6.5971, lon: 106.8060 },
-          "Bandung": { lat: -6.9175, lon: 107.6191 },
-          "Surabaya": { lat: -7.2504, lon: 112.7688 }
-        };
+        // Gunakan CITY_DATA dari array global untuk mencocokkan lokasi terdekat
 
         // Fungsi hitung jarak Haversine formula
         const getDistanceFromLatLonInKm = (lat1: number, lon1: number, lat2: number, lon2: number) => {
@@ -242,8 +324,8 @@ export default function Home() {
           return R * c; 
         };
 
-        for (const [city, coords] of Object.entries(cityCoordinates)) {
-          const distance = getDistanceFromLatLonInKm(latitude, longitude, coords.lat, coords.lon);
+        for (const { name: city, lat, lon } of CITY_DATA) {
+          const distance = getDistanceFromLatLonInKm(latitude, longitude, lat, lon);
           if (distance < minDistance) {
             minDistance = distance;
             closestCity = city;
