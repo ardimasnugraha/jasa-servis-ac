@@ -22,6 +22,7 @@ export async function GET() {
     const formattedInvoices = invoices.map((i) => ({
       id: i.id,
       invoiceNumber: i.invoiceNumber,
+      bookingId: i.bookingId,
       bookingCode: i.booking?.bookingCode || '-',
       customerId: i.booking?.customerId || null,
       customerName: i.booking?.customer?.fullname || '-',

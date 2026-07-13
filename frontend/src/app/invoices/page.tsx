@@ -23,6 +23,7 @@ import { getAutoPrice } from "@/lib/utils";
 type Invoice = {
   id: string;
   invoiceNumber: string;
+  bookingId?: string | null;
   bookingCode: string;
   customerName: string;
   subtotal: number;
@@ -198,10 +199,20 @@ export default function InvoicesPage() {
                     }} required>
                       <SelectTrigger className="rounded-xl"><SelectValue placeholder="Pilih nomor booking" /></SelectTrigger>
                       <SelectContent>
-                        {bookings.map(b => (
-                          <SelectItem key={b.id} value={b.id}>{b.bookingCode} — {b.customer}</SelectItem>
-                        ))}
-                        {bookings.length === 0 && <SelectItem value="empty" disabled>Tidak ada jadwal servis selesai</SelectItem>}
+                        {(() => {
+                          const availableBookings = bookings.filter(b => {
+                            const isPaid = invoices.some(inv => inv.bookingId === b.id && inv.status === 'PAID');
+                            return !isPaid;
+                          });
+
+                          if (availableBookings.length === 0) {
+                            return <SelectItem value="empty" disabled>Tidak ada jadwal servis selesai</SelectItem>;
+                          }
+
+                          return availableBookings.map(b => (
+                            <SelectItem key={b.id} value={b.id}>{b.bookingCode} — {b.customer}</SelectItem>
+                          ));
+                        })()}
                       </SelectContent>
                     </Select>
                   </div>
