@@ -203,14 +203,69 @@ export default function Home() {
   };
 
   const handleGPSDetect = () => {
+    if (!navigator.geolocation) {
+      setGpsStatus("GPS tidak didukung di browser ini");
+      setTimeout(() => setGpsStatus(""), 4000);
+      return;
+    }
+
     setGpsLoading(true);
     setGpsStatus("Mencari lokasi terdekat...");
-    setTimeout(() => {
-      setLocation("Jakarta");
-      setGpsLoading(false);
-      setGpsStatus("Lokasi Terdeteksi: Jakarta (GPS)");
-      setTimeout(() => setGpsStatus(""), 4000);
-    }, 1200);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        
+        let closestCity = "Jakarta";
+        let minDistance = Infinity;
+
+        // Koordinat statis untuk mencocokkan dengan daftar lokasi yang tersedia
+        const cityCoordinates: Record<string, {lat: number, lon: number}> = {
+          "Jakarta": { lat: -6.2088, lon: 106.8456 },
+          "Tangerang": { lat: -6.1702, lon: 106.6403 },
+          "Bekasi": { lat: -6.2383, lon: 106.9756 },
+          "Depok": { lat: -6.4025, lon: 106.7942 },
+          "Bogor": { lat: -6.5971, lon: 106.8060 },
+          "Bandung": { lat: -6.9175, lon: 107.6191 },
+          "Surabaya": { lat: -7.2504, lon: 112.7688 }
+        };
+
+        // Fungsi hitung jarak Haversine formula
+        const getDistanceFromLatLonInKm = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+          const R = 6371; // Radius bumi dalam km
+          const dLat = (lat2 - lat1) * Math.PI / 180;
+          const dLon = (lon2 - lon1) * Math.PI / 180;
+          const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+            Math.sin(dLon/2) * Math.sin(dLon/2); 
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+          return R * c; 
+        };
+
+        for (const [city, coords] of Object.entries(cityCoordinates)) {
+          const distance = getDistanceFromLatLonInKm(latitude, longitude, coords.lat, coords.lon);
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestCity = city;
+          }
+        }
+
+        setLocation(closestCity);
+        setGpsLoading(false);
+        setGpsStatus(`Lokasi Terdeteksi: ${closestCity} (GPS)`);
+        setTimeout(() => setGpsStatus(""), 4000);
+      },
+      (error) => {
+        setGpsLoading(false);
+        setGpsStatus("Gagal mendapatkan lokasi. Pastikan izin GPS aktif.");
+        setTimeout(() => setGpsStatus(""), 4000);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      }
+    );
   };
 
   return (
