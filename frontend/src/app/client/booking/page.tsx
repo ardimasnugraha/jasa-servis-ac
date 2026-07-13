@@ -47,7 +47,7 @@ export default function ClientBookingPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // New Handyman Sewa States
-  const [rateType, setRateType] = useState("DAILY");
+  const [rateType, setRateType] = useState("UNIT");
   const [durationDays, setDurationDays] = useState(1);
   const [numWorkers, setNumWorkers] = useState(1);
   const [materialOption, setMaterialOption] = useState("JASA_SAJA");
@@ -75,7 +75,7 @@ export default function ClientBookingPage() {
     if (rateType === "PROJECT") {
       return materialOption === "ALL_IN" ? 1500000 : 1000000;
     }
-    return materialOption === "ALL_IN" ? 750000 : 500000;
+    return getAutoPrice(complaint);
   };
 
   useEffect(() => {

@@ -50,7 +50,7 @@ export async function POST(request: Request) {
         where: { id: bookingId }
       });
       if (booking) {
-        parsedSubtotal = getAutoPrice(booking.complaint || booking.bookingCode);
+        parsedSubtotal = booking.totalEstimatedCost ? Number(booking.totalEstimatedCost) : getAutoPrice(booking.complaint || booking.bookingCode);
       }
     }
     const parsedTax = parseFloat(tax) || 0;
