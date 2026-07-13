@@ -871,9 +871,11 @@ export default function Home() {
             Nikmati fitur terbaru untuk terhubung dengan customer dengan 10 Kategori Lebih Pekerjaan! Tersedia di seluruh wilayah Indonesia.
           </p>
           <div className="mt-8 flex justify-center gap-4">
-            <Button className="h-11 px-8 rounded-xl font-bold bg-[#111111] hover:bg-[#374151] text-white shadow-md">
-              Daftar Sekarang
-            </Button>
+            <Link href="https://wa.me/628123456789?text=Halo%20Servis%20Kita,%20saya%20tertarik%20mendaftar%20sebagai%20mitra." target="_blank" rel="noopener noreferrer">
+              <Button className="h-11 px-8 rounded-xl font-bold bg-[#111111] hover:bg-[#374151] text-white shadow-md cursor-pointer">
+                Daftar Sekarang
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
