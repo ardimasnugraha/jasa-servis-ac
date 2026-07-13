@@ -475,6 +475,7 @@ export default function ClientBookingPage() {
                     {/* List Kartu Teknisi */}
                     {technicians.map((t, idx) => {
                       const isSelected = technicianId === t.id;
+                      const isBusy = t.bookings && t.bookings.some((b: any) => b.status !== "SELESAI" && b.status !== "BATAL");
                       const colors = [
                         'bg-gray-900 text-white',
                         'bg-indigo-600 text-white',
@@ -486,11 +487,19 @@ export default function ClientBookingPage() {
                       return (
                         <div 
                           key={t.id}
-                          onClick={() => setTechnicianId(t.id)}
-                          className={`cursor-pointer rounded-2xl p-4 border-2 transition-all duration-300 flex items-center justify-between bg-white/40 ${
-                            isSelected
-                              ? 'border-[#111111] bg-gray-100/45 shadow-md shadow-gray-900/4 scale-[1.01]'
-                              : 'border-gray-200 hover:border-[#111111]/50 hover:bg-white/80'
+                          onClick={() => {
+                            if (isBusy) {
+                              alert("Teknisi ini sedang bertugas dan tidak dapat dipilih saat ini.");
+                              return;
+                            }
+                            setTechnicianId(t.id);
+                          }}
+                          className={`rounded-2xl p-4 border-2 transition-all duration-300 flex items-center justify-between bg-white/40 ${
+                            isBusy
+                              ? 'opacity-60 bg-gray-50 border-gray-150 cursor-not-allowed'
+                              : isSelected
+                              ? 'border-[#111111] bg-gray-100/45 shadow-md shadow-gray-900/4 scale-[1.01] cursor-pointer'
+                              : 'border-gray-200 hover:border-[#111111]/50 hover:bg-white/80 cursor-pointer'
                           }`}
                         >
                           <div className="flex items-center gap-3.5 min-w-0">
@@ -498,14 +507,17 @@ export default function ClientBookingPage() {
                               <AvatarFallback className={`text-xs font-black ${avatarColor}`}>
                                 {(t.fullname || 'TK').substring(0, 2).toUpperCase()}
                               </AvatarFallback>
-                              <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-gray-500 border border-white"></span>
+                              <span className={`absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border border-white ${isBusy ? "bg-amber-500" : "bg-emerald-500"}`}></span>
                             </Avatar>
                             <div className="min-w-0">
                               <h5 className="font-extrabold text-xs text-gray-900 truncate">{t.fullname}</h5>
                               <p className="text-[10px] text-gray-500 mt-0.5 truncate font-semibold">Spesialis: {t.specialty || 'General'}</p>
+                              {isBusy && (
+                                <span className="text-[9px] text-amber-700 font-bold bg-amber-50 border border-amber-200/50 px-2 py-0.5 rounded-md mt-1.5 inline-block">Sedang Bertugas</span>
+                              )}
                             </div>
                           </div>
-                          {isSelected && (
+                          {isSelected && !isBusy && (
                             <Check className="h-4.5 w-4.5 text-gray-900 stroke-[3.5] shrink-0" />
                           )}
                         </div>

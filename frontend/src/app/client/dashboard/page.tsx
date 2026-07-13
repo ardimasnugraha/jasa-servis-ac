@@ -26,28 +26,7 @@ export default function ClientDashboard() {
   const [myInvoices, setMyInvoices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    let userData = null;
-    try {
-      userData = localStorage.getItem("user");
-    } catch (e) {
-      console.error(e);
-    }
-    if (!userData) { router.push("/login"); return; }
-    
-    let parsedUser = null;
-    try {
-      parsedUser = JSON.parse(userData);
-      if (parsedUser.role !== "USER") { router.push("/dashboard"); return; }
-      setUser(parsedUser);
-    } catch (e) {
-      console.error(e);
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
-      router.push("/login");
-      return;
-    }
-
+  const fetchDashboardData = (parsedUser: any) => {
     Promise.all([
       fetch(`${API_BASE_URL}/api/bookings`).then(res => res.json()),
       fetch(`${API_BASE_URL}/api/invoices`).then(res => res.json())
@@ -67,6 +46,53 @@ export default function ClientDashboard() {
         console.error("Error loading dashboard data:", err);
         setLoading(false);
       });
+  };
+
+  const handleCompleteBooking = async (bookingId: string) => {
+    if (!confirm("Apakah Anda yakin pekerjaan oleh teknisi ini sudah selesai?")) return;
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/bookings/${bookingId}/status`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "SELESAI" }),
+      });
+      if (!response.ok) throw new Error();
+      alert("Pekerjaan telah ditandai Selesai!");
+      
+      // Update local state by reloading data
+      let userData = localStorage.getItem("user");
+      if (userData) {
+        fetchDashboardData(JSON.parse(userData));
+      } else {
+        window.location.reload();
+      }
+    } catch (e) {
+      alert("Gagal memperbarui status pekerjaan.");
+    }
+  };
+
+  useEffect(() => {
+    let userData = null;
+    try {
+      userData = localStorage.getItem("user");
+    } catch (e) {
+      console.error(e);
+    }
+    if (!userData) { router.push("/login"); return; }
+    
+    let parsedUser = null;
+    try {
+      parsedUser = JSON.parse(userData);
+      if (parsedUser.role !== "USER") { router.push("/dashboard"); return; }
+      setUser(parsedUser);
+      fetchDashboardData(parsedUser);
+    } catch (e) {
+      console.error(e);
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      router.push("/login");
+      return;
+    }
   }, [router]);
 
   if (loading) {
@@ -259,13 +285,24 @@ export default function ClientDashboard() {
                         <div className="h-8 w-8 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
                           <UserCheck className="h-4 w-4 text-gray-500" />
                         </div>
-                        <div className="text-xs">
+                        <div className="text-xs flex-1">
                           {b.technician ? (
-                            <p className="text-gray-700">
-                              Teknisi: <span className="font-bold text-gray-900">{b.technician.fullname}</span>
-                              <span className="text-gray-300 px-1.5">•</span>
-                              <span className="text-gray-400 font-medium">{b.technician.specialty || 'Spesialis Servis'}</span>
-                            </p>
+                            <div className="flex items-center justify-between flex-wrap gap-2">
+                              <p className="text-gray-700">
+                                Teknisi: <span className="font-bold text-gray-900">{b.technician.fullname}</span>
+                                <span className="text-gray-300 px-1.5">•</span>
+                                <span className="text-gray-400 font-medium">{b.technician.specialty || 'Spesialis Servis'}</span>
+                              </p>
+                              {b.status === "TERJADWAL" && (
+                                <Button 
+                                  onClick={() => handleCompleteBooking(b.id)}
+                                  size="sm"
+                                  className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-[10px] gap-1 h-8 px-3 cursor-pointer shadow-sm ml-auto"
+                                >
+                                  <CheckCircle2 className="h-3 w-3" /> Selesai
+                                </Button>
+                              )}
+                            </div>
                           ) : (
                             <p className="text-gray-400 font-medium italic">Sedang mencari teknisi terbaik untuk kunjungan Anda...</p>
                           )}
