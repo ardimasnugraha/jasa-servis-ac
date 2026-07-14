@@ -51,6 +51,25 @@ export default function TechniciansPage() {
   const [specialty, setSpecialty] = useState("");
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
   const [selectedTechnician, setSelectedTechnician] = useState<Technician | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDeleteTechnician = async (techId: string) => {
+    if (!confirm("Apakah Anda yakin ingin memecat teknisi ini? Semua booking yang ditugaskan akan dikosongkan teknisinya.")) return;
+    setIsDeleting(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/technicians/${techId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error();
+      alert("Teknisi berhasil dipecat!");
+      setDetailDialogOpen(false);
+      fetchTechnicians();
+    } catch {
+      alert("Terjadi kesalahan saat memecat teknisi.");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   const fetchTechnicians = () => {
     setLoading(true);
@@ -221,8 +240,18 @@ export default function TechniciansPage() {
               </div>
             </div>
           )}
-          <DialogFooter>
-            <Button onClick={() => setDetailDialogOpen(false)} className="rounded-xl w-full bg-gray-900 hover:bg-gray-800 text-white">
+          <DialogFooter className="flex flex-col sm:flex-row gap-2">
+            <Button 
+              onClick={() => selectedTechnician && handleDeleteTechnician(selectedTechnician.id)} 
+              disabled={isDeleting}
+              className="rounded-xl w-full sm:flex-1 bg-red-600 hover:bg-red-700 text-white font-bold cursor-pointer"
+            >
+              {isDeleting ? "Memproses..." : "Pecat Teknisi"}
+            </Button>
+            <Button 
+              onClick={() => setDetailDialogOpen(false)} 
+              className="rounded-xl w-full sm:flex-1 bg-gray-900 hover:bg-gray-800 text-white font-bold cursor-pointer"
+            >
               Tutup
             </Button>
           </DialogFooter>
