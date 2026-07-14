@@ -61,14 +61,14 @@ function ClientHeader() {
           <Link href="#" className="hover:text-gray-900 transition-colors flex items-center gap-1">
             <HelpCircle className="h-3.5 w-3.5" /> Bantuan
           </Link>
-          <Link href="#" className="hover:text-gray-900 transition-colors flex items-center gap-1">
-            <Users className="h-3.5 w-3.5" /> Jadi Mitra
+          <Link href="/mitra" className="hover:text-gray-900 transition-colors flex items-center gap-1">
+            <Users className="h-3.5 w-3.5" /> Jadi Tukang
           </Link>
           <Link href={user ? (user.role === "ADMIN" ? "/dashboard/chat" : "/client/chat") : "/login"} className="hover:text-gray-900 transition-colors flex items-center gap-1">
             <MessageSquare className="h-3.5 w-3.5" /> Chat
           </Link>
-          <Link href={user ? (user.role === "ADMIN" ? "/dashboard" : "/client/dashboard") : "/login"} className="hover:text-gray-900 transition-colors">
-            Pesanan
+          <Link href={user ? (user.role === "ADMIN" ? "/dashboard" : (user.role === "TECHNICIAN" ? "/mitra/dashboard" : "/client/dashboard")) : "/login"} className="hover:text-gray-900 transition-colors">
+            {user && user.role === "TECHNICIAN" ? "Pekerjaan" : "Pesanan"}
           </Link>
         </nav>
 
@@ -83,7 +83,7 @@ function ClientHeader() {
           {/* Login / Register or Profile */}
           {user ? (
             <div className="flex items-center gap-2">
-              <Link href={user.role === "ADMIN" ? "/dashboard" : "/client/dashboard"}>
+              <Link href={user.role === "ADMIN" ? "/dashboard" : (user.role === "TECHNICIAN" ? "/mitra/dashboard" : "/client/dashboard")}>
                 <Button variant="ghost" className="h-8 px-3 rounded-lg border border-gray-200 hover:bg-gray-100 text-gray-700 hover:text-gray-900 text-[11px] font-bold gap-1.5">
                   <User className="h-3 w-3" />
                   {user.fullname ? user.fullname.split(" ")[0] : "Akun"}
@@ -135,6 +135,8 @@ export function RootLayoutClient({ children }: { children: React.ReactNode }) {
                        pathname?.startsWith("/settings");
 
   const isClientRoute = pathname?.startsWith("/client") || false;
+  const isMitraRoute = pathname?.startsWith("/mitra/dashboard") || false;
+  const isMitraView = pathname?.startsWith("/mitra") || false;
 
   useEffect(() => {
     setMounted(true);
@@ -169,6 +171,16 @@ export function RootLayoutClient({ children }: { children: React.ReactNode }) {
       } else if (user.role !== "USER") {
         setAuthorized(false);
         router.push("/dashboard");
+        isAuth = false;
+      }
+    } else if (isMitraRoute) {
+      if (!user) {
+        setAuthorized(false);
+        router.push(`/login?redirect=${pathname}`);
+        isAuth = false;
+      } else if (user.role !== "TECHNICIAN") {
+        setAuthorized(false);
+        router.push("/");
         isAuth = false;
       }
     }
@@ -207,7 +219,7 @@ export function RootLayoutClient({ children }: { children: React.ReactNode }) {
       return <main className="flex-1 overflow-y-auto bg-gray-50 text-gray-900">{children}</main>;
     }
 
-    if (isClientRoute) {
+    if (isClientRoute || isMitraView) {
       return (
         <div className="min-h-screen w-full text-gray-900 flex flex-col blob-bg" style={{ background: 'linear-gradient(135deg, #ebebeb 0%, #f5f5f5 50%, #e8e8e8 100%)' }}>
           <ClientHeader />

@@ -20,15 +20,21 @@ export async function POST(request: Request) {
     }
 
     let customerId = null;
+    let technicianId = null;
     if (user.role === 'USER') {
       const customer = await prisma.customer.findFirst({ where: { email: user.email || '' } });
       if (customer) {
         customerId = customer.id;
       }
+    } else if (user.role === 'TECHNICIAN') {
+      const technician = await prisma.technician.findFirst({ where: { userId: user.id } });
+      if (technician) {
+        technicianId = technician.id;
+      }
     }
 
     const token = jwt.sign(
-      { userId: user.id, role: user.role, customerId },
+      { userId: user.id, role: user.role, customerId, technicianId },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
@@ -41,7 +47,8 @@ export async function POST(request: Request) {
         email: user.email,
         fullname: user.fullname,
         role: user.role,
-        customerId
+        customerId,
+        technicianId
       }
     });
   } catch (error) {

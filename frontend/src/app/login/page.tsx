@@ -1,16 +1,19 @@
 "use client";
 import { API_BASE_URL } from "@/config";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2, Wrench, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 
-export default function LoginPage() {
+function LoginFormContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams ? searchParams.get("redirect") : null;
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -43,8 +46,12 @@ export default function LoginPage() {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      if (data.user.role === "ADMIN") {
+      if (redirectUrl) {
+        router.push(redirectUrl);
+      } else if (data.user.role === "ADMIN") {
         router.push("/dashboard");
+      } else if (data.user.role === "TECHNICIAN") {
+        router.push("/mitra/dashboard");
       } else {
         router.push("/");
       }
@@ -140,5 +147,20 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 select-none" style={{ background: 'linear-gradient(145deg, #e8e8e8 0%, #f5f5f5 50%, #ebebeb 100%)' }}>
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-10 w-10 rounded-full border-4 border-gray-200 border-t-gray-900 animate-spin" />
+          <p className="text-xs font-semibold text-gray-400 tracking-wide">Memuat Halaman Login...</p>
+        </div>
+      </div>
+    }>
+      <LoginFormContent />
+    </Suspense>
   );
 }
