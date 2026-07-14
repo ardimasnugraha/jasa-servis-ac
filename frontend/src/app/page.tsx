@@ -380,9 +380,11 @@ export default function Home() {
           {/* Links */}
           <nav className="hidden md:flex items-center gap-6 text-xs font-bold uppercase tracking-wider">
             <Link href="#" className="hover:text-gray-300 transition-colors">Bantuan</Link>
-            <Link href="#" className="hover:text-gray-300 transition-colors">Jadi Mitra</Link>
+            <Link href="/mitra" className="hover:text-gray-300 transition-colors">Jadi Tukang</Link>
             <Link href={user ? (user.role === "ADMIN" ? "/dashboard/chat" : "/client/chat") : "/login"} className="hover:text-gray-300 transition-colors">Chat</Link>
-            <Link href={user ? (user.role === "ADMIN" ? "/dashboard" : "/client/dashboard") : "/login"} className="hover:text-gray-300 transition-colors">Pesanan</Link>
+            <Link href={user ? (user.role === "ADMIN" ? "/dashboard" : (user.role === "TECHNICIAN" ? "/mitra/dashboard" : "/client/dashboard")) : "/login"} className="hover:text-gray-300 transition-colors">
+              {user && user.role === "TECHNICIAN" ? "Pekerjaan" : "Pesanan"}
+            </Link>
           </nav>
 
           {/* Profile / Auth / Cart */}
@@ -396,7 +398,7 @@ export default function Home() {
 
             {user ? (
               <div className="flex items-center gap-2">
-                <Link href={user.role === "ADMIN" ? "/dashboard" : "/client/dashboard"}>
+                <Link href={user.role === "ADMIN" ? "/dashboard" : (user.role === "TECHNICIAN" ? "/mitra/dashboard" : "/client/dashboard")}>
                   <Button variant="ghost" className={`h-9 px-3.5 rounded-xl border text-xs font-bold gap-1.5 ${
                     scrolled 
                       ? "border-slate-200 text-slate-800 hover:bg-slate-50" 
@@ -930,9 +932,11 @@ export default function Home() {
               </div>
               <span className="text-base font-black text-white tracking-tight">SERVIS KITA</span>
             </Link>
-            <Button variant="outline" className="w-full h-9 rounded-lg text-[10px] font-bold text-white border-white/10 hover:bg-white/10 hover:text-white bg-transparent">
-              Jadi Mitra Servis Kita
-            </Button>
+            <Link href="/mitra" className="w-full">
+              <Button variant="outline" className="w-full h-9 rounded-lg text-[10px] font-bold text-white border-white/10 hover:bg-white/10 hover:text-white bg-transparent cursor-pointer">
+                Jadi Tukang Servis Kita
+              </Button>
+            </Link>
             <div className="pt-2">
               <span className="block text-[10px] uppercase font-bold text-white/40 mb-2">Partner Pembayaran</span>
               <div className="flex gap-2 flex-wrap opacity-60">
@@ -962,7 +966,7 @@ export default function Home() {
             <h5 className="font-bold text-white mb-4 uppercase tracking-wider text-[10px]">Perusahaan</h5>
             <ul className="space-y-2">
               <li><Link href="#" className="hover:text-white transition-colors">About Us</Link></li>
-              <li><Link href="#" className="hover:text-white transition-colors">Jadi Mitra</Link></li>
+              <li><Link href="/mitra" className="hover:text-white transition-colors">Jadi Tukang</Link></li>
               <li><Link href="#" className="hover:text-white transition-colors">Facebook</Link></li>
               <li><Link href="#" className="hover:text-white transition-colors">Instagram</Link></li>
             </ul>
